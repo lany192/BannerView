@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="SivinBanner">
+    <declare-styleable name="BannerView">
         <!-- 指示点容器背景 -->
-        <attr name="banner_pointContainerBackground" format="reference|color" />
+        <attr name="bv_indicator_container_bg" format="reference|color" />
         <!-- 指示点背景 -->
-        <attr name="banner_pointDrawable" format="reference" />
+        <attr name="bv_indicator" format="reference" />
         <!-- 指示点容器左右内间距 -->
-        <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
+        <attr name="bv_indicator_padding" format="dimension" />
         <!-- 指示点上下外间距 -->
-        <attr name="banner_pointTopBottomMargin" format="dimension" />
+        <attr name="bv_indicator_top_bottom_margin" format="dimension" />
         <!-- 指示点左右外间距 -->
-        <attr name="banner_pointLeftRightMargin" format="dimension" />
+        <attr name="bv_indicator_left_right_margin" format="dimension" />
         <!-- 指示点的位置 -->
-        <attr name="banner_pointGravity">
+        <attr name="bv_indicator_gravity">
             <flag name="top" value="0x30" />
             <flag name="bottom" value="0x50" />
             <flag name="left" value="0x03" />
@@ -21,13 +21,13 @@
             <flag name="center_horizontal" value="0x01" />
         </attr>
         <!-- 自动轮播的时间间隔 -->
-        <attr name="banner_pointAutoPlayInterval" format="integer" />
+        <attr name="bv_play_interval" format="integer" />
         <!-- 页码切换过程的时间长度 -->
-        <attr name="banner_pageChangeDuration" format="integer" />
+        <attr name="bv_page_change_duration" format="integer" />
         <!-- 提示文案的文字颜色 -->
-        <attr name="banner_tipTextColor" format="reference|color" />
+        <attr name="bv_title_text_color" format="reference|color" />
         <!-- 提示文案的文字大小 -->
-        <attr name="banner_tipTextSize" format="dimension" />
+        <attr name="bv_title_text_size" format="dimension" />
     </declare-styleable>
 
 </resources>

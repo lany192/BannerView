@@ -53,7 +53,7 @@ public class BannerView extends RelativeLayout {
     /**
      * 轮播控件的提示文字
      */
-    private TextView mTipTextView;
+    private TextView mTitleText;
     /**
      * 提示文字的大小
      */
@@ -137,37 +137,22 @@ public class BannerView extends RelativeLayout {
 
     public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        //初始化默认属性
-        initDefaultAttrs(context);
+        //默认点指示器的左右Margin3dp
+        mPointLeftRightMargin = dp2px(3);
+        //默认点指示器的上下margin为6dp
+        mPointTopBottomMargin = dp2px(6);
+        //默认点容器的左右padding为10dp
+        mPointContainerLeftRightPadding = dp2px(10);
+        //默认指示器提示文字大小8sp
+        mTipTextSize = sp2px(8);
+        //默认指示器容器的背景图片
+        mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#33aaaaaa"));
 
         //初始化自定义属性
         initCustomAttrs(context, attrs);
 
         //控件初始化
-        initView(context);
-    }
-
-    private void initDefaultAttrs(Context context) {
-
-        //默认点指示器的左右Margin3dp
-        mPointLeftRightMargin = dp2px(context, 3);
-        //默认点指示器的上下margin为6dp
-        mPointTopBottomMargin = dp2px(context, 6);
-        //默认点容器的左右padding为10dp
-        mPointContainerLeftRightPadding = dp2px(context, 10);
-        //默认指示器提示文字大小8sp
-        mTipTextSize = sp2px(context, 8);
-        //默认指示器容器的背景图片
-        mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#33aaaaaa"));
-    }
-
-    private int dp2px(Context context, float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
-    }
-
-    private int sp2px(Context context, float spValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
+        initView();
     }
 
     /**
@@ -177,7 +162,7 @@ public class BannerView extends RelativeLayout {
      * @param attrs   attrs
      */
     private void initCustomAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SivinBanner);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerView);
         final int N = typedArray.getIndexCount();
         for (int i = 0; i < N; i++) {
             initCustomAttr(typedArray.getIndex(i), typedArray);
@@ -186,52 +171,47 @@ public class BannerView extends RelativeLayout {
     }
 
     private void initCustomAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.SivinBanner_banner_pointDrawable) {
+        if (attr == R.styleable.BannerView_bv_indicator) {
             //指示器点的样式资源id
             mPointDrawableResId = typedArray.getResourceId(attr, R.drawable.selector_banner_point);
-        } else if (attr == R.styleable.SivinBanner_banner_pointContainerBackground) {
+        } else if (attr == R.styleable.BannerView_bv_indicator_container_bg) {
             //指示器容器背景样式
             mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
 
-        } else if (attr == R.styleable.SivinBanner_banner_pointLeftRightMargin) {
+        } else if (attr == R.styleable.BannerView_bv_indicator_left_right_margin) {
             //指示器左右边距
             mPointLeftRightMargin = typedArray.getDimensionPixelSize(attr, mPointLeftRightMargin);
-        } else if (attr == R.styleable.SivinBanner_banner_pointContainerLeftRightPadding) {
+        } else if (attr == R.styleable.BannerView_bv_indicator_padding) {
             //指示器容器的左右padding
             mPointContainerLeftRightPadding = typedArray.getDimensionPixelSize(attr, mPointContainerLeftRightPadding);
-        } else if (attr == R.styleable.SivinBanner_banner_pointTopBottomMargin) {
+        } else if (attr == R.styleable.BannerView_bv_indicator_top_bottom_margin) {
 
             //指示器的上下margin
             mPointTopBottomMargin = typedArray.getDimensionPixelSize(attr, mPointTopBottomMargin);
-        } else if (attr == R.styleable.SivinBanner_banner_pointGravity) {
+        } else if (attr == R.styleable.BannerView_bv_indicator_gravity) {
             //指示器在容器中的位置属性
             mPointGravity = typedArray.getInt(attr, mPointGravity);
-        } else if (attr == R.styleable.SivinBanner_banner_pointAutoPlayInterval) {
+        } else if (attr == R.styleable.BannerView_bv_play_interval) {
             //轮播的间隔
             mAutoPlayInterval = typedArray.getInteger(attr, mAutoPlayInterval);
-        } else if (attr == R.styleable.SivinBanner_banner_pageChangeDuration) {
+        } else if (attr == R.styleable.BannerView_bv_page_change_duration) {
             //页面切换的持续时间
             mPageChangeDuration = typedArray.getInteger(attr, mPageChangeDuration);
-        } else if (attr == R.styleable.SivinBanner_banner_tipTextColor) {
+        } else if (attr == R.styleable.BannerView_bv_title_text_color) {
             //提示文字颜色
             mTipTextColor = typedArray.getColor(attr, mTipTextColor);
-        } else if (attr == R.styleable.SivinBanner_banner_tipTextSize) {
+        } else if (attr == R.styleable.BannerView_bv_title_text_size) {
             //提示文字大小
             mTipTextSize = typedArray.getDimensionPixelSize(attr, mTipTextSize);
         }
 
     }
 
-    /**
-     * 控件初始化
-     *
-     * @param context context
-     */
-    private void initView(Context context) {
+    private void initView() {
         mItemArrays = new SparseArray<>();
 
         //初始化ViewPager
-        mViewPager = new LoopViewPager(context);
+        mViewPager = new LoopViewPager(getContext());
 
         mViewPager.setOffscreenPageLimit(4);
 
@@ -247,7 +227,7 @@ public class BannerView extends RelativeLayout {
 
 
         //创建指示器容器的相对布局
-        RelativeLayout indicatorContainerRl = new RelativeLayout(context);
+        RelativeLayout indicatorContainerRl = new RelativeLayout(getContext());
         //设置指示器容器的背景
         if (Build.VERSION.SDK_INT >= 16) {
             indicatorContainerRl.setBackground(mPointContainerBackgroundDrawable);
@@ -269,7 +249,7 @@ public class BannerView extends RelativeLayout {
 
 
         //初始化存放点的容器线性布局
-        mPointContainerLl = new LinearLayout(context);
+        mPointContainerLl = new LinearLayout(getContext());
         //设置点容器布局的id
         mPointContainerLl.setId(R.id.banner_pointContainerId);
         //设置线性布局的方向
@@ -282,21 +262,21 @@ public class BannerView extends RelativeLayout {
 
         //初始化tip的layout尺寸参数，高度和点的高度一致
         LayoutParams tipLp = new LayoutParams(RMP, getResources().getDrawable(mPointDrawableResId).getIntrinsicHeight() + 2 * mPointTopBottomMargin);
-        mTipTextView = new TextView(context);
-        mTipTextView.setGravity(Gravity.CENTER_VERTICAL);
-        mTipTextView.setSingleLine(true);
-        mTipTextView.setEllipsize(TextUtils.TruncateAt.END);
-        mTipTextView.setTextColor(mTipTextColor);
-        mTipTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTipTextSize);
+        mTitleText = new TextView(getContext());
+        mTitleText.setGravity(Gravity.CENTER_VERTICAL);
+        mTitleText.setSingleLine(true);
+        mTitleText.setEllipsize(TextUtils.TruncateAt.END);
+        mTitleText.setTextColor(mTipTextColor);
+        mTitleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTipTextSize);
         //将TieTextView存放于指示器容器中
-        indicatorContainerRl.addView(mTipTextView, tipLp);
+        indicatorContainerRl.addView(mTitleText, tipLp);
         int horizontalGravity = mPointGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
         // 处理圆点容器位于指示器容器的左边、右边还是水平居中
         if (horizontalGravity == Gravity.LEFT) {
             pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             //提示文字设置在点容器的右边
             tipLp.addRule(RelativeLayout.RIGHT_OF, R.id.banner_pointContainerId);
-            mTipTextView.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+            mTitleText.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
         } else if (horizontalGravity == Gravity.RIGHT) {
             pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_pointContainerId);
@@ -306,6 +286,13 @@ public class BannerView extends RelativeLayout {
         }
     }
 
+    private int dp2px(float dpValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
+    }
+
+    private int sp2px(float spValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, getResources().getDisplayMetrics());
+    }
 
     /**
      * 初始化点
@@ -348,13 +335,13 @@ public class BannerView extends RelativeLayout {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (mTipTextView != null) {
+            if (mTitleText != null) {
                 if (positionOffset > 0.5) {
-                    mBannerAdapter.selectTips(mTipTextView, currentPosition);
-                    mTipTextView.setAlpha(positionOffset);
+                    mBannerAdapter.selectTips(mTitleText, currentPosition);
+                    mTitleText.setAlpha(positionOffset);
                 } else {
-                    mTipTextView.setAlpha(1 - positionOffset);
-                    mBannerAdapter.selectTips(mTipTextView, currentPosition);
+                    mTitleText.setAlpha(1 - positionOffset);
+                    mBannerAdapter.selectTips(mTitleText, currentPosition);
                 }
             }
         }
@@ -372,8 +359,8 @@ public class BannerView extends RelativeLayout {
         }
         mPointContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
 
-        if (mTipTextView != null) {
-            mBannerAdapter.selectTips(mTipTextView, currentPosition);
+        if (mTitleText != null) {
+            mBannerAdapter.selectTips(mTitleText, currentPosition);
         }
     }
 

@@ -8,15 +8,15 @@
         android:id="@+id/id_banner"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        app:banner_pageChangeDuration="300"
-        app:banner_pointAutoPlayInterval="3"
-        app:banner_pointContainerBackground="@android:color/transparent"
-        app:banner_pointContainerLeftRightPadding="10dp"
-        app:banner_pointDrawable="@drawable/selector_banner_point"
-        app:banner_pointGravity="center_horizontal"
-        app:banner_pointLeftRightMargin="3dp"
-        app:banner_pointTopBottomMargin="6dp"
-        app:banner_tipTextColor="#FFFFFF"
-        app:banner_tipTextSize="12sp" />
+        app:bv_indicator="@drawable/selector_banner_point"
+        app:bv_indicator_container_bg="@android:color/transparent"
+        app:bv_indicator_gravity="center_horizontal"
+        app:bv_indicator_left_right_margin="3dp"
+        app:bv_indicator_padding="10dp"
+        app:bv_indicator_top_bottom_margin="6dp"
+        app:bv_page_change_duration="300"
+        app:bv_play_interval="3"
+        app:bv_title_text_color="#FFFFFF"
+        app:bv_title_text_size="12sp" />
 
 </FrameLayout>
