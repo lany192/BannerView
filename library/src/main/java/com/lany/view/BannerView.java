@@ -138,62 +138,6 @@ public class BannerView extends RelativeLayout {
         //初始化自定义属性
         initCustomAttrs(context, attrs);
 
-        //控件初始化
-        initView();
-    }
-
-    /**
-     * 初始化自定义属性
-     *
-     * @param context context
-     * @param attrs   attrs
-     */
-    private void initCustomAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerView);
-        final int N = typedArray.getIndexCount();
-        for (int i = 0; i < N; i++) {
-            initCustomAttr(typedArray.getIndex(i), typedArray);
-        }
-        typedArray.recycle();
-    }
-
-    private void initCustomAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.BannerView_bv_indicator) {
-            //指示器点的样式资源id
-            mIndicatorDrawableResId = typedArray.getResourceId(attr, R.drawable.banner_indicator_oval);
-        } else if (attr == R.styleable.BannerView_bv_indicator_container_bg) {
-            //指示器容器背景样式
-            mIndicatorContainerBackgroundDrawable = typedArray.getDrawable(attr);
-
-        } else if (attr == R.styleable.BannerView_bv_indicator_left_right_margin) {
-            //指示器左右边距
-            mIndicatorLeftRightMargin = typedArray.getDimensionPixelSize(attr, mIndicatorLeftRightMargin);
-        } else if (attr == R.styleable.BannerView_bv_indicator_padding) {
-            //指示器容器的左右padding
-            mIndicatorContainerLeftRightPadding = typedArray.getDimensionPixelSize(attr, mIndicatorContainerLeftRightPadding);
-        } else if (attr == R.styleable.BannerView_bv_indicator_top_bottom_margin) {
-
-            //指示器的上下margin
-            mIndicatorTopBottomMargin = typedArray.getDimensionPixelSize(attr, mIndicatorTopBottomMargin);
-        } else if (attr == R.styleable.BannerView_bv_indicator_gravity) {
-            //指示器在容器中的位置属性
-            mIndicatorGravity = typedArray.getInt(attr, mIndicatorGravity);
-        } else if (attr == R.styleable.BannerView_bv_play_interval) {
-            //轮播的间隔
-            mAutoPlayInterval = typedArray.getInteger(attr, mAutoPlayInterval);
-        } else if (attr == R.styleable.BannerView_bv_page_change_duration) {
-            //页面切换的持续时间
-            mPageChangeDuration = typedArray.getInteger(attr, mPageChangeDuration);
-        } else if (attr == R.styleable.BannerView_bv_title_text_color) {
-            //提示文字颜色
-            mTitleTextColor = typedArray.getColor(attr, mTitleTextColor);
-        } else if (attr == R.styleable.BannerView_bv_title_text_size) {
-            mTitleTextSize = typedArray.getDimensionPixelSize(attr, mTitleTextSize);
-        }
-
-    }
-
-    private void initView() {
         //初始化ViewPager
         mViewPager = new LoopViewPager(getContext());
 
@@ -270,43 +214,56 @@ public class BannerView extends RelativeLayout {
         }
     }
 
+    private void initCustomAttrs(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerView);
+        final int N = typedArray.getIndexCount();
+        for (int i = 0; i < N; i++) {
+            initCustomAttr(typedArray.getIndex(i), typedArray);
+        }
+        typedArray.recycle();
+    }
+
+    private void initCustomAttr(int attr, TypedArray typedArray) {
+        if (attr == R.styleable.BannerView_bv_indicator) {
+            //指示器点的样式资源id
+            mIndicatorDrawableResId = typedArray.getResourceId(attr, R.drawable.banner_indicator_oval);
+        } else if (attr == R.styleable.BannerView_bv_indicator_container_bg) {
+            //指示器容器背景样式
+            mIndicatorContainerBackgroundDrawable = typedArray.getDrawable(attr);
+
+        } else if (attr == R.styleable.BannerView_bv_indicator_left_right_margin) {
+            //指示器左右边距
+            mIndicatorLeftRightMargin = typedArray.getDimensionPixelSize(attr, mIndicatorLeftRightMargin);
+        } else if (attr == R.styleable.BannerView_bv_indicator_padding) {
+            //指示器容器的左右padding
+            mIndicatorContainerLeftRightPadding = typedArray.getDimensionPixelSize(attr, mIndicatorContainerLeftRightPadding);
+        } else if (attr == R.styleable.BannerView_bv_indicator_top_bottom_margin) {
+
+            //指示器的上下margin
+            mIndicatorTopBottomMargin = typedArray.getDimensionPixelSize(attr, mIndicatorTopBottomMargin);
+        } else if (attr == R.styleable.BannerView_bv_indicator_gravity) {
+            //指示器在容器中的位置属性
+            mIndicatorGravity = typedArray.getInt(attr, mIndicatorGravity);
+        } else if (attr == R.styleable.BannerView_bv_play_interval) {
+            //轮播的间隔
+            mAutoPlayInterval = typedArray.getInteger(attr, mAutoPlayInterval);
+        } else if (attr == R.styleable.BannerView_bv_page_change_duration) {
+            //页面切换的持续时间
+            mPageChangeDuration = typedArray.getInteger(attr, mPageChangeDuration);
+        } else if (attr == R.styleable.BannerView_bv_title_text_color) {
+            //提示文字颜色
+            mTitleTextColor = typedArray.getColor(attr, mTitleTextColor);
+        } else if (attr == R.styleable.BannerView_bv_title_text_size) {
+            mTitleTextSize = typedArray.getDimensionPixelSize(attr, mTitleTextSize);
+        }
+    }
+
     private int dp2px(float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
     }
 
     private int sp2px(float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, getResources().getDisplayMetrics());
-    }
-
-    /**
-     * 初始化点
-     * 这样的做法，可以使在刷新获数据的时候提升性能
-     */
-    private void initPoints() {
-        //获取容器中原有点的数量
-        int childCount = mIndicatorContainerLl.getChildCount();
-        //获取目标点的数据量
-        int dataSize = mData.size();
-        //获取增加获取删减点的数量
-        int offset = dataSize - childCount;
-        if (offset == 0)
-            return;
-        if (offset > 0) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
-            lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
-            ImageView imageView;
-            for (int i = 0; i < offset; i++) {
-                imageView = new ImageView(getContext());
-                imageView.setLayoutParams(lp);
-                imageView.setImageResource(mIndicatorDrawableResId);
-                imageView.setEnabled(false);
-                mIndicatorContainerLl.addView(imageView);
-            }
-            return;
-        }
-        if (offset < 0) {
-            mIndicatorContainerLl.removeViews(dataSize, -offset);
-        }
     }
 
     private final class ChangePointListener extends LoopViewPager.SimpleOnPageChangeListener {
@@ -550,7 +507,31 @@ public class BannerView extends RelativeLayout {
      * 通知数据已经放生改变
      */
     public void notifyDataHasChanged() {
-        initPoints();
+        //获取容器中原有点的数量
+        int childCount = mIndicatorContainerLl.getChildCount();
+        //获取目标点的数据量
+        int dataSize = mData.size();
+        //获取增加获取删减点的数量
+        int offset = dataSize - childCount;
+        if (offset == 0)
+            return;
+        if (offset > 0) {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
+            lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
+            ImageView imageView;
+            for (int i = 0; i < offset; i++) {
+                imageView = new ImageView(getContext());
+                imageView.setLayoutParams(lp);
+                imageView.setImageResource(mIndicatorDrawableResId);
+                imageView.setEnabled(false);
+                mIndicatorContainerLl.addView(imageView);
+            }
+            return;
+        }
+        if (offset < 0) {
+            mIndicatorContainerLl.removeViews(dataSize, -offset);
+        }
+
         mViewPager.getAdapter().notifyDataSetChanged();
         mViewPager.setCurrentItem(0, false);
         if (mData.size() > 1)
