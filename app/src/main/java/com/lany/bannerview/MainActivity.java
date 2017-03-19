@@ -26,22 +26,17 @@ public class MainActivity extends AppCompatActivity {
         bannerView.setAdapter(new BannerAdapter<BannerItem>(getItems()) {
 
             @Override
-            public void bindTitle(TextView title, BannerItem item) {
+            public void bindData(ImageView bannerImg, TextView titleText, BannerItem item) {
                 //title.setText(item.getTips());
-            }
-
-            @Override
-            public void bindImage(ImageView bannerImg, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getImageUrl())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(bannerImg);
             }
-        });
-        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
+
             @Override
-            public void onItemClick(int position) {
+            public void onItemClicked(int position, BannerItem item) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -58,17 +53,18 @@ public class MainActivity extends AppCompatActivity {
         bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
 
             @Override
-            public void bindTitle(TextView title, BannerItem item) {
-                title.setText(item.getTips());
-            }
-
-            @Override
-            public void bindImage(ImageView bannerImg, BannerItem item) {
+            public void bindData(ImageView bannerImg, TextView titleText, BannerItem item) {
+                titleText.setText(item.getTips());
                 Glide.with(MainActivity.this)
                         .load(item.getImageUrl())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(bannerImg);
+            }
+
+            @Override
+            public void onItemClicked(int position, BannerItem item) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -82,17 +78,18 @@ public class MainActivity extends AppCompatActivity {
         bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
 
             @Override
-            public void bindTitle(TextView title, BannerItem item) {
-                title.setText(item.getTips());
-            }
-
-            @Override
-            public void bindImage(ImageView bannerImg, BannerItem item) {
+            public void bindData(ImageView bannerImg, TextView titleText, BannerItem item) {
+                titleText.setText(item.getTips());
                 Glide.with(MainActivity.this)
                         .load(item.getImageUrl())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(bannerImg);
+            }
+
+            @Override
+            public void onItemClicked(int position, BannerItem item) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }

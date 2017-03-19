@@ -320,12 +320,11 @@ public class BannerView extends RelativeLayout {
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             if (mTitleText != null) {
                 if (positionOffset > 0.5) {
-                    mBannerAdapter.selectTips(mTitleText, currentPosition);
                     mTitleText.setAlpha(positionOffset);
                 } else {
                     mTitleText.setAlpha(1 - positionOffset);
-                    mBannerAdapter.selectTips(mTitleText, currentPosition);
                 }
+                mBannerAdapter.bind(createItemView(currentPosition), mTitleText, currentPosition);
             }
         }
     }
@@ -343,7 +342,7 @@ public class BannerView extends RelativeLayout {
         mIndicatorContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
 
         if (mTitleText != null) {
-            mBannerAdapter.selectTips(mTitleText, currentPosition);
+            mBannerAdapter.bind(createItemView(currentPosition), mTitleText, currentPosition);
         }
     }
 
@@ -399,13 +398,11 @@ public class BannerView extends RelativeLayout {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             ImageView view = createItemView(position);
-            mBannerAdapter.setImageViewSource(view, position);
+            mBannerAdapter.bind(view, mTitleText, position);
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(position);
-                    }
+                    mBannerAdapter.selectClicked(position);
                 }
             });
 
@@ -446,16 +443,6 @@ public class BannerView extends RelativeLayout {
             }
         }
         return iv;
-    }
-
-    private OnItemClickListener mOnItemClickListener;
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.mOnItemClickListener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
     }
 
 

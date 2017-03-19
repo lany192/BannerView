@@ -18,19 +18,19 @@ public abstract class BannerAdapter<T> {
         mItems = items;
     }
 
-    public void setImageViewSource(ImageView bannerImg, int position) {
-        bindImage(bannerImg, mItems.get(position));
-    }
-
-    public void selectTips(TextView tv, int position) {
+    public void bind(ImageView bannerImg, TextView tv, int position) {
         if (mItems != null && mItems.size() > 0) {
-            bindTitle(tv, mItems.get(position));
+            bindData(bannerImg, tv, mItems.get(position));
         }
     }
 
-    public abstract void bindTitle(TextView titleText, T item);
+    public void selectClicked(int position) {
+        if (mItems != null && mItems.size() > 0) {
+            onItemClicked(position, mItems.get(position));
+        }
+    }
 
-    public abstract void bindImage(ImageView bannerImg, T item);
+    public abstract void bindData(ImageView bannerImg, TextView titleText, T item);
 
-
+    public abstract void onItemClicked(int position, T item);
 }
