@@ -58,7 +58,7 @@ public class BannerView extends RelativeLayout {
     /**
      * 点的drawable资源id
      */
-    private int mIndicatorDrawableResId = R.drawable.selector_banner_indicator;
+    private int mIndicatorDrawableResId = R.drawable.banner_indicator_oval;
 
     /**
      * 点在容器中的layout的属性
@@ -160,7 +160,7 @@ public class BannerView extends RelativeLayout {
     private void initCustomAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.BannerView_bv_indicator) {
             //指示器点的样式资源id
-            mIndicatorDrawableResId = typedArray.getResourceId(attr, R.drawable.selector_banner_indicator);
+            mIndicatorDrawableResId = typedArray.getResourceId(attr, R.drawable.banner_indicator_oval);
         } else if (attr == R.styleable.BannerView_bv_indicator_container_bg) {
             //指示器容器背景样式
             mIndicatorContainerBackgroundDrawable = typedArray.getDrawable(attr);
