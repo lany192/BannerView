@@ -19,7 +19,10 @@ public class LoopViewPager extends ViewPager {
 
     public LoopViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        if (mOnPageChangeListener != null) {
+            super.removeOnPageChangeListener(mOnPageChangeListener);
+        }
+        super.addOnPageChangeListener(mOnPageChangeListener);
     }
 
 
@@ -45,23 +48,13 @@ public class LoopViewPager extends ViewPager {
         //item的被调用者传递过来的位置是没有原始的位置，即切换位置是从0到DataSize-1之间切换
         //但是对于外层ViewPager而言，他需要的位置范围应该是映射后的位置切换，即：出去两边映射的页面
         //应该是从1到映射后的倒数第二个位置
-
         super.setCurrentItem(mAdapter.toLooperPosition(position), smoothScroll);
     }
 
-
-    /**
-     * 外层ViewPager中的item是通过内层位置映射关系得到的
-     *
-     * @return 返回映射后的
-     */
     @Override
     public int getCurrentItem() {
         return mAdapter.getInnerAdapterPosition(super.getCurrentItem());
     }
-
-
-
 
     @Override
     public void clearOnPageChangeListeners() {
@@ -83,15 +76,6 @@ public class LoopViewPager extends ViewPager {
             mOnPageChangeListeners = new ArrayList<>();
         }
         mOnPageChangeListeners.add(listener);
-    }
-
-
-    private void init(Context context) {
-        if (mOnPageChangeListener != null) {
-            super.removeOnPageChangeListener(mOnPageChangeListener);
-        }
-        super.addOnPageChangeListener(mOnPageChangeListener);
-
     }
 
 
@@ -142,7 +126,6 @@ public class LoopViewPager extends ViewPager {
 
         @Override
         public void onPageSelected(int position) {
-
             int realPosition = mAdapter.getInnerAdapterPosition(position);
             if (mPreviousPosition != realPosition) {
                 mPreviousPosition = realPosition;
@@ -177,6 +160,4 @@ public class LoopViewPager extends ViewPager {
             }
         }
     };
-
-
 }

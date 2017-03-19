@@ -120,10 +120,15 @@ public class BannerView extends RelativeLayout {
 
     public BannerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        init(attrs);
     }
 
     public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(attrs);
+    }
+
+    private void init(AttributeSet attrs) {
         //默认点指示器的左右Margin3dp
         mIndicatorLeftRightMargin = dp2px(3);
         //默认点指示器的上下margin为6dp
@@ -136,13 +141,10 @@ public class BannerView extends RelativeLayout {
         mIndicatorContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#33aaaaaa"));
 
         //初始化自定义属性
-        initCustomAttrs(context, attrs);
+        initCustomAttrs(attrs);
 
         //初始化ViewPager
         mViewPager = new LoopViewPager(getContext());
-
-        mViewPager.setOffscreenPageLimit(4);
-
         //以matchParent的方式将viewPager填充到控件容器中
         addView(mViewPager, new LayoutParams(RMP, RMP));
 
@@ -214,8 +216,8 @@ public class BannerView extends RelativeLayout {
         }
     }
 
-    private void initCustomAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerView);
+    private void initCustomAttrs(AttributeSet attrs) {
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BannerView);
         final int N = typedArray.getIndexCount();
         for (int i = 0; i < N; i++) {
             initCustomAttr(typedArray.getIndex(i), typedArray);

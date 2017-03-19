@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 public class LoopAdapter extends PagerAdapter {
     private PagerAdapter mAdapter;
 
-    private int mItemCount = 0;
-
     public LoopAdapter(PagerAdapter adapter) {
         mAdapter = adapter;
     }
@@ -32,16 +30,13 @@ public class LoopAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
         return mAdapter.instantiateItem(container, getInnerAdapterPosition(position));
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-
         mAdapter.destroyItem(container, getInnerAdapterPosition(position), object);
     }
-
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
@@ -51,13 +46,6 @@ public class LoopAdapter extends PagerAdapter {
     @Override
     public void finishUpdate(ViewGroup container) {
         mAdapter.finishUpdate(container);
-    }
-
-
-    @Override
-    public void notifyDataSetChanged() {
-        mItemCount = getCount();
-        super.notifyDataSetChanged();
     }
 
     @Override

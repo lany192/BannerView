@@ -30,7 +30,7 @@ public abstract class BannerAdapter<T> {
         }
     }
 
-    public abstract void bindData(ImageView bannerImg, TextView titleText, T item);
+    public abstract void bindData(ImageView banner, TextView title, T item);
 
     public abstract void onItemClicked(int position, T item);
 }

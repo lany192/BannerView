@@ -24,7 +24,6 @@ public class BannerScroller extends Scroller {
         super(context, interpolator, flywheel);
     }
 
-
     @Override
     public void startScroll(int startX, int startY, int dx, int dy, int duration) {
         super.startScroll(startX, startY, dx, dy, mPagerChangeDuration);
@@ -37,7 +36,6 @@ public class BannerScroller extends Scroller {
 
     public void changScrollDuration (ViewPager viewPager,int duration) {
         mPagerChangeDuration = duration;
-
         try {
             Field mScroller = ViewPager.class.getDeclaredField("mScroller");
             mScroller.setAccessible(true);
