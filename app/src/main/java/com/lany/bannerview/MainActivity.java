@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lany.view.BannerAdapter;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         bannerView.setAdapter(new BannerAdapter<BannerItem>(getItems()) {
 
             @Override
-            protected void bindTitle(TextView title, BannerItem item) {
+            public void bindTitle(TextView title, BannerItem item) {
                 //title.setText(item.getTips());
             }
 
@@ -38,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
                         .into(bannerImg);
             }
         });
-
+        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         List<BannerItem> items2 = new ArrayList<>();
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
 
             @Override
-            protected void bindTitle(TextView title, BannerItem item) {
+            public void bindTitle(TextView title, BannerItem item) {
                 title.setText(item.getTips());
             }
 
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
 
             @Override
-            protected void bindTitle(TextView title, BannerItem item) {
+            public void bindTitle(TextView title, BannerItem item) {
                 title.setText(item.getTips());
             }
 
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private List<BannerItem> getItems(){
+    private List<BannerItem> getItems() {
         List<BannerItem> items = new ArrayList<>();
 
         BannerItem banner = new BannerItem();

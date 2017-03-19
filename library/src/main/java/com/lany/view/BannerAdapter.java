@@ -18,16 +18,17 @@ public abstract class BannerAdapter<T> {
         mItems = items;
     }
 
-    public void setImageViewSource(ImageView imageView, int position) {
-        bindImage(imageView, mItems.get(position));
+    public void setImageViewSource(ImageView bannerImg, int position) {
+        bindImage(bannerImg, mItems.get(position));
     }
 
     public void selectTips(TextView tv, int position) {
-        if (mItems != null && mItems.size() > 0)
+        if (mItems != null && mItems.size() > 0) {
             bindTitle(tv, mItems.get(position));
+        }
     }
 
-    protected abstract void bindTitle(TextView tv, T item);
+    public abstract void bindTitle(TextView titleText, T item);
 
     public abstract void bindImage(ImageView bannerImg, T item);
 

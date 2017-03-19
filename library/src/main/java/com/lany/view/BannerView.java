@@ -403,8 +403,8 @@ public class BannerView extends RelativeLayout {
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (onVpItemClickListener != null) {
-                        onVpItemClickListener.onItemClick(position);
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(position);
                     }
                 }
             });
@@ -448,21 +448,13 @@ public class BannerView extends RelativeLayout {
         return iv;
     }
 
-    ;
+    private OnItemClickListener mOnItemClickListener;
 
-
-    private OnBannerItemClickListener onVpItemClickListener;
-
-    /**
-     * 设置viewPage的Item点击监听器
-     *
-     * @param listener
-     */
-    public void setOnBannerItemClickListener(OnBannerItemClickListener listener) {
-        this.onVpItemClickListener = listener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
     }
 
-    public interface OnBannerItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
