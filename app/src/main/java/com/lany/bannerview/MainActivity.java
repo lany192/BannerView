@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.lany.view.BannerAdapter;
 import com.lany.view.BannerView;
 
@@ -17,8 +18,80 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BannerView bannerView = (BannerView) findViewById(R.id.id_banner);
+        BannerView bannerView = (BannerView) findViewById(R.id.banner_view);
+        BannerView bannerView2 = (BannerView) findViewById(R.id.banner_view_2);
+        BannerView bannerView3 = (BannerView) findViewById(R.id.banner_view_3);
 
+        bannerView.setAdapter(new BannerAdapter<BannerItem>(getItems()) {
+
+            @Override
+            protected void bindTitle(TextView title, BannerItem item) {
+                //title.setText(item.getTips());
+            }
+
+            @Override
+            public void bindImage(ImageView bannerImg, BannerItem item) {
+                Glide.with(MainActivity.this)
+                        .load(item.getImageUrl())
+                        .placeholder(R.drawable.pic)
+                        .error(R.drawable.pic)
+                        .into(bannerImg);
+            }
+        });
+
+
+
+        List<BannerItem> items2 = new ArrayList<>();
+        BannerItem item = new BannerItem();
+        item.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=62cf54ead218933744db70780d3ae8b5&imgtype=0&src=http%3A%2F%2Fhomemade.keliren.cn%2Ftuku%2Fa%2F20160406%2F570461f141575.jpg");
+        item.setTips("title6");
+        items2.add(item);
+        items2.addAll(getItems());
+
+
+        bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
+
+            @Override
+            protected void bindTitle(TextView title, BannerItem item) {
+                title.setText(item.getTips());
+            }
+
+            @Override
+            public void bindImage(ImageView bannerImg, BannerItem item) {
+                Glide.with(MainActivity.this)
+                        .load(item.getImageUrl())
+                        .placeholder(R.drawable.pic)
+                        .error(R.drawable.pic)
+                        .into(bannerImg);
+            }
+        });
+
+        List<BannerItem> items3 = new ArrayList<>();
+        BannerItem item1 = new BannerItem();
+        item1.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=b5ff524bb0fcaa460e6a4c398b48e1e4&imgtype=0&src=http%3A%2F%2Fimg3.91.com%2Fuploads%2Fallimg%2F130428%2F32-13042Q63239.jpg");
+        item1.setTips("title7");
+        items3.add(item1);
+        items3.addAll(getItems());
+
+        bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
+
+            @Override
+            protected void bindTitle(TextView title, BannerItem item) {
+                title.setText(item.getTips());
+            }
+
+            @Override
+            public void bindImage(ImageView bannerImg, BannerItem item) {
+                Glide.with(MainActivity.this)
+                        .load(item.getImageUrl())
+                        .placeholder(R.drawable.pic)
+                        .error(R.drawable.pic)
+                        .into(bannerImg);
+            }
+        });
+    }
+
+    private List<BannerItem> getItems(){
         List<BannerItem> items = new ArrayList<>();
 
         BannerItem banner = new BannerItem();
@@ -46,17 +119,6 @@ public class MainActivity extends AppCompatActivity {
         banner.setTips("title5");
         items.add(banner);
 
-        bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
-
-            @Override
-            protected void bindTitle(TextView title, BannerItem item) {
-                //title.setText(item.getTips());
-            }
-
-            @Override
-            public void bindImage(ImageView bannerImg, BannerItem item) {
-                ImageHelper.getInstance().show(item.getImageUrl(), bannerImg);
-            }
-        });
+        return items;
     }
 }

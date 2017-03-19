@@ -101,6 +101,4 @@ public class LoopAdapter extends PagerAdapter {
             return position + 1;
         } else return position;
     }
-
-
 }
