@@ -278,10 +278,12 @@ public class BannerView extends RelativeLayout {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             if (mTitleText != null) {
-                if (positionOffset > 0.5) {
-                    mTitleText.setAlpha(positionOffset);
-                } else {
-                    mTitleText.setAlpha(1 - positionOffset);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    if (positionOffset > 0.5) {
+                        mTitleText.setAlpha(positionOffset);
+                    } else {
+                        mTitleText.setAlpha(1 - positionOffset);
+                    }
                 }
                 mBannerAdapter.bind(createItemView(currentPosition), mTitleText, currentPosition);
             }

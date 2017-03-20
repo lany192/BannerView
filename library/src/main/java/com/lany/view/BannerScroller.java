@@ -1,6 +1,8 @@
 package com.lany.view;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
@@ -20,6 +22,7 @@ public class BannerScroller extends Scroller {
         super(context, interpolator);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     public BannerScroller(Context context, Interpolator interpolator, boolean flywheel) {
         super(context, interpolator, flywheel);
     }
