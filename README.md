@@ -1,6 +1,10 @@
 # BannerView
 This is an android banner view
 
+
+这是一个轻量简洁的自定义banner控件
+
+
 compile 'com.lany:BannerView:1.0.3'
 
        <com.lany.view.BannerView
