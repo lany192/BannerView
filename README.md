@@ -1,9 +1,9 @@
 # BannerView
 This is an android banner view
 
-compile 'com.lany:BannerView:1.0.2'
+compile 'com.lany:BannerView:1.0.3'
 
-        <com.lany.view.BannerView
+       <com.lany.view.BannerView
             android:id="@+id/banner_view"
             android:layout_width="match_parent"
             android:layout_height="180dp"
