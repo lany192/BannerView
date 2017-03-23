@@ -27,6 +27,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     testCompile 'junit:junit:4.12'
-    //compile 'com.lany:BannerView:1.0.2'
+    //compile 'com.lany:BannerView:1.0.3'
     compile project(':library')
 }

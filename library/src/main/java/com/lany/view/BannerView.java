@@ -486,25 +486,29 @@ public class BannerView extends RelativeLayout {
         int childCount = mIndicatorContainer.getChildCount();
         //获取目标点的数据量
         int dataSize = mItems.size();
-        //获取增加获取删减点的数量
-        int offset = dataSize - childCount;
-        if (offset == 0)
-            return;
-        if (offset > 0) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
-            ImageView indicator;
-            for (int i = 0; i < offset; i++) {
-                indicator = new ImageView(getContext());
-                indicator.setLayoutParams(lp);
-                indicator.setImageResource(mIndicatorResId);
-                indicator.setEnabled(false);
-                mIndicatorContainer.addView(indicator);
+        if (dataSize > 1) {
+            //获取增加获取删减点的数量
+            int offset = dataSize - childCount;
+            if (offset == 0)
+                return;
+            if (offset > 0) {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
+                ImageView indicator;
+                for (int i = 0; i < offset; i++) {
+                    indicator = new ImageView(getContext());
+                    indicator.setLayoutParams(lp);
+                    indicator.setImageResource(mIndicatorResId);
+                    indicator.setEnabled(false);
+                    mIndicatorContainer.addView(indicator);
+                }
+                return;
             }
-            return;
-        }
-        if (offset < 1) {
-            mIndicatorContainer.removeViews(dataSize, -offset);
+            if (offset < 1) {
+                mIndicatorContainer.removeViews(dataSize, -offset);
+            }
+        } else {
+            mIndicatorContainer.removeAllViews();
         }
         mViewPager.getAdapter().notifyDataSetChanged();
         mViewPager.setCurrentItem(0, false);
