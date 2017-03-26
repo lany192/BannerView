@@ -309,6 +309,9 @@ public class BannerView extends RelativeLayout {
             case MotionEvent.ACTION_DOWN:
                 pauseScroll();
                 break;
+            case MotionEvent.ACTION_MOVE:
+                pauseScroll();
+                break;
             case MotionEvent.ACTION_UP:
                 goScroll();
                 break;
