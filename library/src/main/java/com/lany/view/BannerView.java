@@ -456,9 +456,9 @@ public class BannerView extends RelativeLayout {
     }
 
     /**
-     * 判断控件是否可用
+     * 检查控件是否可用
      *
-     * @return
+     * @return 控件是否可用
      */
     private boolean isValid() {
         if (mViewPager == null) {
@@ -499,7 +499,11 @@ public class BannerView extends RelativeLayout {
                     indicator = new ImageView(getContext());
                     indicator.setLayoutParams(lp);
                     indicator.setImageResource(mIndicatorResId);
-                    indicator.setEnabled(false);
+                    if (i == 0) {
+                        indicator.setEnabled(true);
+                    } else {
+                        indicator.setEnabled(false);
+                    }
                     mIndicatorContainer.addView(indicator);
                 }
                 return;
@@ -527,8 +531,9 @@ public class BannerView extends RelativeLayout {
         @Override
         public void handleMessage(Message msg) {
             BannerView weakBanner = mWeakBanner.get();
-            if (weakBanner != null)
+            if (weakBanner != null) {
                 weakBanner.scrollToNextItem(weakBanner.currentPosition);
+            }
         }
     }
 

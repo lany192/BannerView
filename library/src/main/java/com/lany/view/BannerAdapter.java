@@ -6,7 +6,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 用户实现部分
+ * @param <T>
+ */
 public abstract class BannerAdapter<T> {
     private List<T> mItems = new ArrayList<>();
 
