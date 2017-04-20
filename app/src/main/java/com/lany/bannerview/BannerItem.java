@@ -1,8 +1,6 @@
 package com.lany.bannerview;
 
-/**
- * Created by xiwen on 2016/4/11.
- */
+
 public class BannerItem {
 
     private String imageUrl;

@@ -26,13 +26,9 @@ public class MainActivity extends AppCompatActivity {
         bannerView.setAdapter(new BannerAdapter<BannerItem>(getItems()) {
 
             @Override
-            public void bindData(ImageView bannerImg, TextView titleText, BannerItem item) {
+            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
                 //title.setText(item.getTips());
-                Glide.with(MainActivity.this)
-                        .load(item.getImageUrl())
-                        .placeholder(R.drawable.pic)
-                        .error(R.drawable.pic)
-                        .into(bannerImg);
+                Glide.with(MainActivity.this).load(item.getImageUrl()).placeholder(R.drawable.pic).error(R.drawable.pic).into(bannerImg);
             }
 
             @Override
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
 
             @Override
-            public void bindData(ImageView bannerImg, TextView titleText, BannerItem item) {
+            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
                 titleText.setText(item.getTips());
                 Glide.with(MainActivity.this)
                         .load(item.getImageUrl())
@@ -78,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
 
             @Override
-            public void bindData(ImageView bannerImg, TextView titleText, BannerItem item) {
+            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
                 titleText.setText(item.getTips());
                 Glide.with(MainActivity.this)
                         .load(item.getImageUrl())
