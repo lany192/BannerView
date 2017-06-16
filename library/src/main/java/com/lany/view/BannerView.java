@@ -32,30 +32,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * custom android banner view
- */
 public class BannerView extends RelativeLayout {
     private static final String TAG = "BannerView";
-    /**
-     * save banner images
-     */
     private SparseArray<ImageView> mItemArrays = new SparseArray<>();
-    /**
-     * auto scroll viewpager
-     */
     private LoopViewPager mViewPager;
-    /**
-     * title textView
-     */
     private TextView mTitleText;
-    /**
-     * title textView size
-     */
     private int mTitleTextSize;
-    /**
-     * title textView color.default white
-     */
     private int mTitleTextColor = Color.WHITE;
     /**
      * viewpager indicator container
@@ -118,6 +100,8 @@ public class BannerView extends RelativeLayout {
      * 播放下一个执行器
      */
     private Handler mPlayHandler = new PlayHandler(this);
+
+    private boolean isShowIndicator = true;
 
 
     public BannerView(Context context) {
@@ -195,6 +179,12 @@ public class BannerView extends RelativeLayout {
         //将点容器存放到指示器容器中
         indicatorContainerRl.addView(mIndicatorContainer, indicatorContainerLP);
 
+        if (isShowIndicator) {
+            mIndicatorContainer.setVisibility(VISIBLE);
+        } else {
+            mIndicatorContainer.setVisibility(GONE);
+        }
+
         //初始化tip的layout尺寸参数，高度和点的高度一致
         int height = getResources().getDrawable(mIndicatorResId).getIntrinsicHeight() + 2 * mIndicatorTopBottomMargin;
         LayoutParams titleLP = new LayoutParams(LayoutParams.MATCH_PARENT, height);
@@ -252,6 +242,8 @@ public class BannerView extends RelativeLayout {
             mTitleTextColor = typedArray.getColor(attr, mTitleTextColor);
         } else if (attr == R.styleable.BannerView_bv_title_text_size) {
             mTitleTextSize = typedArray.getDimensionPixelSize(attr, mTitleTextSize);
+        } else if (attr == R.styleable.BannerView_bv_is_show_indicator) {
+            isShowIndicator = typedArray.getBoolean(attr, true);
         }
     }
 

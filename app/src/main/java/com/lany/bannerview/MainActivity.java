@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         item.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=62cf54ead218933744db70780d3ae8b5&imgtype=0&src=http%3A%2F%2Fhomemade.keliren.cn%2Ftuku%2Fa%2F20160406%2F570461f141575.jpg");
         item.setTips("title6");
         items2.add(item);
-        items2.addAll(getItems());
+        //items2.addAll(getItems());
 
 
         bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {

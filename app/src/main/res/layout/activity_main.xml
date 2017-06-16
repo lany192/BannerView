@@ -23,6 +23,7 @@
             app:bv_indicator_top_bottom_margin="6dp"
             app:bv_page_change_duration="300"
             app:bv_play_interval="3"
+            app:bv_is_show_indicator="false"
             app:bv_title_text_color="#FFFFFF"
             app:bv_title_text_size="12sp" />
 

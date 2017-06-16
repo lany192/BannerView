@@ -8,7 +8,7 @@ publish {
     userOrg = 'lany192'
     groupId = 'com.lany'
     uploadName = 'BannerView'
-    publishVersion = '1.0.6'
+    publishVersion = '1.0.7'
     autoPublish = true
     dryRun = false
     desc = 'This is an android banner view'

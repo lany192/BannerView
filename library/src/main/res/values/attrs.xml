@@ -2,6 +2,8 @@
 <resources>
 
     <declare-styleable name="BannerView">
+        <!-- 是否显示指示器 -->
+        <attr name="bv_is_show_indicator" format="reference|boolean" />
         <!-- 指示点容器背景 -->
         <attr name="bv_indicator_container_bg" format="reference|color" />
         <!-- 指示点背景 -->
