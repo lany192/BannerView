@@ -39,70 +39,22 @@ public class BannerView extends RelativeLayout {
     private TextView mTitleText;
     private int mTitleTextSize;
     private int mTitleTextColor = Color.WHITE;
-    /**
-     * viewpager indicator container
-     */
     private LinearLayout mIndicatorContainer;
-    /**
-     * viewpager indicator drawable resource id
-     */
     private int mIndicatorResId = R.drawable.banner_indicator_oval;
-    /**
-     * viewpager indicator container gravity attr
-     */
     private int mIndicatorGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-    /**
-     * viewpager indicator margin for left and right
-     */
     private int mIndicatorLeftRightMargin;
-    /**
-     * viewpager indicator margin for top and bottom
-     */
     private int mIndicatorTopBottomMargin;
-    /**
-     * viewpager indicator container padding for left and right
-     */
     private int mIndicatorContainerLeftRightPadding;
-    /**
-     * indicator and title container background
-     */
     private Drawable mIndicatorContainerBgDrawable;
-    /**
-     * banner items
-     */
-    protected List mItems = new ArrayList<>();
-    /**
-     * Automatically broadcast interval
-     */
+    private List mItems = new ArrayList<>();
     private int mAutoPlayInterval = 3;
-    /**
-     * 页面切换的时间（从下一页开始出现，到完全出现的时间）
-     */
     private int mPageChangeDuration = 300;
-    /**
-     * play flag
-     */
     private boolean mPlaying = false;
-    /**
-     * viewpager current position
-     */
-    protected int currentPosition;
-
+    private int currentPosition;
     private BannerAdapter mBannerAdapter;
-
-    /**
-     * 任务执行器
-     */
-    protected ScheduledExecutorService mExecutor;
-
-
-    /**
-     * 播放下一个执行器
-     */
+    private ScheduledExecutorService mExecutor;
     private Handler mPlayHandler = new PlayHandler(this);
-
     private boolean isShowIndicator = true;
-
 
     public BannerView(Context context) {
         this(context, null);
@@ -130,12 +82,8 @@ public class BannerView extends RelativeLayout {
         //默认指示器容器的背景图片
         mIndicatorContainerBgDrawable = new ColorDrawable(Color.parseColor("#33aaaaaa"));
 
-        //初始化自定义属性
         initCustomAttrs(attrs);
-
-        //初始化ViewPager
         mViewPager = new LoopViewPager(getContext());
-        //以matchParent的方式将viewPager填充到控件容器中
         addView(mViewPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         //修正banner页面切换时间
@@ -285,14 +233,16 @@ public class BannerView extends RelativeLayout {
      */
     private void switchToPoint(int newCurrentPoint) {
         for (int i = 0; i < mIndicatorContainer.getChildCount(); i++) {
-            mIndicatorContainer.getChildAt(i).setEnabled(false);
+            if (newCurrentPoint == i) {
+                mIndicatorContainer.getChildAt(i).setEnabled(true);
+            } else {
+                mIndicatorContainer.getChildAt(i).setEnabled(false);
+            }
         }
-        mIndicatorContainer.getChildAt(newCurrentPoint).setEnabled(true);
         if (mTitleText != null) {
             mBannerAdapter.bind(createItemView(currentPosition), mTitleText, currentPosition);
         }
     }
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -333,7 +283,6 @@ public class BannerView extends RelativeLayout {
         position++;
         mViewPager.setCurrentItem(position, true);
     }
-
 
     /**
      * viewPager的适配器
@@ -376,12 +325,6 @@ public class BannerView extends RelativeLayout {
         }
     }
 
-    /**
-     * 创建itemView
-     *
-     * @param position
-     * @return
-     */
     private ImageView createItemView(int position) {
         ImageView iv = mItemArrays.get(position);
         if (iv == null) {
@@ -393,7 +336,6 @@ public class BannerView extends RelativeLayout {
         }
         return iv;
     }
-
 
     /**
      * 方法使用状态 ：viewpager处于暂停的状态
@@ -421,7 +363,6 @@ public class BannerView extends RelativeLayout {
             mPlaying = true;
         }
     }
-
 
     /**
      * 暂停滚动
@@ -474,7 +415,8 @@ public class BannerView extends RelativeLayout {
             Log.d(TAG, "setSource: list==null");
             return;
         }
-        this.mItems = list;
+        this.mItems.clear();
+        this.mItems.addAll(list);
         mViewPager.setAdapter(new InnerPagerAdapter());
         mViewPager.addOnPageChangeListener(new ChangePointListener());
         //获取容器中原有点的数量
@@ -532,11 +474,6 @@ public class BannerView extends RelativeLayout {
         }
     }
 
-    /**
-     * 外部添加banner切换监听
-     *
-     * @param listener 监听器
-     */
     public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         if (null != listener) {
             mViewPager.addOnPageChangeListener(listener);
