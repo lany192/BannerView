@@ -2,6 +2,7 @@ package com.lany.bannerview;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,28 +15,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    List<BannerItem> items = new ArrayList<>();
+    BannerView bannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BannerView bannerView = (BannerView) findViewById(R.id.banner_view);
+        bannerView = (BannerView) findViewById(R.id.banner_view);
         BannerView bannerView2 = (BannerView) findViewById(R.id.banner_view_2);
         BannerView bannerView3 = (BannerView) findViewById(R.id.banner_view_3);
-
-        bannerView.setAdapter(new BannerAdapter<BannerItem>(getItems()) {
-
+        findViewById(R.id.my_button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
-                //title.setText(item.getTips());
-                Glide.with(MainActivity.this).load(item.getImageUrl()).placeholder(R.drawable.pic).error(R.drawable.pic).into(bannerImg);
-            }
-
-            @Override
-            public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                BannerItem banner = new BannerItem();
+                banner.setImageUrl("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
+                banner.setTips("title1");
+                items.add(banner);
+                initBanner1();
             }
         });
+
+        BannerItem banner = new BannerItem();
+        banner.setImageUrl("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
+        banner.setTips("title1");
+        items.add(banner);
+
+        banner = new BannerItem();
+        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
+        banner.setTips("title2");
+        items.add(banner);
+
+        banner = new BannerItem();
+        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/184-4-1024x768.jpg");
+        banner.setTips("title3");
+        items.add(banner);
+
+        banner = new BannerItem();
+        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/184-5-1024x768.jpg");
+        banner.setTips("title4");
+        items.add(banner);
+
+        banner = new BannerItem();
+        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
+        banner.setTips("title5");
+        items.add(banner);
+
+        initBanner1();
+
 
 
         List<BannerItem> items2 = new ArrayList<>();
@@ -69,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         item1.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=b5ff524bb0fcaa460e6a4c398b48e1e4&imgtype=0&src=http%3A%2F%2Fimg3.91.com%2Fuploads%2Fallimg%2F130428%2F32-13042Q63239.jpg");
         item1.setTips("title7");
         items3.add(item1);
-        items3.addAll(getItems());
+        items3.addAll(items);
 
         bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
 
@@ -90,34 +117,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private List<BannerItem> getItems() {
-        List<BannerItem> items = new ArrayList<>();
+    private void initBanner1(){
+        bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
 
-        BannerItem banner = new BannerItem();
-        banner.setImageUrl("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
-        banner.setTips("title1");
-        items.add(banner);
+            @Override
+            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
+                //title.setText(item.getTips());
+                Glide.with(MainActivity.this).load(item.getImageUrl()).placeholder(R.drawable.pic).error(R.drawable.pic).into(bannerImg);
+            }
 
-        banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
-        banner.setTips("title2");
-        items.add(banner);
-
-        banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/184-4-1024x768.jpg");
-        banner.setTips("title3");
-        items.add(banner);
-
-        banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/184-5-1024x768.jpg");
-        banner.setTips("title4");
-        items.add(banner);
-
-        banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
-        banner.setTips("title5");
-        items.add(banner);
-
-        return items;
+            @Override
+            public void onItemClicked(int position, BannerItem item) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

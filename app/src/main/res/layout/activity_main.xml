@@ -9,6 +9,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/my_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:text="增加一个banner"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
 
         <com.lany.view.BannerView
             android:id="@+id/banner_view"
@@ -21,9 +31,9 @@
             app:bv_indicator_left_right_margin="2dp"
             app:bv_indicator_padding="10dp"
             app:bv_indicator_top_bottom_margin="6dp"
+            app:bv_is_show_indicator="false"
             app:bv_page_change_duration="300"
             app:bv_play_interval="3"
-            app:bv_is_show_indicator="false"
             app:bv_title_text_color="#FFFFFF"
             app:bv_title_text_size="12sp" />
 
