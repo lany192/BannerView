@@ -417,46 +417,40 @@ public class BannerView extends RelativeLayout {
         }
         this.mItems.clear();
         this.mItems.addAll(list);
-        mViewPager.setAdapter(new InnerPagerAdapter());
+        mIndicatorContainer.removeAllViews();
+        InnerPagerAdapter innerPagerAdapter = new InnerPagerAdapter();
+        mViewPager.setAdapter(innerPagerAdapter);
         mViewPager.addOnPageChangeListener(new ChangePointListener());
-        //获取容器中原有点的数量
-        int childCount = mIndicatorContainer.getChildCount();
-        //获取目标点的数据量
-        int dataSize = mItems.size();
-        if (dataSize > 1) {
-            //获取增加获取删减点的数量
-            int offset = dataSize - childCount;
-            if (offset == 0)
-                return;
-            if (offset > 0) {
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
-                ImageView indicator;
-                for (int i = 0; i < offset; i++) {
-                    indicator = new ImageView(getContext());
-                    indicator.setLayoutParams(lp);
-                    indicator.setImageResource(mIndicatorResId);
-                    if (i == 0) {
-                        indicator.setEnabled(true);
-                    } else {
-                        indicator.setEnabled(false);
-                    }
-                    mIndicatorContainer.addView(indicator);
+        if (!isEmpty(mItems)) {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
+            ImageView indicator;
+            for (int i = 0; i < mItems.size(); i++) {
+                indicator = new ImageView(getContext());
+                indicator.setLayoutParams(lp);
+                indicator.setImageResource(mIndicatorResId);
+                if (i == 0) {
+                    indicator.setEnabled(true);
+                } else {
+                    indicator.setEnabled(false);
                 }
-                return;
+                mIndicatorContainer.addView(indicator);
             }
-            if (offset < 1) {
-                mIndicatorContainer.removeViews(dataSize, -offset);
-            }
-        } else {
-            mIndicatorContainer.removeAllViews();
         }
-        mViewPager.getAdapter().notifyDataSetChanged();
+        innerPagerAdapter.notifyDataSetChanged();
         mViewPager.setCurrentItem(0, false);
-        if (mItems.size() > 1) {
+        if (!isEmpty(mItems)) {
             goScroll();
         }
     }
+
+    /**
+     * 判断list是否为空
+     */
+    boolean isEmpty(List<?> lists) {
+        return lists == null || lists.size() == 0;
+    }
+
 
     private static class PlayHandler extends Handler {
         WeakReference<BannerView> mWeakBanner;

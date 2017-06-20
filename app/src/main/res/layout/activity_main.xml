@@ -31,7 +31,7 @@
             app:bv_indicator_left_right_margin="2dp"
             app:bv_indicator_padding="10dp"
             app:bv_indicator_top_bottom_margin="6dp"
-            app:bv_is_show_indicator="false"
+            app:bv_is_show_indicator="true"
             app:bv_page_change_duration="300"
             app:bv_play_interval="3"
             app:bv_title_text_color="#FFFFFF"
