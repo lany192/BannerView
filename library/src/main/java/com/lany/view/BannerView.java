@@ -421,7 +421,7 @@ public class BannerView extends RelativeLayout {
         InnerPagerAdapter innerPagerAdapter = new InnerPagerAdapter();
         mViewPager.setAdapter(innerPagerAdapter);
         mViewPager.addOnPageChangeListener(new ChangePointListener());
-        if (!isEmpty(mItems)) {
+        if (!isEmpty(mItems) && mItems.size() > 1) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
             ImageView indicator;
