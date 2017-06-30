@@ -41,6 +41,5 @@ This is an android banner view
             }
         });
 # Preview
-![image](https://github.com/lany192/BannerView/raw/master/preview/preview.png)
-
+![image](https://github.com/lany192/BannerView/raw/master/preview/pic1.png)
 
