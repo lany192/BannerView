@@ -418,6 +418,7 @@ public class BannerView extends RelativeLayout {
         this.mItems.clear();
         this.mItems.addAll(list);
         mIndicatorContainer.removeAllViews();
+        mItemArrays.clear();
         InnerPagerAdapter innerPagerAdapter = new InnerPagerAdapter();
         mViewPager.setAdapter(innerPagerAdapter);
         mViewPager.addOnPageChangeListener(new ChangePointListener());
