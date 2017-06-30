@@ -4,9 +4,9 @@ This is an android banner view
 
 这是一个轻量简洁的自定义banner控件
 
-
-compile 'com.lany:BannerView:1.1.2'
-
+# Gradle
+       compile 'com.lany:BannerView:1.1.2'
+# Usage
        <com.lany.view.BannerView
             android:id="@+id/banner_view"
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@ compile 'com.lany:BannerView:1.1.2'
         bannerView.setAdapter(new BannerAdapter<BannerItem>(getItems()) {
 
             @Override
-            public void bindData(ImageView bannerImg, TextView titleText, BannerItem item) {
+            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
                 //title.setText(item.getTips());
                 Glide.with(MainActivity.this)
                         .load(item.getImageUrl())
@@ -40,7 +40,7 @@ compile 'com.lany:BannerView:1.1.2'
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-
+# Preview
 ![image](https://github.com/lany192/BannerView/raw/master/preview/preview.png)
 
 
