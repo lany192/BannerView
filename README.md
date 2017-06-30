@@ -5,7 +5,7 @@ This is an android banner view
 这是一个轻量简洁的自定义banner控件
 
 # Gradle
-       compile 'com.lany:BannerView:1.1.2'
+       compile 'com.lany:BannerView:1.1.3'
 # Usage
        <com.lany.view.BannerView
             android:id="@+id/banner_view"
