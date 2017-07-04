@@ -2,23 +2,34 @@ package com.lany.bannerview;
 
 
 public class BannerItem {
+    private String pic;
+    private String title;
 
-    private String imageUrl;
-    private String mTips;
-
-    public String getTips() {
-        return mTips;
+    public BannerItem() {
     }
 
-    public void setTips(String tips) {
-        mTips = tips;
+    @Override
+    public String toString() {
+        return "BannerItem{" +
+                "pic='" + pic + '\'' +
+                ", title='" + title + '\'' +
+
+                '}';
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getPic() {
+        return pic;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

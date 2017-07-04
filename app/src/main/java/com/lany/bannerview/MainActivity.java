@@ -29,46 +29,54 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BannerItem banner = new BannerItem();
-                banner.setImageUrl("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
-                banner.setTips("title1");
+                banner.setPic("http://imgsrc.baidu.com/imgad/pic/item/b03533fa828ba61e5e6d4c0d4b34970a304e5915.jpg");
+                banner.setTitle("title1");
                 items.add(banner);
                 initBanner1();
             }
         });
+        findViewById(R.id.my_button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (items.size() > 0) {
+                    items.remove(0);
+                    initBanner1();
+                }
+            }
+        });
 
         BannerItem banner = new BannerItem();
-        banner.setImageUrl("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
-        banner.setTips("title1");
+        banner.setPic("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
+        banner.setTitle("title1");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
-        banner.setTips("title2");
+        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
+        banner.setTitle("title2");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/184-4-1024x768.jpg");
-        banner.setTips("title3");
+        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/184-4-1024x768.jpg");
+        banner.setTitle("title3");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/184-5-1024x768.jpg");
-        banner.setTips("title4");
+        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/184-5-1024x768.jpg");
+        banner.setTitle("title4");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setImageUrl("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
-        banner.setTips("title5");
+        banner.setPic("http://pic17.nipic.com/20111122/6759425_152002413138_2.jpg");
+        banner.setTitle("title5");
         items.add(banner);
 
         initBanner1();
 
 
-
         List<BannerItem> items2 = new ArrayList<>();
         BannerItem item = new BannerItem();
-        item.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=62cf54ead218933744db70780d3ae8b5&imgtype=0&src=http%3A%2F%2Fhomemade.keliren.cn%2Ftuku%2Fa%2F20160406%2F570461f141575.jpg");
-        item.setTips("title6");
+        item.setPic("http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg");
+        item.setTitle("title6");
         items2.add(item);
         //items2.addAll(getItems());
 
@@ -77,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
-                titleText.setText(item.getTips());
+                titleText.setText(item.getTitle());
                 Glide.with(MainActivity.this)
-                        .load(item.getImageUrl())
+                        .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(bannerImg);
@@ -87,14 +95,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "点击" + item, Toast.LENGTH_SHORT).show();
             }
         });
 
         List<BannerItem> items3 = new ArrayList<>();
         BannerItem item1 = new BannerItem();
-        item1.setImageUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=b5ff524bb0fcaa460e6a4c398b48e1e4&imgtype=0&src=http%3A%2F%2Fimg3.91.com%2Fuploads%2Fallimg%2F130428%2F32-13042Q63239.jpg");
-        item1.setTips("title7");
+        item1.setPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=b5ff524bb0fcaa460e6a4c398b48e1e4&imgtype=0&src=http%3A%2F%2Fimg3.91.com%2Fuploads%2Fallimg%2F130428%2F32-13042Q63239.jpg");
+        item1.setTitle("title7");
         items3.add(item1);
         items3.addAll(items);
 
@@ -102,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
-                titleText.setText(item.getTips());
+                titleText.setText(item.getTitle());
                 Glide.with(MainActivity.this)
-                        .load(item.getImageUrl())
+                        .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(bannerImg);
@@ -112,23 +120,23 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "点击" + item, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void initBanner1(){
+    private void initBanner1() {
         bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
 
             @Override
             public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
                 //title.setText(item.getTips());
-                Glide.with(MainActivity.this).load(item.getImageUrl()).placeholder(R.drawable.pic).error(R.drawable.pic).into(bannerImg);
+                Glide.with(MainActivity.this).load(item.getPic()).placeholder(R.drawable.pic).error(R.drawable.pic).into(bannerImg);
             }
 
             @Override
             public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "点击" + item, Toast.LENGTH_SHORT).show();
             }
         });
     }
