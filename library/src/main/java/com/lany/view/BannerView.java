@@ -78,52 +78,36 @@ public class BannerView extends RelativeLayout {
     }
 
     private void init(AttributeSet attrs) {
-        //默认点指示器的左右Margin3dp
         mIndicatorLeftRightMargin = dp2px(3);
-        //默认点指示器的上下margin为6dp
         mIndicatorTopBottomMargin = dp2px(6);
-        //默认点容器的左右padding为10dp
         mIndicatorContainerLeftRightPadding = dp2px(10);
-        //默认指示器提示文字大小8sp
         mTitleTextSize = sp2px(8);
-        //默认指示器容器的背景图片
         mIndicatorContainerBgDrawable = new ColorDrawable(Color.parseColor("#33aaaaaa"));
 
         initCustomAttrs(attrs);
         mViewPager = new LoopViewPager(getContext());
         addView(mViewPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-        //创建指示器容器的相对布局
         RelativeLayout indicatorContainerRl = new RelativeLayout(getContext());
-        //设置指示器容器的背景
         if (Build.VERSION.SDK_INT >= 16) {
             indicatorContainerRl.setBackground(mIndicatorContainerBgDrawable);
         } else {
             indicatorContainerRl.setBackgroundDrawable(mIndicatorContainerBgDrawable);
         }
-        //设置指示器容器Padding
         indicatorContainerRl.setPadding(mIndicatorContainerLeftRightPadding, 0, mIndicatorContainerLeftRightPadding, 0);
-        //初始化指示器容器的布局参数
         LayoutParams indicatorContainerLp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        // 设置指示器容器内的子view的布局方式
+
         if ((mIndicatorGravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP) {
             indicatorContainerLp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         } else {
             indicatorContainerLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         }
-        //将指示器容器添加到父View中
         addView(indicatorContainerRl, indicatorContainerLp);
 
-
-        //初始化存放点的容器线性布局
         mIndicatorContainer = new LinearLayout(getContext());
-        //设置点容器布局的id
         mIndicatorContainer.setId(R.id.banner_indicator_container_id);
-        //设置线性布局的方
         mIndicatorContainer.setOrientation(LinearLayout.HORIZONTAL);
-        //设置点容器的布局参数
         LayoutParams indicatorContainerLP = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        //将点容器存放到指示器容器中
         indicatorContainerRl.addView(mIndicatorContainer, indicatorContainerLP);
 
         if (isShowIndicator) {
@@ -132,7 +116,6 @@ public class BannerView extends RelativeLayout {
             mIndicatorContainer.setVisibility(GONE);
         }
 
-        //初始化tip的layout尺寸参数，高度和点的高度一致
         int height = getResources().getDrawable(mIndicatorResId).getIntrinsicHeight() + 2 * mIndicatorTopBottomMargin;
         LayoutParams titleLP = new LayoutParams(LayoutParams.MATCH_PARENT, height);
         mTitleText = new TextView(getContext());
@@ -141,13 +124,10 @@ public class BannerView extends RelativeLayout {
         mTitleText.setEllipsize(TextUtils.TruncateAt.END);
         mTitleText.setTextColor(mTitleTextColor);
         mTitleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleTextSize);
-        //将TieTextView存放于指示器容器中
         indicatorContainerRl.addView(mTitleText, titleLP);
         int horizontalGravity = mIndicatorGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
-        // 处理圆点容器位于指示器容器的左边、右边还是水平居中
         if (horizontalGravity == Gravity.LEFT) {
             indicatorContainerLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            //提示文字设置在点容器的右边
             titleLP.addRule(RelativeLayout.RIGHT_OF, R.id.banner_indicator_container_id);
             mTitleText.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
         } else if (horizontalGravity == Gravity.RIGHT) {
@@ -223,12 +203,6 @@ public class BannerView extends RelativeLayout {
         }
     }
 
-    /**
-     * 将点切换到指定的位置
-     * 就是将指定位置的点设置成Enable
-     *
-     * @param newCurrentPoint 新位置
-     */
     private void switchToPoint(int newCurrentPoint) {
         for (int i = 0; i < mIndicatorContainer.getChildCount(); i++) {
             if (newCurrentPoint == i) {
@@ -262,11 +236,6 @@ public class BannerView extends RelativeLayout {
         return super.dispatchTouchEvent(ev);
     }
 
-    /**
-     * 滚动到下一个条目
-     *
-     * @param position
-     */
     private void scrollToNextItem(int position) {
         position++;
         if (position >= mItems.size()) {
@@ -275,9 +244,6 @@ public class BannerView extends RelativeLayout {
         mViewPager.setCurrentItem(position, true);
     }
 
-    /**
-     * viewPager的适配器
-     */
     private final class InnerPagerAdapter extends PagerAdapter {
 
         @Override
@@ -328,12 +294,13 @@ public class BannerView extends RelativeLayout {
         return iv;
     }
 
-    /**
-     * 方法使用状态 ：viewpager处于暂停的状态
-     * 开始滚动
-     */
     public void goScroll() {
-        if (!isValid()) {
+        if (mViewPager == null) {
+            Log.e(TAG, "ViewPager is not exist!");
+            return;
+        }
+        if (isEmpty(mItems)) {
+            Log.e(TAG, "items must be not empty!");
             return;
         }
         if (mPlaying) {
@@ -351,9 +318,6 @@ public class BannerView extends RelativeLayout {
         }
     }
 
-    /**
-     * 暂停滚动
-     */
     public void pauseScroll() {
         if (mExecutor != null) {
             mExecutor.shutdown();
@@ -378,28 +342,11 @@ public class BannerView extends RelativeLayout {
         pauseScroll();
     }
 
-    /**
-     * 检查控件是否可用
-     *
-     * @return 控件是否可用
-     */
-    private boolean isValid() {
-        if (mViewPager == null) {
-            Log.e(TAG, "ViewPager is not exist!");
-            return false;
-        }
-        if (mItems == null || mItems.size() == 0) {
-            Log.e(TAG, "DataList must be not empty!");
-            return false;
-        }
-        return true;
-    }
-
     public void setAdapter(@NonNull BannerAdapter adapter) {
         mBannerAdapter = adapter;
         List list = mBannerAdapter.getItems();
-        if (list == null) {
-            Log.d(TAG, "setSource: list==null");
+        if (isEmpty(list)) {
+            Log.e(TAG, "items must be not empty!");
             return;
         }
         this.mItems.clear();
@@ -433,9 +380,6 @@ public class BannerView extends RelativeLayout {
         }
     }
 
-    /**
-     * 判断list是否为空
-     */
     boolean isEmpty(List<?> lists) {
         return lists == null || lists.size() == 0;
     }

@@ -5,7 +5,7 @@ This is an android banner view
 这是一个轻量简洁的自定义banner控件
 
 # Gradle
-       compile 'com.lany:BannerView:1.1.3'
+       compile 'com.lany:BannerView:1.1.6'
 # Usage
        <com.lany.view.BannerView
             android:id="@+id/banner_view"
@@ -18,7 +18,6 @@ This is an android banner view
             app:bv_indicator_left_right_margin="2dp"
             app:bv_indicator_padding="10dp"
             app:bv_indicator_top_bottom_margin="6dp"
-            app:bv_page_change_duration="300"
             app:bv_play_interval="3"
             app:bv_title_text_color="#FFFFFF"
             app:bv_title_text_size="12sp" />
