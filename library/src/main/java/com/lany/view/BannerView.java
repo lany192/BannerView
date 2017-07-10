@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.view.LoopViewPager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -25,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -48,12 +48,19 @@ public class BannerView extends RelativeLayout {
     private Drawable mIndicatorContainerBgDrawable;
     private List mItems = new ArrayList<>();
     private int mAutoPlayInterval = 3;
-    private int mPageChangeDuration = 300;
     private boolean mPlaying = false;
     private int currentPosition;
     private BannerAdapter mBannerAdapter;
     private ScheduledExecutorService mExecutor;
-    private Handler mPlayHandler = new PlayHandler(this);
+
+    private Handler mPlayHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            scrollToNextItem(currentPosition);
+        }
+    };
     private boolean isShowIndicator = true;
 
     public BannerView(Context context) {
@@ -85,14 +92,6 @@ public class BannerView extends RelativeLayout {
         initCustomAttrs(attrs);
         mViewPager = new LoopViewPager(getContext());
         addView(mViewPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-
-        //修正banner页面切换时间
-        mPageChangeDuration = mPageChangeDuration > (mAutoPlayInterval * 1000) ? (mAutoPlayInterval * 1000) : mPageChangeDuration;
-
-        // 设置banner轮播的切换时间
-        BannerScroller pagerScroller = new BannerScroller(getContext());
-        pagerScroller.changScrollDuration(mViewPager, mPageChangeDuration);
-
 
         //创建指示器容器的相对布局
         RelativeLayout indicatorContainerRl = new RelativeLayout(getContext());
@@ -184,8 +183,6 @@ public class BannerView extends RelativeLayout {
             mIndicatorGravity = typedArray.getInt(attr, mIndicatorGravity);
         } else if (attr == R.styleable.BannerView_bv_play_interval) {
             mAutoPlayInterval = typedArray.getInteger(attr, mAutoPlayInterval);
-        } else if (attr == R.styleable.BannerView_bv_page_change_duration) {
-            mPageChangeDuration = typedArray.getInteger(attr, mPageChangeDuration);
         } else if (attr == R.styleable.BannerView_bv_title_text_color) {
             mTitleTextColor = typedArray.getColor(attr, mTitleTextColor);
         } else if (attr == R.styleable.BannerView_bv_title_text_size) {
@@ -203,7 +200,8 @@ public class BannerView extends RelativeLayout {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, getResources().getDisplayMetrics());
     }
 
-    private final class ChangePointListener extends LoopViewPager.SimpleOnPageChangeListener {
+    private final class ChangePointListener extends ViewPager.SimpleOnPageChangeListener {
+
         @Override
         public void onPageSelected(int position) {
             currentPosition = position % mItems.size();
@@ -264,16 +262,6 @@ public class BannerView extends RelativeLayout {
         return super.dispatchTouchEvent(ev);
     }
 
-
-    /**
-     * 设置页码切换过程的时间长度
-     *
-     * @param duration 页码切换过程的时间长度
-     */
-    public void setPageChangeDuration(int duration) {
-        mPageChangeDuration = duration;
-    }
-
     /**
      * 滚动到下一个条目
      *
@@ -281,6 +269,9 @@ public class BannerView extends RelativeLayout {
      */
     private void scrollToNextItem(int position) {
         position++;
+        if (position >= mItems.size()) {
+            position = currentPosition = 0;
+        }
         mViewPager.setCurrentItem(position, true);
     }
 
@@ -350,10 +341,6 @@ public class BannerView extends RelativeLayout {
         } else {
             pauseScroll();
             mExecutor = Executors.newSingleThreadScheduledExecutor();
-            //command：执行线程
-            //initialDelay：初始化延时
-            //period：两次开始执行最小间隔时间
-            //unit：计时单位
             mExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
@@ -451,23 +438,6 @@ public class BannerView extends RelativeLayout {
      */
     boolean isEmpty(List<?> lists) {
         return lists == null || lists.size() == 0;
-    }
-
-
-    private static class PlayHandler extends Handler {
-        WeakReference<BannerView> mWeakBanner;
-
-        public PlayHandler(BannerView banner) {
-            this.mWeakBanner = new WeakReference<>(banner);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            BannerView weakBanner = mWeakBanner.get();
-            if (weakBanner != null) {
-                weakBanner.scrollToNextItem(weakBanner.currentPosition);
-            }
-        }
     }
 
     public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {

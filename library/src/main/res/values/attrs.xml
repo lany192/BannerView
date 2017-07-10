@@ -24,8 +24,6 @@
         </attr>
         <!-- 自动轮播的时间间隔 -->
         <attr name="bv_play_interval" format="integer" />
-        <!-- 页码切换过程的时间长度 -->
-        <attr name="bv_page_change_duration" format="integer" />
         <!-- 提示文案的文字颜色 -->
         <attr name="bv_title_text_color" format="reference|color" />
         <!-- 提示文案的文字大小 -->

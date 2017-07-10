@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 BannerItem banner = new BannerItem();
                 banner.setPic("http://imgsrc.baidu.com/imgad/pic/item/b03533fa828ba61e5e6d4c0d4b34970a304e5915.jpg");
-                banner.setTitle("title1");
+                banner.setTitle("title6");
                 items.add(banner);
                 initBanner1();
             }
