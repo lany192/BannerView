@@ -138,7 +138,6 @@ public class LoopViewPager extends ViewGroup {
     private boolean mCalledSuper;
     private int mDecorChildCount;
     private List<ViewPager.OnPageChangeListener> mOnPageChangeListeners;
-    private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private ViewPager.OnPageChangeListener mInternalPageChangeListener;
     private List<OnAdapterChangeListener> mAdapterChangeListeners;
     private ViewPager.PageTransformer mPageTransformer;
@@ -410,11 +409,6 @@ public class LoopViewPager extends ViewGroup {
             scrollTo(destX, 0);
             pageScrolled(destX);
         }
-    }
-
-    @Deprecated
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        mOnPageChangeListener = listener;
     }
 
     public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
@@ -1431,9 +1425,6 @@ public class LoopViewPager extends ViewGroup {
     }
 
     private void dispatchOnPageScrolled(int position, float offset, int offsetPixels) {
-        if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageScrolled(position, offset, offsetPixels);
-        }
         if (mOnPageChangeListeners != null) {
             for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
                 ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
@@ -1448,9 +1439,6 @@ public class LoopViewPager extends ViewGroup {
     }
 
     private void dispatchOnPageSelected(int position) {
-        if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageSelected(position);
-        }
         if (mOnPageChangeListeners != null) {
             for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
                 ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
@@ -1465,9 +1453,6 @@ public class LoopViewPager extends ViewGroup {
     }
 
     private void dispatchOnScrollStateChanged(int state) {
-        if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageScrollStateChanged(state);
-        }
         if (mOnPageChangeListeners != null) {
             for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
                 ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
