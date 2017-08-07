@@ -53,6 +53,8 @@ public class BannerView extends RelativeLayout {
     private BannerAdapter mBannerAdapter;
     private ScheduledExecutorService mExecutor;
 
+    private boolean isShowLastAnim = true;//是否显示最后一页切换到第一项的动画，默认true
+
     private Handler mPlayHandler = new Handler() {
 
         @Override
@@ -169,6 +171,8 @@ public class BannerView extends RelativeLayout {
             mTitleTextSize = typedArray.getDimensionPixelSize(attr, mTitleTextSize);
         } else if (attr == R.styleable.BannerView_bv_is_show_indicator) {
             isShowIndicator = typedArray.getBoolean(attr, true);
+        } else if (attr == R.styleable.BannerView_bv_is_show_last_anim) {
+            isShowLastAnim = typedArray.getBoolean(attr, true);
         }
     }
 
@@ -238,10 +242,8 @@ public class BannerView extends RelativeLayout {
 
     private void scrollToNextItem(int position) {
         position++;
-        if (position >= mItems.size()) {
-            position = currentPosition = 0;
-        }
-        mViewPager.setCurrentItem(position, true);
+        position = currentPosition = position % mItems.size();
+        mViewPager.setCurrentItem(position, isShowLastAnim || (position != 0));//从最后一页切换到第一页不需要动画
     }
 
     private final class InnerPagerAdapter extends PagerAdapter {

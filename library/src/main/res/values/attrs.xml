@@ -28,6 +28,8 @@
         <attr name="bv_title_text_color" format="reference|color" />
         <!-- 提示文案的文字大小 -->
         <attr name="bv_title_text_size" format="dimension" />
+        <!-- 从最后一页切换到第一页是否需要动画 -->
+        <attr name="bv_is_show_last_anim" format="reference|boolean" />
     </declare-styleable>
 
 </resources>
