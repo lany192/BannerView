@@ -2,68 +2,74 @@ package com.lany.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.view.LoopViewPager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lany.view.listener.OnBannerListener;
+import com.lany.view.loader.ImageLoaderInterface;
+import com.lany.view.view.BannerViewPager;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-public class BannerView extends RelativeLayout {
-    private static final String TAG = "BannerView";
-    private SparseArray<ImageView> mItemArrays = new SparseArray<>();
-    private LoopViewPager mViewPager;
-    private TextView mTitleText;
-    private int mTitleTextSize;
-    private int mTitleTextColor = Color.WHITE;
-    private LinearLayout mIndicatorContainer;
-    private int mIndicatorResId = R.drawable.banner_indicator_oval;
-    private int mIndicatorGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-    private int mIndicatorLeftRightMargin;
-    private int mIndicatorTopBottomMargin;
-    private int mIndicatorContainerLeftRightPadding;
-    private Drawable mIndicatorContainerBgDrawable;
-    private List mItems = new ArrayList<>();
-    private int mAutoPlayInterval = 3;
-    private boolean mPlaying = false;
-    private int currentPosition;
-    private BannerAdapter mBannerAdapter;
-    private ScheduledExecutorService mExecutor;
+import static android.support.v4.view.ViewPager.OnPageChangeListener;
+import static android.support.v4.view.ViewPager.PageTransformer;
 
-    private boolean isShowLastAnim = true;//是否显示最后一页切换到第一项的动画，默认true
+public class BannerView extends FrameLayout implements OnPageChangeListener {
+    private final String TAG = "BannerView";
+    private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
+    private int mIndicatorWidth;
+    private int mIndicatorHeight;
+    private int indicatorSize;
+    private int bannerStyle = BannerConfig.CIRCLE_INDICATOR;
+    private int delayTime = BannerConfig.TIME;
+    private int scrollTime = BannerConfig.DURATION;
+    private boolean isAutoPlay = BannerConfig.IS_AUTO_PLAY;
+    private boolean isScroll = BannerConfig.IS_SCROLL;
+    private int mIndicatorSelectedResId = R.drawable.gray_radius;
+    private int mIndicatorUnselectedResId = R.drawable.white_radius;
+    private int mLayoutResId = R.layout.banner;
+    private int titleHeight;
+    private int titleBackground;
+    private int titleTextColor;
+    private int titleTextSize;
+    private int count = 0;
+    private int currentItem;
+    private int gravity = -1;
+    private int lastPosition = 1;
+    private int scaleType = 1;
+    private List<String> titles;
+    private List imageUrls;
+    private List<View> imageViews;
+    private List<ImageView> indicatorImages;
+    private Context context;
+    private BannerViewPager viewPager;
+    private TextView bannerTitle, numIndicatorInside, numIndicator;
+    private LinearLayout indicator, indicatorInside, titleView;
+    private ImageLoaderInterface imageLoader;
+    private BannerPagerAdapter adapter;
+    private OnPageChangeListener mOnPageChangeListener;
+    private BannerScroller mScroller;
+    private OnBannerListener listener;
+    private DisplayMetrics dm;
 
-    private Handler mPlayHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            scrollToNextItem(currentPosition);
-        }
-    };
-    private boolean isShowIndicator = true;
+    private WeakHandler handler = new WeakHandler();
 
     public BannerView(Context context) {
         this(context, null);
@@ -71,199 +77,422 @@ public class BannerView extends RelativeLayout {
 
     public BannerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        init(attrs);
     }
 
-    public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(attrs);
+    public BannerView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        this.context = context;
+        titles = new ArrayList<>();
+        imageUrls = new ArrayList<>();
+        imageViews = new ArrayList<>();
+        indicatorImages = new ArrayList<>();
+        dm = context.getResources().getDisplayMetrics();
+        indicatorSize = dm.widthPixels / 80;
+        initView(context, attrs);
     }
 
-    private void init(AttributeSet attrs) {
-        mIndicatorLeftRightMargin = dp2px(3);
-        mIndicatorTopBottomMargin = dp2px(6);
-        mIndicatorContainerLeftRightPadding = dp2px(10);
-        mTitleTextSize = sp2px(8);
-        mIndicatorContainerBgDrawable = new ColorDrawable(Color.parseColor("#33aaaaaa"));
-
-        initCustomAttrs(attrs);
-        mViewPager = new LoopViewPager(getContext());
-        addView(mViewPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-
-        RelativeLayout indicatorContainerRl = new RelativeLayout(getContext());
-        if (Build.VERSION.SDK_INT >= 16) {
-            indicatorContainerRl.setBackground(mIndicatorContainerBgDrawable);
-        } else {
-            indicatorContainerRl.setBackgroundDrawable(mIndicatorContainerBgDrawable);
-        }
-        indicatorContainerRl.setPadding(mIndicatorContainerLeftRightPadding, 0, mIndicatorContainerLeftRightPadding, 0);
-        LayoutParams indicatorContainerLp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-
-        if ((mIndicatorGravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP) {
-            indicatorContainerLp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        } else {
-            indicatorContainerLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        }
-        addView(indicatorContainerRl, indicatorContainerLp);
-
-        mIndicatorContainer = new LinearLayout(getContext());
-        mIndicatorContainer.setId(R.id.banner_indicator_container_id);
-        mIndicatorContainer.setOrientation(LinearLayout.HORIZONTAL);
-        LayoutParams indicatorContainerLP = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        indicatorContainerRl.addView(mIndicatorContainer, indicatorContainerLP);
-
-        if (isShowIndicator) {
-            mIndicatorContainer.setVisibility(VISIBLE);
-        } else {
-            mIndicatorContainer.setVisibility(GONE);
-        }
-
-        int height = getResources().getDrawable(mIndicatorResId).getIntrinsicHeight() + 2 * mIndicatorTopBottomMargin;
-        LayoutParams titleLP = new LayoutParams(LayoutParams.MATCH_PARENT, height);
-        mTitleText = new TextView(getContext());
-        mTitleText.setGravity(Gravity.CENTER_VERTICAL);
-        mTitleText.setSingleLine(true);
-        mTitleText.setEllipsize(TextUtils.TruncateAt.END);
-        mTitleText.setTextColor(mTitleTextColor);
-        mTitleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleTextSize);
-        indicatorContainerRl.addView(mTitleText, titleLP);
-        int horizontalGravity = mIndicatorGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
-        if (horizontalGravity == Gravity.LEFT) {
-            indicatorContainerLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            titleLP.addRule(RelativeLayout.RIGHT_OF, R.id.banner_indicator_container_id);
-            mTitleText.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
-        } else if (horizontalGravity == Gravity.RIGHT) {
-            indicatorContainerLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            titleLP.addRule(RelativeLayout.LEFT_OF, R.id.banner_indicator_container_id);
-        } else {
-            indicatorContainerLP.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            titleLP.addRule(RelativeLayout.LEFT_OF, R.id.banner_indicator_container_id);
-        }
+    private void initView(Context context, AttributeSet attrs) {
+        imageViews.clear();
+        handleTypedArray(context, attrs);
+        View view = LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        viewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
+        titleView = (LinearLayout) view.findViewById(R.id.titleView);
+        indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
+        indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
+        bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
+        numIndicator = (TextView) view.findViewById(R.id.numIndicator);
+        numIndicatorInside = (TextView) view.findViewById(R.id.numIndicatorInside);
+        initViewPagerScroll();
     }
 
-    private void initCustomAttrs(AttributeSet attrs) {
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BannerView);
-        final int N = typedArray.getIndexCount();
-        for (int i = 0; i < N; i++) {
-            initCustomAttr(typedArray.getIndex(i), typedArray);
+    private void handleTypedArray(Context context, AttributeSet attrs) {
+        if (attrs == null) {
+            return;
         }
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_indicatorWidth, indicatorSize);
+        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_indicatorHeight, indicatorSize);
+        mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_indicatorMargin, BannerConfig.PADDING_SIZE);
+        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
+        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
+        scaleType = typedArray.getInt(R.styleable.Banner_banner_scaleType, scaleType);
+        delayTime = typedArray.getInt(R.styleable.Banner_banner_delayTime, BannerConfig.TIME);
+        scrollTime = typedArray.getInt(R.styleable.Banner_banner_scrollTime, BannerConfig.DURATION);
+        isAutoPlay = typedArray.getBoolean(R.styleable.Banner_banner_isAutoPlay, BannerConfig.IS_AUTO_PLAY);
+        titleBackground = typedArray.getColor(R.styleable.Banner_banner_titleBackground, BannerConfig.TITLE_BACKGROUND);
+        titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_titleHeight, BannerConfig.TITLE_HEIGHT);
+        titleTextColor = typedArray.getColor(R.styleable.Banner_banner_titleTextColor, BannerConfig.TITLE_TEXT_COLOR);
+        titleTextSize = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_titleTextSize, BannerConfig.TITLE_TEXT_SIZE);
+        mLayoutResId = typedArray.getResourceId(R.styleable.Banner_layout_id, mLayoutResId);
         typedArray.recycle();
     }
 
-    private void initCustomAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.BannerView_bv_indicator) {
-            mIndicatorResId = typedArray.getResourceId(attr, R.drawable.banner_indicator_oval);
-        } else if (attr == R.styleable.BannerView_bv_indicator_container_bg) {
-            mIndicatorContainerBgDrawable = typedArray.getDrawable(attr);
-        } else if (attr == R.styleable.BannerView_bv_indicator_left_right_margin) {
-            mIndicatorLeftRightMargin = typedArray.getDimensionPixelSize(attr, mIndicatorLeftRightMargin);
-        } else if (attr == R.styleable.BannerView_bv_indicator_padding) {
-            mIndicatorContainerLeftRightPadding = typedArray.getDimensionPixelSize(attr, mIndicatorContainerLeftRightPadding);
-        } else if (attr == R.styleable.BannerView_bv_indicator_top_bottom_margin) {
-            mIndicatorTopBottomMargin = typedArray.getDimensionPixelSize(attr, mIndicatorTopBottomMargin);
-        } else if (attr == R.styleable.BannerView_bv_indicator_gravity) {
-            mIndicatorGravity = typedArray.getInt(attr, mIndicatorGravity);
-        } else if (attr == R.styleable.BannerView_bv_play_interval) {
-            mAutoPlayInterval = typedArray.getInteger(attr, mAutoPlayInterval);
-        } else if (attr == R.styleable.BannerView_bv_title_text_color) {
-            mTitleTextColor = typedArray.getColor(attr, mTitleTextColor);
-        } else if (attr == R.styleable.BannerView_bv_title_text_size) {
-            mTitleTextSize = typedArray.getDimensionPixelSize(attr, mTitleTextSize);
-        } else if (attr == R.styleable.BannerView_bv_is_show_indicator) {
-            isShowIndicator = typedArray.getBoolean(attr, true);
-        } else if (attr == R.styleable.BannerView_bv_is_show_last_anim) {
-            isShowLastAnim = typedArray.getBoolean(attr, true);
+    private void initViewPagerScroll() {
+        try {
+            Field mField = ViewPager.class.getDeclaredField("mScroller");
+            mField.setAccessible(true);
+            mScroller = new BannerScroller(viewPager.getContext());
+            mScroller.setDuration(scrollTime);
+            mField.set(viewPager, mScroller);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
-    private int dp2px(float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
+
+    public BannerView isAutoPlay(boolean isAutoPlay) {
+        this.isAutoPlay = isAutoPlay;
+        return this;
     }
 
-    private int sp2px(float spValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, getResources().getDisplayMetrics());
+    public BannerView setImageLoader(ImageLoaderInterface imageLoader) {
+        this.imageLoader = imageLoader;
+        return this;
     }
 
-    private final class ChangePointListener extends ViewPager.SimpleOnPageChangeListener {
+    public BannerView setDelayTime(int delayTime) {
+        this.delayTime = delayTime;
+        return this;
+    }
 
-        @Override
-        public void onPageSelected(int position) {
-            currentPosition = position % mItems.size();
-            switchToPoint(currentPosition);
+    public BannerView setIndicatorGravity(int type) {
+        switch (type) {
+            case BannerConfig.LEFT:
+                this.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+                break;
+            case BannerConfig.CENTER:
+                this.gravity = Gravity.CENTER;
+                break;
+            case BannerConfig.RIGHT:
+                this.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+                break;
         }
+        return this;
+    }
 
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (mTitleText != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    if (positionOffset > 0.5) {
-                        mTitleText.setAlpha(positionOffset);
-                    } else {
-                        mTitleText.setAlpha(1 - positionOffset);
-                    }
-                }
-                mBannerAdapter.bind(createItemView(currentPosition), mTitleText, currentPosition);
+    public BannerView setAnimation(Class<? extends PageTransformer> transformer) {
+        try {
+            setPageTransformer(true, transformer.newInstance());
+        } catch (Exception e) {
+            Log.e(TAG, "Please set the PageTransformer class");
+        }
+        return this;
+    }
+
+
+    public BannerView setOffscreenPageLimit(int limit) {
+        if (viewPager != null) {
+            viewPager.setOffscreenPageLimit(limit);
+        }
+        return this;
+    }
+
+
+    public BannerView setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
+        viewPager.setPageTransformer(reverseDrawingOrder, transformer);
+        return this;
+    }
+
+    public BannerView setBannerTitles(List<String> titles) {
+        this.titles = titles;
+        return this;
+    }
+
+    public BannerView setBannerStyle(int bannerStyle) {
+        this.bannerStyle = bannerStyle;
+        return this;
+    }
+
+    public BannerView setViewPagerIsScroll(boolean isScroll) {
+        this.isScroll = isScroll;
+        return this;
+    }
+
+    public BannerView setImages(List<?> imageUrls) {
+        this.imageUrls = imageUrls;
+        this.count = imageUrls.size();
+        return this;
+    }
+
+    public void update(List<?> imageUrls, List<String> titles) {
+        this.imageUrls.clear();
+        this.titles.clear();
+        this.imageUrls.addAll(imageUrls);
+        this.titles.addAll(titles);
+        this.count = this.imageUrls.size();
+        start();
+    }
+
+    public void update(List<?> imageUrls) {
+        this.imageUrls.clear();
+        this.imageUrls.addAll(imageUrls);
+        this.count = this.imageUrls.size();
+        start();
+    }
+
+    public void updateBannerStyle(int bannerStyle) {
+        indicator.setVisibility(GONE);
+        numIndicator.setVisibility(GONE);
+        numIndicatorInside.setVisibility(GONE);
+        indicatorInside.setVisibility(GONE);
+        bannerTitle.setVisibility(View.GONE);
+        titleView.setVisibility(View.GONE);
+        this.bannerStyle = bannerStyle;
+        start();
+    }
+
+    public BannerView start() {
+        setBannerStyleUI();
+        setImageList(imageUrls);
+        setData();
+        return this;
+    }
+
+    private void setTitleStyleUI() {
+        if (titles.size() != imageUrls.size()) {
+            throw new RuntimeException("[Banner] --> The number of titles and images is different");
+        }
+        if (titleBackground != -1) {
+            titleView.setBackgroundColor(titleBackground);
+        }
+        if (titleHeight != -1) {
+            titleView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, titleHeight));
+        }
+        if (titleTextColor != -1) {
+            bannerTitle.setTextColor(titleTextColor);
+        }
+        if (titleTextSize != -1) {
+            bannerTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
+        }
+        if (titles != null && titles.size() > 0) {
+            bannerTitle.setText(titles.get(0));
+            bannerTitle.setVisibility(View.VISIBLE);
+            titleView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setBannerStyleUI() {
+        int visibility;
+        if (count > 1) visibility = View.VISIBLE;
+        else visibility = View.GONE;
+        switch (bannerStyle) {
+            case BannerConfig.CIRCLE_INDICATOR:
+                indicator.setVisibility(visibility);
+                break;
+            case BannerConfig.NUM_INDICATOR:
+                numIndicator.setVisibility(visibility);
+                break;
+            case BannerConfig.NUM_INDICATOR_TITLE:
+                numIndicatorInside.setVisibility(visibility);
+                setTitleStyleUI();
+                break;
+            case BannerConfig.CIRCLE_INDICATOR_TITLE:
+                indicator.setVisibility(visibility);
+                setTitleStyleUI();
+                break;
+            case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
+                indicatorInside.setVisibility(visibility);
+                setTitleStyleUI();
+                break;
+        }
+    }
+
+    private void initImages() {
+        imageViews.clear();
+        if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
+                bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||
+                bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
+            createIndicator();
+        } else if (bannerStyle == BannerConfig.NUM_INDICATOR_TITLE) {
+            numIndicatorInside.setText("1/" + count);
+        } else if (bannerStyle == BannerConfig.NUM_INDICATOR) {
+            numIndicator.setText("1/" + count);
+        }
+    }
+
+    private void setImageList(List<?> imagesUrl) {
+        if (imagesUrl == null || imagesUrl.size() <= 0) {
+            Log.e(TAG, "Please set the images data.");
+            return;
+        }
+        initImages();
+        for (int i = 0; i <= count + 1; i++) {
+            View imageView = null;
+            if (imageLoader != null) {
+                imageView = imageLoader.createImageView(context);
             }
-        }
-    }
-
-    private void switchToPoint(int newCurrentPoint) {
-        for (int i = 0; i < mIndicatorContainer.getChildCount(); i++) {
-            if (newCurrentPoint == i) {
-                mIndicatorContainer.getChildAt(i).setEnabled(true);
+            if (imageView == null) {
+                imageView = new ImageView(context);
+            }
+            setScaleType(imageView);
+            Object url = null;
+            if (i == 0) {
+                url = imagesUrl.get(count - 1);
+            } else if (i == count + 1) {
+                url = imagesUrl.get(0);
             } else {
-                mIndicatorContainer.getChildAt(i).setEnabled(false);
+                url = imagesUrl.get(i - 1);
             }
-        }
-        if (mTitleText != null) {
-            mBannerAdapter.bind(createItemView(currentPosition), mTitleText, currentPosition);
+            imageViews.add(imageView);
+            if (imageLoader != null)
+                imageLoader.displayImage(context, url, imageView);
+            else
+                Log.e(TAG, "Please set images loader.");
         }
     }
+
+    private void setScaleType(View imageView) {
+        if (imageView instanceof ImageView) {
+            ImageView view = ((ImageView) imageView);
+            switch (scaleType) {
+                case 0:
+                    view.setScaleType(ScaleType.CENTER);
+                    break;
+                case 1:
+                    view.setScaleType(ScaleType.CENTER_CROP);
+                    break;
+                case 2:
+                    view.setScaleType(ScaleType.CENTER_INSIDE);
+                    break;
+                case 3:
+                    view.setScaleType(ScaleType.FIT_CENTER);
+                    break;
+                case 4:
+                    view.setScaleType(ScaleType.FIT_END);
+                    break;
+                case 5:
+                    view.setScaleType(ScaleType.FIT_START);
+                    break;
+                case 6:
+                    view.setScaleType(ScaleType.FIT_XY);
+                    break;
+                case 7:
+                    view.setScaleType(ScaleType.MATRIX);
+                    break;
+            }
+
+        }
+    }
+
+    private void createIndicator() {
+        indicatorImages.clear();
+        indicator.removeAllViews();
+        indicatorInside.removeAllViews();
+        for (int i = 0; i < count; i++) {
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ScaleType.CENTER_CROP);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth, mIndicatorHeight);
+            params.leftMargin = mIndicatorMargin;
+            params.rightMargin = mIndicatorMargin;
+            if (i == 0) {
+                imageView.setImageResource(mIndicatorSelectedResId);
+            } else {
+                imageView.setImageResource(mIndicatorUnselectedResId);
+            }
+            indicatorImages.add(imageView);
+            if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
+                    bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE)
+                indicator.addView(imageView, params);
+            else if (bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
+                indicatorInside.addView(imageView, params);
+        }
+    }
+
+
+    private void setData() {
+        currentItem = 1;
+        if (adapter == null) {
+            adapter = new BannerPagerAdapter();
+            viewPager.addOnPageChangeListener(this);
+        }
+        viewPager.setAdapter(adapter);
+        viewPager.setFocusable(true);
+        viewPager.setCurrentItem(1);
+        if (gravity != -1)
+            indicator.setGravity(gravity);
+        if (isScroll && count > 1) {
+            viewPager.setScrollable(true);
+        } else {
+            viewPager.setScrollable(false);
+        }
+        if (isAutoPlay)
+            startAutoPlay();
+    }
+
+
+    public void startAutoPlay() {
+        handler.removeCallbacks(task);
+        handler.postDelayed(task, delayTime);
+    }
+
+    public void stopAutoPlay() {
+        handler.removeCallbacks(task);
+    }
+
+    private final Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            if (count > 1 && isAutoPlay) {
+                currentItem = currentItem % (count + 1) + 1;
+//                Log.i(tag, "curr:" + currentItem + " count:" + count);
+                if (currentItem == 1) {
+                    viewPager.setCurrentItem(currentItem, false);
+                    handler.post(task);
+                } else {
+                    viewPager.setCurrentItem(currentItem);
+                    handler.postDelayed(task, delayTime);
+                }
+            }
+        }
+    };
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        int action = ev.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                pauseScroll();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                pauseScroll();
-                break;
-            case MotionEvent.ACTION_UP:
-                goScroll();
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                goScroll();
-                break;
+//        Log.i(tag, ev.getAction() + "--" + isAutoPlay);
+        if (isAutoPlay) {
+            int action = ev.getAction();
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL
+                    || action == MotionEvent.ACTION_OUTSIDE) {
+                startAutoPlay();
+            } else if (action == MotionEvent.ACTION_DOWN) {
+                stopAutoPlay();
+            }
         }
         return super.dispatchTouchEvent(ev);
     }
 
-    private void scrollToNextItem(int position) {
-        position++;
-        position = currentPosition = position % mItems.size();
-        mViewPager.setCurrentItem(position, isShowLastAnim || (position != 0));//从最后一页切换到第一页不需要动画
+
+    public int toRealPosition(int position) {
+        int realPosition = (position - 1) % count;
+        if (realPosition < 0)
+            realPosition += count;
+        return realPosition;
     }
 
-    private final class InnerPagerAdapter extends PagerAdapter {
+    class BannerPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return mItems.size();
+            return imageViews.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            ImageView view = createItemView(position);
-            mBannerAdapter.bind(view, mTitleText, position);
-            view.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mBannerAdapter.selectClicked(position);
-                }
-            });
-            container.addView(view);
+            container.addView(imageViews.get(position));
+            View view = imageViews.get(position);
+            if (listener != null) {
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClicked(toRealPosition(position));
+                    }
+                });
+            }
             return view;
         }
 
@@ -272,123 +501,85 @@ public class BannerView extends RelativeLayout {
             container.removeView((View) object);
         }
 
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-    }
-
-    private ImageView createItemView(int position) {
-        ImageView iv = mItemArrays.get(position);
-        if (iv == null) {
-            iv = new ImageView(getContext());
-            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            if (position != 0 && position != mItems.size() - 1) {
-                mItemArrays.put(position, iv);
-            }
-        }
-        return iv;
-    }
-
-    public void goScroll() {
-        if (mViewPager == null) {
-            Log.e(TAG, "ViewPager is not exist!");
-            return;
-        }
-        if (isEmpty(mItems)) {
-            Log.e(TAG, "items must be not empty!");
-            return;
-        }
-        if (mPlaying) {
-            return;
-        } else {
-            pauseScroll();
-            mExecutor = Executors.newSingleThreadScheduledExecutor();
-            mExecutor.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    mPlayHandler.obtainMessage().sendToTarget();
-                }
-            }, mAutoPlayInterval, mAutoPlayInterval, TimeUnit.SECONDS);
-            mPlaying = true;
-        }
-    }
-
-    public void pauseScroll() {
-        if (mExecutor != null) {
-            mExecutor.shutdown();
-            mExecutor = null;
-        }
-        mPlaying = false;
     }
 
     @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        if (visibility == VISIBLE) {
-            goScroll();
-        } else if (visibility == INVISIBLE) {
-            pauseScroll();
+    public void onPageScrollStateChanged(int state) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrollStateChanged(state);
+        }
+        currentItem = viewPager.getCurrentItem();
+        switch (state) {
+            case 0://No operation
+                if (currentItem == 0) {
+                    viewPager.setCurrentItem(count, false);
+                } else if (currentItem == count + 1) {
+                    viewPager.setCurrentItem(1, false);
+                }
+                break;
+            case 1://start Sliding
+                if (currentItem == count + 1) {
+                    viewPager.setCurrentItem(1, false);
+                } else if (currentItem == 0) {
+                    viewPager.setCurrentItem(count, false);
+                }
+                break;
+            case 2://end Sliding
+                break;
         }
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        pauseScroll();
-    }
-
-    public void setAdapter(@NonNull BannerAdapter adapter) {
-        mBannerAdapter = adapter;
-        List list = mBannerAdapter.getItems();
-        if (isEmpty(list)) {
-            Log.e(TAG, "items must be not empty!");
-            return;
-        }
-        this.mItems.clear();
-        this.mItems.addAll(list);
-        currentPosition = 0;
-        mIndicatorContainer.removeAllViews();
-        mItemArrays.clear();
-        InnerPagerAdapter innerPagerAdapter = new InnerPagerAdapter();
-        mViewPager.setAdapter(innerPagerAdapter);
-        mViewPager.addOnPageChangeListener(new ChangePointListener());
-        if (!isEmpty(mItems) && mItems.size() > 1) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(mIndicatorLeftRightMargin, mIndicatorTopBottomMargin, mIndicatorLeftRightMargin, mIndicatorTopBottomMargin);
-            ImageView indicator;
-            for (int i = 0; i < mItems.size(); i++) {
-                indicator = new ImageView(getContext());
-                indicator.setLayoutParams(lp);
-                indicator.setImageResource(mIndicatorResId);
-                if (i == 0) {
-                    indicator.setEnabled(true);
-                } else {
-                    indicator.setEnabled(false);
-                }
-                mIndicatorContainer.addView(indicator);
-            }
-        }
-        innerPagerAdapter.notifyDataSetChanged();
-        mViewPager.setCurrentItem(0, false);
-        if (!isEmpty(mItems)) {
-            goScroll();
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
         }
     }
 
-    boolean isEmpty(List<?> lists) {
-        return lists == null || lists.size() == 0;
+    @Override
+    public void onPageSelected(int position) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageSelected(position);
+        }
+        if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
+                bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||
+                bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
+            indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
+            indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
+            lastPosition = position;
+        }
+        if (position == 0) position = count;
+        if (position > count) position = 1;
+        switch (bannerStyle) {
+            case BannerConfig.CIRCLE_INDICATOR:
+                break;
+            case BannerConfig.NUM_INDICATOR:
+                numIndicator.setText(position + "/" + count);
+                break;
+            case BannerConfig.NUM_INDICATOR_TITLE:
+                numIndicatorInside.setText(position + "/" + count);
+                bannerTitle.setText(titles.get(position - 1));
+                break;
+            case BannerConfig.CIRCLE_INDICATOR_TITLE:
+                bannerTitle.setText(titles.get(position - 1));
+                break;
+            case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
+                bannerTitle.setText(titles.get(position - 1));
+                break;
+        }
+
     }
 
-    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        if (null != listener) {
-            mViewPager.addOnPageChangeListener(listener);
-        }
+    public BannerView setOnBannerListener(OnBannerListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
+        mOnPageChangeListener = onPageChangeListener;
+    }
+
+    public void releaseBanner() {
+        handler.removeCallbacksAndMessages(null);
     }
 }

@@ -5,40 +5,32 @@ This is an android banner view
 这是一个轻量简洁的自定义banner控件
 
 # Gradle
-       compile 'com.lany:BannerView:1.1.6'
+       compile 'com.lany:BannerView:2.0.0'
 # Usage
        <com.lany.view.BannerView
             android:id="@+id/banner_view"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginTop="8dp"
-            app:bv_indicator="@drawable/banner_indicator_oval"
-            app:bv_indicator_container_bg="@android:color/transparent"
-            app:bv_indicator_gravity="center_horizontal"
-            app:bv_indicator_left_right_margin="2dp"
-            app:bv_indicator_padding="10dp"
-            app:bv_indicator_top_bottom_margin="6dp"
-            app:bv_play_interval="3"
-            app:bv_title_text_color="#FFFFFF"
-            app:bv_title_text_size="12sp" />
+            android:layout_height="180dp"/>
             
-        bannerView.setAdapter(new BannerAdapter<BannerItem>(getItems()) {
-
+        bannerView.setImages(items).setImageLoader(new ImageLoader() {
             @Override
-            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
-                //title.setText(item.getTips());
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                BannerItem item = (BannerItem) path;
                 Glide.with(MainActivity.this)
-                        .load(item.getImageUrl())
+                        .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
-                        .into(bannerImg);
+                        .into(imageView);
             }
-
+        });
+        bannerView.setOnBannerListener(new OnBannerListener() {
             @Override
-            public void onItemClicked(int position, BannerItem item) {
+            public void onItemClicked(int position) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
+        bannerView.start();
 # Preview
 ![image](https://github.com/lany192/BannerView/raw/master/preview/pic1.png)
 

@@ -1,15 +1,16 @@
 package com.lany.bannerview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.lany.view.BannerAdapter;
 import com.lany.view.BannerView;
+import com.lany.view.listener.OnBannerListener;
+import com.lany.view.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,25 +80,25 @@ public class MainActivity extends AppCompatActivity {
         item.setTitle("title6");
         items2.add(item);
         //items2.addAll(getItems());
-
-
-        bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
-
+        bannerView2.setImages(items2).setImageLoader(new ImageLoader() {
             @Override
-            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
-                titleText.setText(item.getTitle());
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                BannerItem item = (BannerItem) path;
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
-                        .into(bannerImg);
-            }
-
-            @Override
-            public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + item, Toast.LENGTH_SHORT).show();
+                        .into(imageView);
             }
         });
+        bannerView2.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        bannerView2.start();
 
         List<BannerItem> items3 = new ArrayList<>();
         BannerItem item1 = new BannerItem();
@@ -106,38 +107,47 @@ public class MainActivity extends AppCompatActivity {
         items3.add(item1);
         items3.addAll(items);
 
-        bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
 
+        bannerView3.setImages(items3).setImageLoader(new ImageLoader() {
             @Override
-            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
-                titleText.setText(item.getTitle());
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                BannerItem item = (BannerItem) path;
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
-                        .into(bannerImg);
-            }
-
-            @Override
-            public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + item, Toast.LENGTH_SHORT).show();
+                        .into(imageView);
             }
         });
+        bannerView3.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        bannerView3.start();
     }
 
     private void initBanner1() {
-        bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
-
+        bannerView.setImages(items).setImageLoader(new ImageLoader() {
             @Override
-            public void bindItem(ImageView bannerImg, TextView titleText, BannerItem item) {
-                //title.setText(item.getTips());
-                Glide.with(MainActivity.this).load(item.getPic()).placeholder(R.drawable.pic).error(R.drawable.pic).into(bannerImg);
-            }
-
-            @Override
-            public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + item, Toast.LENGTH_SHORT).show();
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                BannerItem item = (BannerItem) path;
+                Glide.with(MainActivity.this)
+                        .load(item.getPic())
+                        .placeholder(R.drawable.pic)
+                        .error(R.drawable.pic)
+                        .into(imageView);
             }
         });
+        bannerView.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        bannerView.start();
     }
 }
