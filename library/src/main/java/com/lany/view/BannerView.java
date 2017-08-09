@@ -2,6 +2,7 @@ package com.lany.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -577,5 +578,17 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     public interface OnItemClickListener {
         void onItemClicked(int position);
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE) {
+            Log.i(TAG, "onVisibilityChanged: start auto play");
+            startAutoPlay();
+        } else if (visibility == INVISIBLE) {
+            Log.i(TAG, "onVisibilityChanged: stop auto play");
+            stopAutoPlay();
+        }
     }
 }
