@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.my_button5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, BannerAnimationActivity.class));
+                startActivity(new Intent(MainActivity.this, PageTransformerActivity.class));
             }
         });
 

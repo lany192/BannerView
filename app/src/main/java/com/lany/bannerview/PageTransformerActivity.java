@@ -36,7 +36,7 @@ import com.lany.view.OnBannerClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BannerAnimationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class PageTransformerActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     BannerView bannerView;
     List<Class<? extends ViewPager.PageTransformer>> items = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_banner_animation);
+        setContentView(R.layout.activity_page_transformer);
         initData();
         bannerView = (BannerView) findViewById(R.id.banner);
         ListView listView = (ListView) findViewById(R.id.list);
@@ -77,7 +77,7 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
                 BannerItem item = (BannerItem) path;
-                Glide.with(BannerAnimationActivity.this)
+                Glide.with(PageTransformerActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
@@ -87,10 +87,10 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
         bannerView.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onItemClicked(int position) {
-                Toast.makeText(BannerAnimationActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PageTransformerActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView.setAnimation(Transformer.FlipHorizontal);
+        bannerView.setAnimation(Transformer.Default);
         bannerView.start();
     }
 
