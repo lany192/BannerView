@@ -8,7 +8,7 @@ import android.widget.Scroller;
 
 @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
 public class BannerScroller extends Scroller {
-    private int mDuration = BannerConfig.DURATION;
+    private int mDuration = 800;
 
     public BannerScroller(Context context) {
         super(context);
