@@ -29,7 +29,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PageTransformerActivity.class));
             }
         });
-
+        findViewById(R.id.my_button6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, BannerStyleActivity.class));
+            }
+        });
         bannerView = (BannerView) findViewById(R.id.banner_view);
         BannerView bannerView2 = (BannerView) findViewById(R.id.banner_view_2);
         BannerView bannerView3 = (BannerView) findViewById(R.id.banner_view_3);

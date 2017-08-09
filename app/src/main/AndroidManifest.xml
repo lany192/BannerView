@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PageTransformerActivity"></activity>
+        <activity android:name=".PageTransformerActivity"/>
+        <activity android:name=".BannerStyleActivity"/>
     </application>
 
 </manifest>
