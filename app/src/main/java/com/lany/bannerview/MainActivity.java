@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lany.view.BannerView;
+import com.lany.view.ImageLoader;
 import com.lany.view.OnBannerClickListener;
-import com.lany.view.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
+        bannerView.setAnimation(Transformer.FlipHorizontal);
         bannerView.start();
     }
 }

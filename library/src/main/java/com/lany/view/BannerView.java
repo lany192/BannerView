@@ -19,9 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lany.view.loader.ImageLoaderInterface;
-import com.lany.view.view.BannerViewPager;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +166,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
         return this;
     }
-
 
     public BannerView setOffscreenPageLimit(int limit) {
         if (mViewPager != null) {

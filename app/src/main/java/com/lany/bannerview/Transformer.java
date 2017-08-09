@@ -1,24 +1,24 @@
-package com.lany.view;
+package com.lany.bannerview;
 
 import android.support.v4.view.ViewPager.PageTransformer;
 
-import com.lany.view.transformer.AccordionTransformer;
-import com.lany.view.transformer.BackgroundToForegroundTransformer;
-import com.lany.view.transformer.CubeInTransformer;
-import com.lany.view.transformer.CubeOutTransformer;
-import com.lany.view.transformer.DefaultTransformer;
-import com.lany.view.transformer.DepthPageTransformer;
-import com.lany.view.transformer.FlipHorizontalTransformer;
-import com.lany.view.transformer.FlipVerticalTransformer;
-import com.lany.view.transformer.ForegroundToBackgroundTransformer;
-import com.lany.view.transformer.RotateDownTransformer;
-import com.lany.view.transformer.RotateUpTransformer;
-import com.lany.view.transformer.ScaleInOutTransformer;
-import com.lany.view.transformer.StackTransformer;
-import com.lany.view.transformer.TabletTransformer;
-import com.lany.view.transformer.ZoomInTransformer;
-import com.lany.view.transformer.ZoomOutSlideTransformer;
-import com.lany.view.transformer.ZoomOutTranformer;
+import com.lany.bannerview.transformer.AccordionTransformer;
+import com.lany.bannerview.transformer.BackgroundToForegroundTransformer;
+import com.lany.bannerview.transformer.CubeInTransformer;
+import com.lany.bannerview.transformer.CubeOutTransformer;
+import com.lany.bannerview.transformer.DefaultTransformer;
+import com.lany.bannerview.transformer.DepthPageTransformer;
+import com.lany.bannerview.transformer.FlipHorizontalTransformer;
+import com.lany.bannerview.transformer.FlipVerticalTransformer;
+import com.lany.bannerview.transformer.ForegroundToBackgroundTransformer;
+import com.lany.bannerview.transformer.RotateDownTransformer;
+import com.lany.bannerview.transformer.RotateUpTransformer;
+import com.lany.bannerview.transformer.ScaleInOutTransformer;
+import com.lany.bannerview.transformer.StackTransformer;
+import com.lany.bannerview.transformer.TabletTransformer;
+import com.lany.bannerview.transformer.ZoomInTransformer;
+import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
+import com.lany.bannerview.transformer.ZoomOutTranformer;
 
 public class Transformer {
     public static Class<? extends PageTransformer> Default = DefaultTransformer.class;

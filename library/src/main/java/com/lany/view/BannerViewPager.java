@@ -1,4 +1,4 @@
-package com.lany.view.view;
+package com.lany.view;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

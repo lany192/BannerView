@@ -1,4 +1,4 @@
-package com.lany.view.loader;
+package com.lany.view;
 
 import android.content.Context;
 import android.view.View;

@@ -1,6 +1,6 @@
 
 
-package com.lany.view.transformer;
+package com.lany.bannerview.transformer;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;

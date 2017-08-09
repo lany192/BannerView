@@ -1,4 +1,4 @@
-package com.lany.view.transformer;
+package com.lany.bannerview.transformer;
 
 import android.view.View;
 
