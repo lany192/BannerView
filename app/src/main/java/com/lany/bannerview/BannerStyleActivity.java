@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.lany.view.BannerStyle;
 import com.lany.view.BannerView;
 import com.lany.view.ImageLoader;
-import com.lany.view.OnBannerClickListener;
 
 public class BannerStyleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     BannerView bannerView;
@@ -37,7 +36,7 @@ public class BannerStyleActivity extends AppCompatActivity implements AdapterVie
                         .into(imageView);
             }
         });
-        bannerView.setOnBannerClickListener(new OnBannerClickListener() {
+        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(BannerStyleActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();

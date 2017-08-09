@@ -31,7 +31,6 @@ import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
 import com.lany.bannerview.transformer.ZoomOutTranformer;
 import com.lany.view.BannerView;
 import com.lany.view.ImageLoader;
-import com.lany.view.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +83,7 @@ public class PageTransformerActivity extends AppCompatActivity implements Adapte
                         .into(imageView);
             }
         });
-        bannerView.setOnBannerClickListener(new OnBannerClickListener() {
+        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(PageTransformerActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();

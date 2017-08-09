@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.lany.view.BannerView;
 import com.lany.view.ImageLoader;
-import com.lany.view.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         .into(imageView);
             }
         });
-        bannerView2.setOnBannerClickListener(new OnBannerClickListener() {
+        bannerView2.setOnItemClickListener(new BannerView.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                         .into(imageView);
             }
         });
-        bannerView3.setOnBannerClickListener(new OnBannerClickListener() {
+        bannerView3.setOnItemClickListener(new BannerView.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         .into(imageView);
             }
         });
-        bannerView.setOnBannerClickListener(new OnBannerClickListener() {
+        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();

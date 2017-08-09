@@ -60,7 +60,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
     private BannerScroller mScroller;
-    private OnBannerClickListener listener;
+    private OnItemClickListener listener;
 
     private WeakHandler mHandler = new WeakHandler();
 
@@ -555,7 +555,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     }
 
-    public BannerView setOnBannerClickListener(OnBannerClickListener listener) {
+    public BannerView setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
         return this;
     }
@@ -566,5 +566,9 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     public void releaseBanner() {
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClicked(int position);
     }
 }
