@@ -40,14 +40,14 @@
         </attr>
         <attr name="banner_layoutId" format="reference" />
         <attr name="banner_scaleType" format="enum">
-            <enum name="center" value="0" />
-            <enum name="centerCrop" value="1" />
-            <enum name="centerInside" value="2" />
+            <enum name="matrix" value="0" />
+            <enum name="fitXY" value="1" />
+            <enum name="fitStart" value="2" />
             <enum name="fitCenter" value="3" />
             <enum name="fitEnd" value="4" />
-            <enum name="fitStart" value="5" />
-            <enum name="fitXY" value="6" />
-            <enum name="matrix" value="7" />
+            <enum name="center" value="5" />
+            <enum name="centerCrop" value="6" />
+            <enum name="centerInside" value="7" />
         </attr>
     </declare-styleable>
 </resources>

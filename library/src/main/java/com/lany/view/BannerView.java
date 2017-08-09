@@ -333,13 +333,13 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             ImageView view = ((ImageView) imageView);
             switch (mScaleType) {
                 case 0:
-                    view.setScaleType(ScaleType.CENTER);
+                    view.setScaleType(ScaleType.MATRIX);
                     break;
                 case 1:
-                    view.setScaleType(ScaleType.CENTER_CROP);
+                    view.setScaleType(ScaleType.FIT_XY);
                     break;
                 case 2:
-                    view.setScaleType(ScaleType.CENTER_INSIDE);
+                    view.setScaleType(ScaleType.FIT_START);
                     break;
                 case 3:
                     view.setScaleType(ScaleType.FIT_CENTER);
@@ -348,13 +348,13 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                     view.setScaleType(ScaleType.FIT_END);
                     break;
                 case 5:
-                    view.setScaleType(ScaleType.FIT_START);
+                    view.setScaleType(ScaleType.CENTER);
                     break;
                 case 6:
-                    view.setScaleType(ScaleType.FIT_XY);
+                    view.setScaleType(ScaleType.CENTER_CROP);
                     break;
                 case 7:
-                    view.setScaleType(ScaleType.MATRIX);
+                    view.setScaleType(ScaleType.CENTER_INSIDE);
                     break;
             }
         }
