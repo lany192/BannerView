@@ -1,6 +1,7 @@
 package com.lany.bannerview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,13 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    List<BannerItem> items = new ArrayList<>();
     BannerView bannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.my_button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, BannerAnimationActivity.class));
+            }
+        });
+
         bannerView = (BannerView) findViewById(R.id.banner_view);
         BannerView bannerView2 = (BannerView) findViewById(R.id.banner_view_2);
         BannerView bannerView3 = (BannerView) findViewById(R.id.banner_view_3);
@@ -32,44 +39,19 @@ public class MainActivity extends AppCompatActivity {
                 BannerItem banner = new BannerItem();
                 banner.setPic("http://imgsrc.baidu.com/imgad/pic/item/b03533fa828ba61e5e6d4c0d4b34970a304e5915.jpg");
                 banner.setTitle("title6");
-                items.add(banner);
+                DataUtils.addItem(banner);
                 initBanner1();
             }
         });
         findViewById(R.id.my_button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (items.size() > 0) {
-                    items.remove(0);
+                if (DataUtils.getItems().size() > 0) {
+                    DataUtils.removeItem(0);
                     initBanner1();
                 }
             }
         });
-
-        BannerItem banner = new BannerItem();
-        banner.setPic("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
-        banner.setTitle("title1");
-        items.add(banner);
-
-        banner = new BannerItem();
-        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
-        banner.setTitle("title2");
-        items.add(banner);
-
-        banner = new BannerItem();
-        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/184-4-1024x768.jpg");
-        banner.setTitle("title3");
-        items.add(banner);
-
-        banner = new BannerItem();
-        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/184-5-1024x768.jpg");
-        banner.setTitle("title4");
-        items.add(banner);
-
-        banner = new BannerItem();
-        banner.setPic("http://pic17.nipic.com/20111122/6759425_152002413138_2.jpg");
-        banner.setTitle("title5");
-        items.add(banner);
 
         initBanner1();
 
@@ -79,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         item.setPic("http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg");
         item.setTitle("title6");
         items2.add(item);
-        items2.addAll(items);
+        items2.addAll(DataUtils.getItems());
         bannerView2.setImages(items2).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
@@ -104,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         item1.setPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=b5ff524bb0fcaa460e6a4c398b48e1e4&imgtype=0&src=http%3A%2F%2Fimg3.91.com%2Fuploads%2Fallimg%2F130428%2F32-13042Q63239.jpg");
         item1.setTitle("title7");
         items3.add(item1);
-        items3.addAll(items);
+        items3.addAll(DataUtils.getItems());
 
 
         bannerView3.setImages(items3).setImageLoader(new ImageLoader() {
@@ -128,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initBanner1() {
-        bannerView.setImages(items).setImageLoader(new ImageLoader() {
+        bannerView.setImages(DataUtils.getItems()).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
                 BannerItem item = (BannerItem) path;
