@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lany.view.BannerView;
-import com.lany.view.listener.OnBannerListener;
+import com.lany.view.OnBannerClickListener;
 import com.lany.view.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         bannerView2.setImages(items2).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 BannerItem item = (BannerItem) path;
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         .into(imageView);
             }
         });
-        bannerView2.setOnBannerListener(new OnBannerListener() {
+        bannerView2.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
@@ -111,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         bannerView3.setImages(items3).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 BannerItem item = (BannerItem) path;
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
@@ -120,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         .into(imageView);
             }
         });
-        bannerView3.setOnBannerListener(new OnBannerListener() {
+        bannerView3.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
@@ -133,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         bannerView.setImages(items).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 BannerItem item = (BannerItem) path;
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
@@ -142,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                         .into(imageView);
             }
         });
-        bannerView.setOnBannerListener(new OnBannerListener() {
+        bannerView.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onItemClicked(int position) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();

@@ -5,10 +5,8 @@ import android.content.res.TypedArray;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lany.view.listener.OnBannerListener;
 import com.lany.view.loader.ImageLoaderInterface;
 import com.lany.view.view.BannerViewPager;
 
@@ -54,20 +51,18 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private int gravity = -1;
     private int lastPosition = 1;
     private int scaleType = 1;
-    private List<String> titles;
-    private List imageUrls;
-    private List<View> imageViews;
-    private List<ImageView> indicatorImages;
-    private Context context;
-    private BannerViewPager viewPager;
+    private List<String> mTitles = new ArrayList<>();
+    private List imageUrls = new ArrayList<>();
+    private List<View> imageViews = new ArrayList<>();
+    private List<ImageView> indicatorImages = new ArrayList<>();
+    private BannerViewPager mViewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
-    private ImageLoaderInterface imageLoader;
+    private ImageLoaderInterface mImageLoader;
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
     private BannerScroller mScroller;
-    private OnBannerListener listener;
-    private DisplayMetrics dm;
+    private OnBannerClickListener listener;
 
     private WeakHandler handler = new WeakHandler();
 
@@ -81,13 +76,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     public BannerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.context = context;
-        titles = new ArrayList<>();
-        imageUrls = new ArrayList<>();
-        imageViews = new ArrayList<>();
-        indicatorImages = new ArrayList<>();
-        dm = context.getResources().getDisplayMetrics();
-        indicatorSize = dm.widthPixels / 80;
+        indicatorSize = context.getResources().getDisplayMetrics().widthPixels / 80;
         initView(context, attrs);
     }
 
@@ -95,7 +84,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         imageViews.clear();
         handleTypedArray(context, attrs);
         View view = LayoutInflater.from(context).inflate(mLayoutResId, this, true);
-        viewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
+        mViewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
         indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
@@ -109,21 +98,24 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         if (attrs == null) {
             return;
         }
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
-        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_indicatorWidth, indicatorSize);
-        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_indicatorHeight, indicatorSize);
-        mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_indicatorMargin, BannerConfig.PADDING_SIZE);
-        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
-        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
-        scaleType = typedArray.getInt(R.styleable.Banner_banner_scaleType, scaleType);
-        delayTime = typedArray.getInt(R.styleable.Banner_banner_delayTime, BannerConfig.TIME);
-        scrollTime = typedArray.getInt(R.styleable.Banner_banner_scrollTime, BannerConfig.DURATION);
-        isAutoPlay = typedArray.getBoolean(R.styleable.Banner_banner_isAutoPlay, BannerConfig.IS_AUTO_PLAY);
-        titleBackground = typedArray.getColor(R.styleable.Banner_banner_titleBackground, BannerConfig.TITLE_BACKGROUND);
-        titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_titleHeight, BannerConfig.TITLE_HEIGHT);
-        titleTextColor = typedArray.getColor(R.styleable.Banner_banner_titleTextColor, BannerConfig.TITLE_TEXT_COLOR);
-        titleTextSize = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_titleTextSize, BannerConfig.TITLE_TEXT_SIZE);
-        mLayoutResId = typedArray.getResourceId(R.styleable.Banner_layout_id, mLayoutResId);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerStyle);
+        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_indicatorWidth, indicatorSize);
+        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_indicatorHeight, indicatorSize);
+        mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_indicatorMargin, BannerConfig.PADDING_SIZE);
+        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorSelectedDrawable, R.drawable.gray_radius);
+        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorUnselectedDrawable, R.drawable.white_radius);
+        scaleType = typedArray.getInt(R.styleable.BannerStyle_banner_scaleType, scaleType);
+        delayTime = typedArray.getInt(R.styleable.BannerStyle_banner_delayTime, BannerConfig.TIME);
+        scrollTime = typedArray.getInt(R.styleable.BannerStyle_banner_scrollTime, BannerConfig.DURATION);
+        isAutoPlay = typedArray.getBoolean(R.styleable.BannerStyle_banner_isAutoPlay, BannerConfig.IS_AUTO_PLAY);
+        titleBackground = typedArray.getColor(R.styleable.BannerStyle_banner_titleBackground, BannerConfig.TITLE_BACKGROUND);
+        titleHeight = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_titleHeight, BannerConfig.TITLE_HEIGHT);
+        titleTextColor = typedArray.getColor(R.styleable.BannerStyle_banner_titleTextColor, BannerConfig.TITLE_TEXT_COLOR);
+        titleTextSize = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_titleTextSize, BannerConfig.TITLE_TEXT_SIZE);
+        mLayoutResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_layoutId, mLayoutResId);
+        gravity = typedArray.getInt(R.styleable.BannerStyle_banner_indicatorGravity, gravity);
+
+        bannerStyle = typedArray.getInt(R.styleable.BannerStyle_banner_indicatorType, BannerConfig.CIRCLE_INDICATOR);
         typedArray.recycle();
     }
 
@@ -131,9 +123,9 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         try {
             Field mField = ViewPager.class.getDeclaredField("mScroller");
             mField.setAccessible(true);
-            mScroller = new BannerScroller(viewPager.getContext());
+            mScroller = new BannerScroller(mViewPager.getContext());
             mScroller.setDuration(scrollTime);
-            mField.set(viewPager, mScroller);
+            mField.set(mViewPager, mScroller);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
@@ -145,8 +137,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public BannerView setImageLoader(ImageLoaderInterface imageLoader) {
-        this.imageLoader = imageLoader;
+    public BannerView setImageLoader(ImageLoaderInterface mImageLoader) {
+        this.mImageLoader = mImageLoader;
         return this;
     }
 
@@ -155,18 +147,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public BannerView setIndicatorGravity(int type) {
-        switch (type) {
-            case BannerConfig.LEFT:
-                this.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
-                break;
-            case BannerConfig.CENTER:
-                this.gravity = Gravity.CENTER;
-                break;
-            case BannerConfig.RIGHT:
-                this.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-                break;
-        }
+    public BannerView setIndicatorGravity(int gravity) {
+        this.gravity = gravity;
         return this;
     }
 
@@ -181,20 +163,20 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
 
     public BannerView setOffscreenPageLimit(int limit) {
-        if (viewPager != null) {
-            viewPager.setOffscreenPageLimit(limit);
+        if (mViewPager != null) {
+            mViewPager.setOffscreenPageLimit(limit);
         }
         return this;
     }
 
 
     public BannerView setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
-        viewPager.setPageTransformer(reverseDrawingOrder, transformer);
+        mViewPager.setPageTransformer(reverseDrawingOrder, transformer);
         return this;
     }
 
-    public BannerView setBannerTitles(List<String> titles) {
-        this.titles = titles;
+    public BannerView setTitles(List<String> mTitles) {
+        this.mTitles = mTitles;
         return this;
     }
 
@@ -214,11 +196,11 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public void update(List<?> imageUrls, List<String> titles) {
+    public void update(List<?> imageUrls, List<String> mTitles) {
         this.imageUrls.clear();
-        this.titles.clear();
+        this.mTitles.clear();
         this.imageUrls.addAll(imageUrls);
-        this.titles.addAll(titles);
+        this.mTitles.addAll(mTitles);
         this.count = this.imageUrls.size();
         start();
     }
@@ -230,7 +212,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         start();
     }
 
-    public void updateBannerStyle(int bannerStyle) {
+    public void updateStyle(int bannerStyle) {
         indicator.setVisibility(GONE);
         numIndicator.setVisibility(GONE);
         numIndicatorInside.setVisibility(GONE);
@@ -249,8 +231,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setTitleStyleUI() {
-        if (titles.size() != imageUrls.size()) {
-            throw new RuntimeException("[Banner] --> The number of titles and images is different");
+        if (mTitles.size() != imageUrls.size()) {
+            throw new RuntimeException("[Banner] --> The number of mTitles and images is different");
         }
         if (titleBackground != -1) {
             titleView.setBackgroundColor(titleBackground);
@@ -264,8 +246,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         if (titleTextSize != -1) {
             bannerTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
         }
-        if (titles != null && titles.size() > 0) {
-            bannerTitle.setText(titles.get(0));
+        if (mTitles != null && mTitles.size() > 0) {
+            bannerTitle.setText(mTitles.get(0));
             bannerTitle.setVisibility(View.VISIBLE);
             titleView.setVisibility(View.VISIBLE);
         }
@@ -318,11 +300,11 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         initImages();
         for (int i = 0; i <= count + 1; i++) {
             View imageView = null;
-            if (imageLoader != null) {
-                imageView = imageLoader.createImageView(context);
+            if (mImageLoader != null) {
+                imageView = mImageLoader.createImageView(getContext());
             }
             if (imageView == null) {
-                imageView = new ImageView(context);
+                imageView = new ImageView(getContext());
             }
             setScaleType(imageView);
             Object url = null;
@@ -334,8 +316,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 url = imagesUrl.get(i - 1);
             }
             imageViews.add(imageView);
-            if (imageLoader != null)
-                imageLoader.displayImage(context, url, imageView);
+            if (mImageLoader != null)
+                mImageLoader.displayImage(getContext(), url, imageView);
             else
                 Log.e(TAG, "Please set images loader.");
         }
@@ -370,7 +352,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                     view.setScaleType(ScaleType.MATRIX);
                     break;
             }
-
         }
     }
 
@@ -379,7 +360,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         indicator.removeAllViews();
         indicatorInside.removeAllViews();
         for (int i = 0; i < count; i++) {
-            ImageView imageView = new ImageView(context);
+            ImageView imageView = new ImageView(getContext());
             imageView.setScaleType(ScaleType.CENTER_CROP);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth, mIndicatorHeight);
             params.leftMargin = mIndicatorMargin;
@@ -403,17 +384,17 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         currentItem = 1;
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
-            viewPager.addOnPageChangeListener(this);
+            mViewPager.addOnPageChangeListener(this);
         }
-        viewPager.setAdapter(adapter);
-        viewPager.setFocusable(true);
-        viewPager.setCurrentItem(1);
+        mViewPager.setAdapter(adapter);
+        mViewPager.setFocusable(true);
+        mViewPager.setCurrentItem(1);
         if (gravity != -1)
             indicator.setGravity(gravity);
         if (isScroll && count > 1) {
-            viewPager.setScrollable(true);
+            mViewPager.setScrollable(true);
         } else {
-            viewPager.setScrollable(false);
+            mViewPager.setScrollable(false);
         }
         if (isAutoPlay)
             startAutoPlay();
@@ -436,10 +417,10 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 currentItem = currentItem % (count + 1) + 1;
 //                Log.i(tag, "curr:" + currentItem + " count:" + count);
                 if (currentItem == 1) {
-                    viewPager.setCurrentItem(currentItem, false);
+                    mViewPager.setCurrentItem(currentItem, false);
                     handler.post(task);
                 } else {
-                    viewPager.setCurrentItem(currentItem);
+                    mViewPager.setCurrentItem(currentItem);
                     handler.postDelayed(task, delayTime);
                 }
             }
@@ -508,20 +489,20 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageScrollStateChanged(state);
         }
-        currentItem = viewPager.getCurrentItem();
+        currentItem = mViewPager.getCurrentItem();
         switch (state) {
             case 0://No operation
                 if (currentItem == 0) {
-                    viewPager.setCurrentItem(count, false);
+                    mViewPager.setCurrentItem(count, false);
                 } else if (currentItem == count + 1) {
-                    viewPager.setCurrentItem(1, false);
+                    mViewPager.setCurrentItem(1, false);
                 }
                 break;
             case 1://start Sliding
                 if (currentItem == count + 1) {
-                    viewPager.setCurrentItem(1, false);
+                    mViewPager.setCurrentItem(1, false);
                 } else if (currentItem == 0) {
-                    viewPager.setCurrentItem(count, false);
+                    mViewPager.setCurrentItem(count, false);
                 }
                 break;
             case 2://end Sliding
@@ -558,19 +539,19 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 break;
             case BannerConfig.NUM_INDICATOR_TITLE:
                 numIndicatorInside.setText(position + "/" + count);
-                bannerTitle.setText(titles.get(position - 1));
+                bannerTitle.setText(mTitles.get(position - 1));
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
-                bannerTitle.setText(titles.get(position - 1));
+                bannerTitle.setText(mTitles.get(position - 1));
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
-                bannerTitle.setText(titles.get(position - 1));
+                bannerTitle.setText(mTitles.get(position - 1));
                 break;
         }
 
     }
 
-    public BannerView setOnBannerListener(OnBannerListener listener) {
+    public BannerView setOnBannerClickListener(OnBannerClickListener listener) {
         this.listener = listener;
         return this;
     }
