@@ -1,12 +1,9 @@
 package com.lany.view;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-@RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
 public class BannerScroller extends Scroller {
     private int mDuration = 800;
 

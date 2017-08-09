@@ -58,7 +58,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private LinearLayout indicator, indicatorInside, titleView;
     private ImageLoaderInterface mImageLoader;
     private BannerPagerAdapter adapter;
-    private OnPageChangeListener mOnPageChangeListener;
+    private List<OnPageChangeListener> mOnPageChangeListeners = new ArrayList<>();
     private BannerScroller mScroller;
     private OnItemClickListener listener;
 
@@ -490,8 +490,10 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageScrollStateChanged(state);
+        if (mOnPageChangeListeners != null) {
+            for (int i = 0; i < mOnPageChangeListeners.size(); i++) {
+                mOnPageChangeListeners.get(i).onPageScrollStateChanged(state);
+            }
         }
         currentItem = mViewPager.getCurrentItem();
         switch (state) {
@@ -516,16 +518,21 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+        if (mOnPageChangeListeners != null) {
+            for (int i = 0; i < mOnPageChangeListeners.size(); i++) {
+                mOnPageChangeListeners.get(i).onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
         }
     }
 
     @Override
     public void onPageSelected(int position) {
-        if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageSelected(position);
+        if (mOnPageChangeListeners != null) {
+            for (int i = 0; i < mOnPageChangeListeners.size(); i++) {
+                mOnPageChangeListeners.get(i).onPageSelected(position);
+            }
         }
+
         if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR ||
                 mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE ||
                 mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
@@ -560,8 +567,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
-        mOnPageChangeListener = onPageChangeListener;
+    public void addOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
+        mOnPageChangeListeners.add(onPageChangeListener);
     }
 
     public void releaseBanner() {
