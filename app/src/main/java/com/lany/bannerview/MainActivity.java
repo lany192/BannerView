@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         item.setPic("http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg");
         item.setTitle("title6");
         items2.add(item);
-        //items2.addAll(getItems());
+        items2.addAll(items);
         bannerView2.setImages(items2).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
