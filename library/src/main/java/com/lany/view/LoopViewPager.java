@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LoopViewPager extends ViewPager {
     private InnerLoopAdapter mAdapter;
-    private List<OnPageChangeListener> mOnPageChangeListeners;
+    private List<OnPageChangeListener> mListeners;
     private boolean scrollable = true;
 
     public LoopViewPager(Context context) {
@@ -27,24 +27,6 @@ public class LoopViewPager extends ViewPager {
         super(context, attrs);
         super.addOnPageChangeListener(mInnerListener);
     }
-//
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        int count = getChildCount();
-//        if (count > 0) {
-//            int width = MeasureSpec.getSize(widthMeasureSpec);
-//            int height = MeasureSpec.getSize(heightMeasureSpec);
-//            View child = getChildAt(0);
-//            child.measure(widthMeasureSpec, heightMeasureSpec);
-//            if (width == ViewGroup.LayoutParams.WRAP_CONTENT || width == 0) {
-//                widthMeasureSpec = MeasureSpec.makeMeasureSpec(child.getMeasuredWidth(), MeasureSpec.EXACTLY);
-//            }
-//            if (height == ViewGroup.LayoutParams.WRAP_CONTENT || height == 0) {
-//                heightMeasureSpec = MeasureSpec.makeMeasureSpec(child.getMeasuredHeight(), MeasureSpec.EXACTLY);
-//            }
-//        }
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//    }
 
     @Override
     public void setAdapter(PagerAdapter adapter) {
@@ -69,7 +51,7 @@ public class LoopViewPager extends ViewPager {
 
     @Override
     public PagerAdapter getAdapter() {
-        return mAdapter != null ? mAdapter.pa : null;
+        return mAdapter != null ? mAdapter.pagerAdapter : null;
     }
 
     @Override
@@ -89,30 +71,30 @@ public class LoopViewPager extends ViewPager {
 
     @Override
     public void addOnPageChangeListener(OnPageChangeListener listener) {
-        if (mOnPageChangeListeners == null) {
-            mOnPageChangeListeners = new ArrayList<>();
+        if (mListeners == null) {
+            mListeners = new ArrayList<>();
         }
-        mOnPageChangeListeners.add(listener);
+        mListeners.add(listener);
     }
 
     @Override
     public void removeOnPageChangeListener(OnPageChangeListener listener) {
-        if (mOnPageChangeListeners != null) {
-            mOnPageChangeListeners.remove(listener);
+        if (mListeners != null) {
+            mListeners.remove(listener);
         }
     }
 
     @Override
     public void clearOnPageChangeListeners() {
-        if (mOnPageChangeListeners != null) {
-            mOnPageChangeListeners.clear();
+        if (mListeners != null) {
+            mListeners.clear();
         }
     }
 
     private void dispatchOnPageScrolled(int position, float offset, int offsetPixels) {
-        if (mOnPageChangeListeners != null) {
-            for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
-                OnPageChangeListener listener = mOnPageChangeListeners.get(i);
+        if (mListeners != null) {
+            for (int i = 0, z = mListeners.size(); i < z; i++) {
+                OnPageChangeListener listener = mListeners.get(i);
                 if (listener != null) {
                     listener.onPageScrolled(position, offset, offsetPixels);
                 }
@@ -121,9 +103,9 @@ public class LoopViewPager extends ViewPager {
     }
 
     private void dispatchOnPageSelected(int position) {
-        if (mOnPageChangeListeners != null) {
-            for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
-                OnPageChangeListener listener = mOnPageChangeListeners.get(i);
+        if (mListeners != null) {
+            for (int i = 0, z = mListeners.size(); i < z; i++) {
+                OnPageChangeListener listener = mListeners.get(i);
                 if (listener != null) {
                     listener.onPageSelected(position);
                 }
@@ -132,9 +114,9 @@ public class LoopViewPager extends ViewPager {
     }
 
     private void dispatchOnScrollStateChanged(int state) {
-        if (mOnPageChangeListeners != null) {
-            for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
-                OnPageChangeListener listener = mOnPageChangeListeners.get(i);
+        if (mListeners != null) {
+            for (int i = 0, z = mListeners.size(); i < z; i++) {
+                OnPageChangeListener listener = mListeners.get(i);
                 if (listener != null) {
                     listener.onPageScrollStateChanged(state);
                 }
@@ -199,11 +181,11 @@ public class LoopViewPager extends ViewPager {
     };
 
     private static class InnerLoopAdapter extends PagerAdapter {
-        final PagerAdapter pa;
+        final PagerAdapter pagerAdapter;
         private SparseArray<Object> recycler = new SparseArray<>();
 
         InnerLoopAdapter(PagerAdapter adapter) {
-            this.pa = adapter;
+            this.pagerAdapter = adapter;
         }
 
         @Override
@@ -213,11 +195,11 @@ public class LoopViewPager extends ViewPager {
         }
 
         int getRealPosition(int position) {
-            return toRealPosition(position, pa.getCount());
+            return toRealPosition(position, pagerAdapter.getCount());
         }
 
         int getRealCount() {
-            return pa.getCount();
+            return pagerAdapter.getCount();
         }
 
         @Override
@@ -234,7 +216,7 @@ public class LoopViewPager extends ViewPager {
                 recycler.remove(position);
                 return destroy;
             }
-            return pa.instantiateItem(container, real);
+            return pagerAdapter.instantiateItem(container, real);
         }
 
         @Override
@@ -243,38 +225,38 @@ public class LoopViewPager extends ViewPager {
             if (position == first || position == last) {
                 recycler.put(position, object);
             } else {
-                pa.destroyItem(container, getRealPosition(position), object);
+                pagerAdapter.destroyItem(container, getRealPosition(position), object);
             }
         }
 
         @Override
         public void finishUpdate(ViewGroup container) {
-            pa.finishUpdate(container);
+            pagerAdapter.finishUpdate(container);
         }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return pa.isViewFromObject(view, object);
+            return pagerAdapter.isViewFromObject(view, object);
         }
 
         @Override
         public void restoreState(Parcelable bundle, ClassLoader classLoader) {
-            pa.restoreState(bundle, classLoader);
+            pagerAdapter.restoreState(bundle, classLoader);
         }
 
         @Override
         public Parcelable saveState() {
-            return pa.saveState();
+            return pagerAdapter.saveState();
         }
 
         @Override
         public void startUpdate(ViewGroup container) {
-            pa.startUpdate(container);
+            pagerAdapter.startUpdate(container);
         }
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            pa.setPrimaryItem(container, position, object);
+            pagerAdapter.setPrimaryItem(container, position, object);
         }
     }
 }
