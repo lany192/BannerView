@@ -1,6 +1,5 @@
 package com.lany.bannerview;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -30,7 +30,7 @@ import com.lany.bannerview.transformer.ZoomInTransformer;
 import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
 import com.lany.bannerview.transformer.ZoomOutTranformer;
 import com.lany.view.BannerView;
-import com.lany.view.ImageLoader;
+import com.lany.view.BindFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,21 +71,18 @@ public class PageTransformerActivity extends AppCompatActivity implements Adapte
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data));
         listView.setOnItemClickListener(this);
 
-
-        bannerView.setImages(DataUtils.getItems()).setImageLoader(new ImageLoader() {
+        bannerView.setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
             @Override
-            public void displayImage(Context context, Object path, ImageView imageView) {
-                BannerItem item = (BannerItem) path;
+            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
                 Glide.with(PageTransformerActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
             }
-        });
-        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
+
             @Override
-            public void onItemClicked(int position) {
+            public void onItemClicked(int position, BannerItem item) {
                 Toast.makeText(PageTransformerActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });

@@ -1,6 +1,5 @@
 package com.lany.bannerview;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -8,11 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lany.view.BannerView;
-import com.lany.view.ImageLoader;
+import com.lany.view.BindFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,20 +68,18 @@ public class MainActivity extends AppCompatActivity {
         item.setTitle("title6");
         items2.add(item);
         items2.addAll(DataUtils.getItems());
-        bannerView2.setImages(items2).setImageLoader(new ImageLoader() {
+        bannerView2.setBindFactory(new BindFactory<BannerItem>(items2) {
             @Override
-            public void displayImage(Context context, Object path, ImageView imageView) {
-                BannerItem item = (BannerItem) path;
+            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
             }
-        });
-        bannerView2.setOnItemClickListener(new BannerView.OnItemClickListener() {
+
             @Override
-            public void onItemClicked(int position) {
+            public void onItemClicked(int position, BannerItem item) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -94,21 +92,18 @@ public class MainActivity extends AppCompatActivity {
         items3.add(item1);
         items3.addAll(DataUtils.getItems());
 
-
-        bannerView3.setImages(items3).setImageLoader(new ImageLoader() {
+        bannerView3.setBindFactory(new BindFactory<BannerItem>(items3) {
             @Override
-            public void displayImage(Context context, Object path, ImageView imageView) {
-                BannerItem item = (BannerItem) path;
+            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
             }
-        });
-        bannerView3.setOnItemClickListener(new BannerView.OnItemClickListener() {
+
             @Override
-            public void onItemClicked(int position) {
+            public void onItemClicked(int position, BannerItem item) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -116,20 +111,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initBanner1() {
-        bannerView.setImages(DataUtils.getItems()).setImageLoader(new ImageLoader() {
+        bannerView.setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
             @Override
-            public void displayImage(Context context, Object path, ImageView imageView) {
-                BannerItem item = (BannerItem) path;
+            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
             }
-        });
-        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
+
             @Override
-            public void onItemClicked(int position) {
+            public void onItemClicked(int position, BannerItem item) {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });

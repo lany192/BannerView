@@ -1,18 +1,18 @@
 package com.lany.bannerview;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lany.view.BannerStyle;
 import com.lany.view.BannerView;
-import com.lany.view.ImageLoader;
+import com.lany.view.BindFactory;
 
 public class BannerStyleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     BannerView bannerView;
@@ -25,20 +25,18 @@ public class BannerStyleActivity extends AppCompatActivity implements AdapterVie
         bannerView = (BannerView) findViewById(R.id.banner);
         spinnerStyle = (Spinner) findViewById(R.id.spinnerStyle);
         spinnerStyle.setOnItemSelectedListener(this);
-        bannerView.setImages(DataUtils.getItems()).setImageLoader(new ImageLoader() {
+        bannerView.setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
             @Override
-            public void displayImage(Context context, Object path, ImageView imageView) {
-                BannerItem item = (BannerItem) path;
+            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
                 Glide.with(BannerStyleActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
             }
-        });
-        bannerView.setOnItemClickListener(new BannerView.OnItemClickListener() {
+
             @Override
-            public void onItemClicked(int position) {
+            public void onItemClicked(int position, BannerItem item) {
                 Toast.makeText(BannerStyleActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
