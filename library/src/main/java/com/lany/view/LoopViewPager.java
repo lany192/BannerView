@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class LoopViewPager extends ViewPager {
     private InnerLoopAdapter mAdapter;
     private List<OnPageChangeListener> mOnPageChangeListeners;
+    private boolean scrollable = true;
 
     public LoopViewPager(Context context) {
         super(context);
@@ -25,30 +27,44 @@ public class LoopViewPager extends ViewPager {
         super(context, attrs);
         super.addOnPageChangeListener(mInnerListener);
     }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int count = getChildCount();
-        if (count > 0) {
-            int width = MeasureSpec.getSize(widthMeasureSpec);
-            int height = MeasureSpec.getSize(heightMeasureSpec);
-            View child = getChildAt(0);
-            child.measure(widthMeasureSpec, heightMeasureSpec);
-            if (width == ViewGroup.LayoutParams.WRAP_CONTENT || width == 0) {
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(child.getMeasuredWidth(), MeasureSpec.EXACTLY);
-            }
-            if (height == ViewGroup.LayoutParams.WRAP_CONTENT || height == 0) {
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(child.getMeasuredHeight(), MeasureSpec.EXACTLY);
-            }
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
+//
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        int count = getChildCount();
+//        if (count > 0) {
+//            int width = MeasureSpec.getSize(widthMeasureSpec);
+//            int height = MeasureSpec.getSize(heightMeasureSpec);
+//            View child = getChildAt(0);
+//            child.measure(widthMeasureSpec, heightMeasureSpec);
+//            if (width == ViewGroup.LayoutParams.WRAP_CONTENT || width == 0) {
+//                widthMeasureSpec = MeasureSpec.makeMeasureSpec(child.getMeasuredWidth(), MeasureSpec.EXACTLY);
+//            }
+//            if (height == ViewGroup.LayoutParams.WRAP_CONTENT || height == 0) {
+//                heightMeasureSpec = MeasureSpec.makeMeasureSpec(child.getMeasuredHeight(), MeasureSpec.EXACTLY);
+//            }
+//        }
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//    }
 
     @Override
     public void setAdapter(PagerAdapter adapter) {
         mAdapter = adapter == null ? null : new InnerLoopAdapter(adapter);
         super.setAdapter(mAdapter);
         setCurrentItem(0, false);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        return this.scrollable && super.onTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return this.scrollable && super.onInterceptTouchEvent(ev);
+    }
+
+    public void setScrollable(boolean scrollable) {
+        this.scrollable = scrollable;
     }
 
     @Override
