@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        bannerView.setAnimation(Transformer.Default).setBannerAdapter(new BannerAdapter<BannerItem>(DataUtils.getItems()) {
+        bannerView.setAnimation(Transformer.Default).setAdapter(new BannerAdapter<BannerItem>(DataUtils.getItems()) {
             @Override
             public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         item.setTitle("title6");
         items2.add(item);
         items2.addAll(DataUtils.getItems());
-        bannerView2.setBannerAdapter(new BannerAdapter<BannerItem>(items2) {
+        bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
 
             @Override
             public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         items3.add(item1);
         items3.addAll(DataUtils.getItems());
 
-        bannerView3.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
+        bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bannerView4.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
+        bannerView4.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView5.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
+        bannerView5.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView6.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
+        bannerView6.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initBanner1() {
         bannerView1.setAnimation(Transformer.FlipHorizontal)
-                .setBannerAdapter(new BannerAdapter<BannerItem>(items1) {
+                .setAdapter(new BannerAdapter<BannerItem>(items1) {
                     @Override
                     public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                         Glide.with(MainActivity.this)

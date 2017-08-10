@@ -58,10 +58,10 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private ScrollViewPager mViewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
-    private BannerPagerAdapter adapter;
+    private BannerPagerAdapter mPagerAdapter;
     private List<OnPageChangeListener> mListeners = new ArrayList<>();
     private WeakHandler mHandler = new WeakHandler();
-    private BannerAdapter mBindFactory;
+    private BannerAdapter mBannerAdapter;
 
     public BannerView(Context context) {
         this(context, null);
@@ -196,7 +196,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     private void start() {
         setBannerStyleUI();
-        if (mBindFactory != null && mBindFactory.size() > 0) {
+        if (mBannerAdapter != null && mBannerAdapter.size() > 0) {
             setImageList();
         } else {
             throw new IllegalArgumentException("mBindFactory most not null");
@@ -300,13 +300,13 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         for (int i = 0; i <= count + 1; i++) {
             ImageView imageView = new ImageView(getContext());
             setScaleType(imageView);
-            if (mBindFactory != null) {
+            if (mBannerAdapter != null) {
                 if (i == 0) {
-                    mBindFactory.bind(imageView, bannerTitle, count - 1);
+                    mBannerAdapter.bind(imageView, bannerTitle, count - 1);
                 } else if (i == count + 1) {
-                    mBindFactory.bind(imageView, bannerTitle, 0);
+                    mBannerAdapter.bind(imageView, bannerTitle, 0);
                 } else {
-                    mBindFactory.bind(imageView, bannerTitle, i - 1);
+                    mBannerAdapter.bind(imageView, bannerTitle, i - 1);
                 }
             }
             imageViews.add(imageView);
@@ -370,11 +370,11 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     private void setData() {
         currentItem = 1;
-        if (adapter == null) {
-            adapter = new BannerPagerAdapter();
+        if (mPagerAdapter == null) {
+            mPagerAdapter = new BannerPagerAdapter();
             mViewPager.addOnPageChangeListener(this);
         }
-        mViewPager.setAdapter(adapter);
+        mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setFocusable(true);
         mViewPager.setCurrentItem(1);
         indicator.setGravity(mGravity);
@@ -453,11 +453,11 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         public Object instantiateItem(ViewGroup container, final int position) {
             container.addView(imageViews.get(position));
             ImageView imageView = imageViews.get(position);
-            if (mBindFactory != null) {
+            if (mBannerAdapter != null) {
                 imageView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mBindFactory.selectClicked(toRealPosition(position));
+                        mBannerAdapter.selectClicked(toRealPosition(position));
                     }
                 });
             }
@@ -536,8 +536,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 numIndicatorInside.setText(position + "/" + count);
             case BannerStyle.CIRCLE_INDICATOR_TITLE:
             case BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE:
-                if (mBindFactory != null) {
-                    mBindFactory.bind(imageViews.get(position), bannerTitle, position);
+                if (mBannerAdapter != null) {
+                    mBannerAdapter.bind(imageViews.get(position), bannerTitle, position);
                 }
                 break;
         }
@@ -564,14 +564,14 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
     }
 
-    public BannerView setBannerAdapter(BannerAdapter bindFactory) {
+    public BannerView setAdapter(BannerAdapter adapter) {
         this.imageViews.clear();
         this.indicatorImages.clear();
         this.indicator.removeAllViews();
         this.indicatorInside.removeAllViews();
-        this.adapter = null;
-        this.count = bindFactory.size();
-        this.mBindFactory = bindFactory;
+        this.mPagerAdapter = null;
+        this.count = adapter.size();
+        this.mBannerAdapter = adapter;
         start();
         return this;
     }
