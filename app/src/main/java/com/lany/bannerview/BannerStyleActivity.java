@@ -25,24 +25,23 @@ public class BannerStyleActivity extends AppCompatActivity implements AdapterVie
         bannerView = (BannerView) findViewById(R.id.banner);
         spinnerStyle = (Spinner) findViewById(R.id.spinnerStyle);
         spinnerStyle.setOnItemSelectedListener(this);
-        bannerView.setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
-            @Override
-            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
-                Glide.with(BannerStyleActivity.this)
-                        .load(item.getPic())
-                        .placeholder(R.drawable.pic)
-                        .error(R.drawable.pic)
-                        .into(imageView);
-            }
+        bannerView.setAnimation(Transformer.Default)
+                .setBannerStyle(BannerStyle.NOT_INDICATOR)
+                .setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
+                    @Override
+                    public void bindItem(ImageView imageView, TextView title, BannerItem item) {
+                        Glide.with(BannerStyleActivity.this)
+                                .load(item.getPic())
+                                .placeholder(R.drawable.pic)
+                                .error(R.drawable.pic)
+                                .into(imageView);
+                    }
 
-            @Override
-            public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(BannerStyleActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        bannerView.setAnimation(Transformer.Default);
-        bannerView.setBannerStyle(BannerStyle.NOT_INDICATOR);
-        bannerView.start();
+                    @Override
+                    public void onItemClicked(int position, BannerItem item) {
+                        Toast.makeText(BannerStyleActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

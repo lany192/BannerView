@@ -71,7 +71,7 @@ public class PageTransformerActivity extends AppCompatActivity implements Adapte
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data));
         listView.setOnItemClickListener(this);
 
-        bannerView.setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
+        bannerView.setAnimation(Transformer.Default).setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
             @Override
             public void bindItem(ImageView imageView, TextView title, BannerItem item) {
                 Glide.with(PageTransformerActivity.this)
@@ -86,8 +86,6 @@ public class PageTransformerActivity extends AppCompatActivity implements Adapte
                 Toast.makeText(PageTransformerActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView.setAnimation(Transformer.Default);
-        bannerView.start();
     }
 
     @Override

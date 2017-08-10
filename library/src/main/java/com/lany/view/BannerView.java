@@ -189,11 +189,11 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public BannerView setBindFactory(BindFactory bindFactory) {
+    public void setBindFactory(BindFactory bindFactory) {
         this.imageViews.clear();
         this.mBindFactory = bindFactory;
         this.count = bindFactory.size();
-        return this;
+        start();
     }
 
     public void update(List<String> mTitles) {
@@ -213,7 +213,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         start();
     }
 
-    public BannerView start() {
+    private void start() {
         setBannerStyleUI();
         if (mBindFactory != null && mBindFactory.size() > 0) {
             setImageList();
@@ -221,7 +221,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             throw new IllegalArgumentException("mBindFactory most not null");
         }
         setData();
-        return this;
     }
 
     private void setTitleStyleUI() {

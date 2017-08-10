@@ -2,9 +2,7 @@ package com.lany.bannerview;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView2.start();
 
         List<BannerItem> items3 = new ArrayList<>();
         BannerItem item1 = new BannerItem();
@@ -107,42 +104,24 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView3.start();
     }
 
     private void initBanner1() {
-        bannerView.setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
-            @Override
-            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
-                Glide.with(MainActivity.this)
-                        .load(item.getPic())
-                        .placeholder(R.drawable.pic)
-                        .error(R.drawable.pic)
-                        .into(imageView);
-            }
+        bannerView.setAnimation(Transformer.FlipHorizontal)
+                .setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
+                    @Override
+                    public void bindItem(ImageView imageView, TextView title, BannerItem item) {
+                        Glide.with(MainActivity.this)
+                                .load(item.getPic())
+                                .placeholder(R.drawable.pic)
+                                .error(R.drawable.pic)
+                                .into(imageView);
+                    }
 
-            @Override
-            public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        bannerView.setAnimation(Transformer.FlipHorizontal);
-        bannerView.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.i("TAG", "onPageSelected: position==" + position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        bannerView.start();
+                    @Override
+                    public void onItemClicked(int position, BannerItem item) {
+                        Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
