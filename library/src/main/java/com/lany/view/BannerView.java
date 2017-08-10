@@ -54,7 +54,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private List imageUrls = new ArrayList<>();
     private List<View> imageViews = new ArrayList<>();
     private List<ImageView> indicatorImages = new ArrayList<>();
-    private BannerViewPager mViewPager;
+    private ScrollViewPager mViewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
     private ImageLoaderInterface mImageLoader;
@@ -83,7 +83,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         imageViews.clear();
         handleTypedArray(context, attrs);
         View view = LayoutInflater.from(context).inflate(mLayoutResId, this, true);
-        mViewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
+        mViewPager = (ScrollViewPager) view.findViewById(R.id.bannerViewPager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
         indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);

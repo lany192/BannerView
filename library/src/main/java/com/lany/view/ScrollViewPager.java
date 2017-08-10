@@ -6,17 +6,16 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 
-public class BannerViewPager extends ViewPager {
+public class ScrollViewPager extends ViewPager {
     private boolean scrollable = true;
 
-    public BannerViewPager(Context context) {
+    public ScrollViewPager(Context context) {
         super(context);
     }
 
-    public BannerViewPager(Context context, AttributeSet attrs) {
+    public ScrollViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
