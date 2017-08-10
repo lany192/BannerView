@@ -30,7 +30,7 @@ import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
 import com.lany.bannerview.transformer.ZoomOutTranformer;
 import com.lany.view.BannerStyle;
 import com.lany.view.BannerView;
-import com.lany.view.BindFactory;
+import com.lany.view.BannerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,18 +98,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        bannerView.setAnimation(Transformer.Default).setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
+        bannerView.setAnimation(Transformer.Default).setBannerAdapter(new BannerAdapter<BannerItem>(DataUtils.getItems()) {
             @Override
-            public void bindImageView(ImageView imageView, BannerItem item) {
+            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
-            }
-
-            @Override
-            public void bindTitleText(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -140,19 +136,15 @@ public class MainActivity extends AppCompatActivity {
         item.setTitle("title6");
         items2.add(item);
         items2.addAll(DataUtils.getItems());
-        bannerView2.setBindFactory(new BindFactory<BannerItem>(items2) {
+        bannerView2.setBannerAdapter(new BannerAdapter<BannerItem>(items2) {
 
             @Override
-            public void bindImageView(ImageView imageView, BannerItem item) {
+            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
-            }
-
-            @Override
-            public void bindTitleText(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -169,18 +161,14 @@ public class MainActivity extends AppCompatActivity {
         items3.add(item1);
         items3.addAll(DataUtils.getItems());
 
-        bannerView3.setBindFactory(new BindFactory<BannerItem>(items3) {
+        bannerView3.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindImageView(ImageView imageView, BannerItem item) {
+            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
-            }
-
-            @Override
-            public void bindTitleText(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -190,18 +178,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bannerView4.setBindFactory(new BindFactory<BannerItem>(items3) {
+        bannerView4.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindImageView(ImageView imageView, BannerItem item) {
+            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
-            }
-
-            @Override
-            public void bindTitleText(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -210,18 +194,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView5.setBindFactory(new BindFactory<BannerItem>(items3) {
+        bannerView5.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindImageView(ImageView imageView, BannerItem item) {
+            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
-            }
-
-            @Override
-            public void bindTitleText(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -230,18 +210,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView6.setBindFactory(new BindFactory<BannerItem>(items3) {
+        bannerView6.setBannerAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindImageView(ImageView imageView, BannerItem item) {
+            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
-            }
-
-            @Override
-            public void bindTitleText(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -275,18 +251,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void initBanner1() {
         bannerView1.setAnimation(Transformer.FlipHorizontal)
-                .setBindFactory(new BindFactory<BannerItem>(items1) {
+                .setBannerAdapter(new BannerAdapter<BannerItem>(items1) {
                     @Override
-                    public void bindImageView(ImageView imageView, BannerItem item) {
+                    public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
                         Glide.with(MainActivity.this)
                                 .load(item.getPic())
                                 .placeholder(R.drawable.pic)
                                 .error(R.drawable.pic)
                                 .into(imageView);
-                    }
-
-                    @Override
-                    public void bindTitleText(TextView titleText, BannerItem item) {
                         titleText.setText("" + item.getTitle());
                     }
 

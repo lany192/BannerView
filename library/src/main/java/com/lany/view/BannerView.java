@@ -61,7 +61,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private BannerPagerAdapter adapter;
     private List<OnPageChangeListener> mListeners = new ArrayList<>();
     private WeakHandler mHandler = new WeakHandler();
-    private BindFactory mBindFactory;
+    private BannerAdapter mBindFactory;
 
     public BannerView(Context context) {
         this(context, null);
@@ -302,11 +302,11 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             setScaleType(imageView);
             if (mBindFactory != null) {
                 if (i == 0) {
-                    mBindFactory.bind(imageView, count - 1);
+                    mBindFactory.bind(imageView, bannerTitle, count - 1);
                 } else if (i == count + 1) {
-                    mBindFactory.bind(imageView, 0);
+                    mBindFactory.bind(imageView, bannerTitle, 0);
                 } else {
-                    mBindFactory.bind(imageView, i - 1);
+                    mBindFactory.bind(imageView, bannerTitle, i - 1);
                 }
             }
             imageViews.add(imageView);
@@ -521,35 +521,27 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
             lastPosition = position;
         }
-        if (position == 0) position = count;
-        if (position > count) position = 1;
+        if (position == 0)
+            position = count;
+        if (position > count)
+            position = 1;
         switch (mBannerStyle) {
             case BannerStyle.NOT_INDICATOR:
-
-                break;
             case BannerStyle.CIRCLE_INDICATOR:
-
                 break;
             case BannerStyle.NUM_INDICATOR:
                 numIndicator.setText(position + "/" + count);
                 break;
             case BannerStyle.NUM_INDICATOR_TITLE:
                 numIndicatorInside.setText(position + "/" + count);
-                if (mBindFactory != null) {
-                    mBindFactory.setTitleData(bannerTitle, position - 1);
-                }
-                break;
             case BannerStyle.CIRCLE_INDICATOR_TITLE:
-                if (mBindFactory != null) {
-                    mBindFactory.setTitleData(bannerTitle, position - 1);
-                }
-                break;
             case BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE:
                 if (mBindFactory != null) {
-                    mBindFactory.setTitleData(bannerTitle, position - 1);
+                    mBindFactory.bind(imageViews.get(position), bannerTitle, position);
                 }
                 break;
         }
+
     }
 
     public void addOnPageChangeListener(OnPageChangeListener listener) {
@@ -572,7 +564,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
     }
 
-    public BannerView setBindFactory(BindFactory bindFactory) {
+    public BannerView setBannerAdapter(BannerAdapter bindFactory) {
         this.imageViews.clear();
         this.indicatorImages.clear();
         this.indicator.removeAllViews();

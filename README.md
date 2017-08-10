@@ -12,7 +12,7 @@ This is an android banner view
             android:layout_width="match_parent"
             android:layout_height="180dp"/>
             
-        bannerView.setBindFactory(new BindFactory<BannerItem>(items) {
+        bannerView.setBannerAdapter(new BannerAdapter<BannerItem>(items) {
             @Override
             public void bindItem(ImageView imageView, TextView title, BannerItem item) {
                 Glide.with(MainActivity.this)
