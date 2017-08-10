@@ -53,10 +53,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private int lastPosition = 1;
     private int mScaleType = 1;
 
-
-    private List<String> mTitles = new ArrayList<>();
-
-
     private List<ImageView> imageViews = new ArrayList<>();
     private List<ImageView> indicatorImages = new ArrayList<>();
     private ScrollViewPager mViewPager;
@@ -176,13 +172,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public BannerView setTitles(List<String> mTitles) {
-        this.mTitles.clear();
-        this.mTitles.addAll(mTitles);
-        start();
-        return this;
-    }
-
     public BannerView setBannerStyle(int bannerStyle) {
         this.mBannerStyle = bannerStyle;
         return this;
@@ -193,13 +182,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public BannerView setBindFactory(BindFactory bindFactory) {
-        this.imageViews.clear();
-        this.mBindFactory = bindFactory;
-        this.count = bindFactory.size();
-        start();
-        return this;
-    }
 
     public void updateStyle(int bannerStyle) {
         indicator.setVisibility(GONE);
@@ -235,35 +217,66 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         if (mTitleTextSize != -1) {
             bannerTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleTextSize);
         }
-        if (mTitles != null && mTitles.size() > 0) {
-            bannerTitle.setText(mTitles.get(0));
-            bannerTitle.setVisibility(View.VISIBLE);
-            titleView.setVisibility(View.VISIBLE);
-        }
     }
 
     private void setBannerStyleUI() {
         int visibility;
-        if (count > 1) visibility = View.VISIBLE;
-        else visibility = View.GONE;
+        if (count > 1) {
+            visibility = View.VISIBLE;
+        } else {
+            visibility = View.GONE;
+        }
         switch (mBannerStyle) {
+            case BannerStyle.NOT_INDICATOR:
+                indicator.setVisibility(GONE);
+                numIndicator.setVisibility(GONE);
+                numIndicatorInside.setVisibility(GONE);
+                indicatorInside.setVisibility(GONE);
+                bannerTitle.setVisibility(View.GONE);
+                titleView.setVisibility(View.GONE);
+                break;
             case BannerStyle.CIRCLE_INDICATOR:
                 indicator.setVisibility(visibility);
+                numIndicator.setVisibility(GONE);
+                numIndicatorInside.setVisibility(GONE);
+                indicatorInside.setVisibility(GONE);
+                bannerTitle.setVisibility(View.GONE);
+                titleView.setVisibility(View.GONE);
                 break;
             case BannerStyle.NUM_INDICATOR:
                 numIndicator.setVisibility(visibility);
+                indicator.setVisibility(GONE);
+                numIndicatorInside.setVisibility(GONE);
+                indicatorInside.setVisibility(GONE);
+                bannerTitle.setVisibility(View.GONE);
+                titleView.setVisibility(View.GONE);
                 break;
             case BannerStyle.NUM_INDICATOR_TITLE:
                 numIndicatorInside.setVisibility(visibility);
                 setTitleStyleUI();
+                bannerTitle.setVisibility(View.VISIBLE);
+                titleView.setVisibility(View.VISIBLE);
+                indicator.setVisibility(GONE);
+                numIndicator.setVisibility(GONE);
+                indicatorInside.setVisibility(GONE);
                 break;
             case BannerStyle.CIRCLE_INDICATOR_TITLE:
                 indicator.setVisibility(visibility);
                 setTitleStyleUI();
+                bannerTitle.setVisibility(View.VISIBLE);
+                titleView.setVisibility(View.VISIBLE);
+                numIndicator.setVisibility(GONE);
+                numIndicatorInside.setVisibility(GONE);
+                indicatorInside.setVisibility(GONE);
                 break;
             case BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE:
                 indicatorInside.setVisibility(visibility);
                 setTitleStyleUI();
+                bannerTitle.setVisibility(View.VISIBLE);
+                titleView.setVisibility(View.VISIBLE);
+                indicator.setVisibility(GONE);
+                numIndicator.setVisibility(GONE);
+                numIndicatorInside.setVisibility(GONE);
                 break;
         }
     }
@@ -289,11 +302,11 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             setScaleType(imageView);
             if (mBindFactory != null) {
                 if (i == 0) {
-                    mBindFactory.bind(imageView, bannerTitle, count - 1);
+                    mBindFactory.bind(imageView, count - 1);
                 } else if (i == count + 1) {
-                    mBindFactory.bind(imageView, bannerTitle, 0);
+                    mBindFactory.bind(imageView, 0);
                 } else {
-                    mBindFactory.bind(imageView, bannerTitle, i - 1);
+                    mBindFactory.bind(imageView, i - 1);
                 }
             }
             imageViews.add(imageView);
@@ -501,7 +514,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 mListeners.get(i).onPageSelected(position);
             }
         }
-
         if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR ||
                 mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE ||
                 mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
@@ -512,32 +524,38 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         if (position == 0) position = count;
         if (position > count) position = 1;
         switch (mBannerStyle) {
+            case BannerStyle.NOT_INDICATOR:
+
+                break;
             case BannerStyle.CIRCLE_INDICATOR:
-                bannerTitle.setVisibility(GONE);
+
                 break;
             case BannerStyle.NUM_INDICATOR:
                 numIndicator.setText(position + "/" + count);
-                bannerTitle.setVisibility(GONE);
                 break;
             case BannerStyle.NUM_INDICATOR_TITLE:
                 numIndicatorInside.setText(position + "/" + count);
-                bannerTitle.setText(mTitles.get(position - 1));
-                bannerTitle.setVisibility(VISIBLE);
+                if (mBindFactory != null) {
+                    mBindFactory.setTitleData(bannerTitle, position - 1);
+                }
                 break;
             case BannerStyle.CIRCLE_INDICATOR_TITLE:
-                bannerTitle.setText(mTitles.get(position - 1));
-                bannerTitle.setVisibility(VISIBLE);
+                if (mBindFactory != null) {
+                    mBindFactory.setTitleData(bannerTitle, position - 1);
+                }
                 break;
             case BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE:
-                bannerTitle.setText(mTitles.get(position - 1));
-                bannerTitle.setVisibility(VISIBLE);
+                if (mBindFactory != null) {
+                    mBindFactory.setTitleData(bannerTitle, position - 1);
+                }
                 break;
         }
-
     }
 
-    public void addOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
-        mListeners.add(onPageChangeListener);
+    public void addOnPageChangeListener(OnPageChangeListener listener) {
+        if (listener != null) {
+            this.mListeners.add(listener);
+        }
     }
 
     public void releaseBanner() {
@@ -548,11 +566,21 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
         if (visibility == VISIBLE) {
-            Log.i(TAG, "onVisibilityChanged: start auto play");
             startAutoPlay();
-        } else if (visibility == INVISIBLE) {
-            Log.i(TAG, "onVisibilityChanged: stop auto play");
+        } else {
             stopAutoPlay();
         }
+    }
+
+    public BannerView setBindFactory(BindFactory bindFactory) {
+        this.imageViews.clear();
+        this.indicatorImages.clear();
+        this.indicator.removeAllViews();
+        this.indicatorInside.removeAllViews();
+        this.adapter = null;
+        this.count = bindFactory.size();
+        this.mBindFactory = bindFactory;
+        start();
+        return this;
     }
 }

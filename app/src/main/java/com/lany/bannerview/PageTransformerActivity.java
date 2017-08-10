@@ -73,7 +73,7 @@ public class PageTransformerActivity extends AppCompatActivity implements Adapte
 
         bannerView.setAnimation(Transformer.Default).setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
             @Override
-            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
+            public void bindImageView(ImageView imageView, BannerItem item) {
                 Glide.with(PageTransformerActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
@@ -81,6 +81,10 @@ public class PageTransformerActivity extends AppCompatActivity implements Adapte
                         .into(imageView);
             }
 
+            @Override
+            public void bindTitleText(TextView titleText, BannerItem item) {
+                titleText.setText("" + item.getTitle());
+            }
             @Override
             public void onItemClicked(int position, BannerItem item) {
                 Toast.makeText(PageTransformerActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();

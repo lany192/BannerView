@@ -31,9 +31,15 @@ public abstract class BindFactory<T> {
         mItems.addAll(items);
     }
 
-    public void bind(ImageView imageView, TextView tv, int position) {
+    public void bind(ImageView imageView, int position) {
         if (mItems != null && mItems.size() > 0 && position < mItems.size() && position >= 0) {
-            bindItem(imageView, tv, mItems.get(position));
+            bindImageView(imageView, mItems.get(position));
+        }
+    }
+
+    public void setTitleData(TextView titleText, int position) {
+        if (mItems != null && mItems.size() > 0 && position < mItems.size() && position >= 0) {
+            bindTitleText(titleText, mItems.get(position));
         }
     }
 
@@ -43,7 +49,9 @@ public abstract class BindFactory<T> {
         }
     }
 
-    public abstract void bindItem(ImageView imageView, TextView title, T item);
+    public abstract void bindImageView(ImageView imageView, T item);
+
+    public abstract void bindTitleText(TextView titleText, T item);
 
     public abstract void onItemClicked(int position, T item);
 }

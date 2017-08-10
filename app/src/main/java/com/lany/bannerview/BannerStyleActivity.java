@@ -29,12 +29,17 @@ public class BannerStyleActivity extends AppCompatActivity implements AdapterVie
                 .setBannerStyle(BannerStyle.NOT_INDICATOR)
                 .setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
                     @Override
-                    public void bindItem(ImageView imageView, TextView title, BannerItem item) {
+                    public void bindImageView(ImageView imageView, BannerItem item) {
                         Glide.with(BannerStyleActivity.this)
                                 .load(item.getPic())
                                 .placeholder(R.drawable.pic)
                                 .error(R.drawable.pic)
                                 .into(imageView);
+                    }
+
+                    @Override
+                    public void bindTitleText(TextView titleText, BannerItem item) {
+                        titleText.setText("" + item.getTitle());
                     }
 
                     @Override
