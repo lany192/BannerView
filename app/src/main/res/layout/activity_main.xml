@@ -9,30 +9,55 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/my_button5"
+        <com.lany.view.BannerView
+            android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="转场动画"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:layout_height="200dp" />
 
-        <Button
-            android:id="@+id/my_button6"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="banner type"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="banner type："
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/style" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PageTransformer："
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerTransformer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/anim" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/my_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="增加一个banner"
+            android:text="add one banner"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 

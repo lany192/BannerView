@@ -1,14 +1,34 @@
 package com.lany.bannerview;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.lany.bannerview.transformer.AccordionTransformer;
+import com.lany.bannerview.transformer.BackgroundToForegroundTransformer;
+import com.lany.bannerview.transformer.CubeInTransformer;
+import com.lany.bannerview.transformer.CubeOutTransformer;
+import com.lany.bannerview.transformer.DefaultTransformer;
+import com.lany.bannerview.transformer.DepthPageTransformer;
+import com.lany.bannerview.transformer.FlipHorizontalTransformer;
+import com.lany.bannerview.transformer.FlipVerticalTransformer;
+import com.lany.bannerview.transformer.ForegroundToBackgroundTransformer;
+import com.lany.bannerview.transformer.RotateDownTransformer;
+import com.lany.bannerview.transformer.RotateUpTransformer;
+import com.lany.bannerview.transformer.ScaleInOutTransformer;
+import com.lany.bannerview.transformer.StackTransformer;
+import com.lany.bannerview.transformer.TabletTransformer;
+import com.lany.bannerview.transformer.ZoomInTransformer;
+import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
+import com.lany.bannerview.transformer.ZoomOutTranformer;
+import com.lany.view.BannerStyle;
 import com.lany.view.BannerView;
 import com.lany.view.BindFactory;
 
@@ -17,30 +37,89 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private List<BannerItem> items1 = new ArrayList<>();
-    BannerView bannerView1;
+    private BannerView bannerView1;
+    private BannerView bannerView;
+    private List<Class<? extends ViewPager.PageTransformer>> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.my_button5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, PageTransformerActivity.class));
-            }
-        });
-        findViewById(R.id.my_button6).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, BannerStyleActivity.class));
-            }
-        });
+        initData();
+        bannerView = (BannerView) findViewById(R.id.banner);
+        Spinner spinnerStyle = (Spinner) findViewById(R.id.spinnerStyle);
+        Spinner spinnerStyle2 = (Spinner) findViewById(R.id.spinnerTransformer);
         bannerView1 = (BannerView) findViewById(R.id.banner_view_1);
         BannerView bannerView2 = (BannerView) findViewById(R.id.banner_view_2);
         BannerView bannerView3 = (BannerView) findViewById(R.id.banner_view_3);
         BannerView bannerView4 = (BannerView) findViewById(R.id.banner_view_4);
         BannerView bannerView5 = (BannerView) findViewById(R.id.banner_view_5);
         BannerView bannerView6 = (BannerView) findViewById(R.id.banner_view_6);
+
+
+        spinnerStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        bannerView.updateStyle(BannerStyle.NOT_INDICATOR);
+                        break;
+                    case 1:
+                        bannerView.updateStyle(BannerStyle.CIRCLE_INDICATOR);
+                        break;
+                    case 2:
+                        bannerView.updateStyle(BannerStyle.NUM_INDICATOR);
+                        break;
+                    case 3:
+                        bannerView.updateStyle(BannerStyle.NUM_INDICATOR_TITLE);
+                        break;
+                    case 4:
+                        bannerView.updateStyle(BannerStyle.CIRCLE_INDICATOR_TITLE);
+                        break;
+                    case 5:
+                        bannerView.updateStyle(BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerStyle2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bannerView.setAnimation(items.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        bannerView.setAnimation(Transformer.Default).setBindFactory(new BindFactory<BannerItem>(DataUtils.getItems()) {
+            @Override
+            public void bindImageView(ImageView imageView, BannerItem item) {
+                Glide.with(MainActivity.this)
+                        .load(item.getPic())
+                        .placeholder(R.drawable.pic)
+                        .error(R.drawable.pic)
+                        .into(imageView);
+            }
+
+            @Override
+            public void bindTitleText(TextView titleText, BannerItem item) {
+                titleText.setText("" + item.getTitle());
+            }
+
+            @Override
+            public void onItemClicked(int position, BannerItem item) {
+                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         findViewById(R.id.my_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +250,27 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    void initData() {
+        items.clear();
+        items.add(DefaultTransformer.class);
+        items.add(AccordionTransformer.class);
+        items.add(BackgroundToForegroundTransformer.class);
+        items.add(ForegroundToBackgroundTransformer.class);
+        items.add(CubeInTransformer.class);
+        items.add(CubeOutTransformer.class);
+        items.add(DepthPageTransformer.class);
+        items.add(FlipHorizontalTransformer.class);
+        items.add(FlipVerticalTransformer.class);
+        items.add(RotateDownTransformer.class);
+        items.add(RotateUpTransformer.class);
+        items.add(ScaleInOutTransformer.class);
+        items.add(StackTransformer.class);
+        items.add(TabletTransformer.class);
+        items.add(ZoomInTransformer.class);
+        items.add(ZoomOutTranformer.class);
+        items.add(ZoomOutSlideTransformer.class);
     }
 
     private void initBanner1() {
