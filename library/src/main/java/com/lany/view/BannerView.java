@@ -1,5 +1,6 @@
 package com.lany.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ import java.util.List;
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 import static android.support.v4.view.ViewPager.PageTransformer;
 
+@SuppressWarnings("unused")
 public class BannerView extends FrameLayout implements OnPageChangeListener {
     private final String TAG = "BannerView";
     private int mIndicatorMargin = 5;
@@ -61,7 +63,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
     private BannerPagerAdapter adapter;
-    private List<OnPageChangeListener> mOnPageChangeListeners = new ArrayList<>();
+    private List<OnPageChangeListener> mListeners = new ArrayList<>();
     private WeakHandler mHandler = new WeakHandler();
     private BindFactory mBindFactory;
 
@@ -175,12 +177,14 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     }
 
     public BannerView setTitles(List<String> mTitles) {
-        this.mTitles = mTitles;
+        this.mTitles.clear();
+        this.mTitles.addAll(mTitles);
+        start();
         return this;
     }
 
-    public BannerView setBannerStyle(int mBannerStyle) {
-        this.mBannerStyle = mBannerStyle;
+    public BannerView setBannerStyle(int bannerStyle) {
+        this.mBannerStyle = bannerStyle;
         return this;
     }
 
@@ -189,27 +193,22 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public void setBindFactory(BindFactory bindFactory) {
+    public BannerView setBindFactory(BindFactory bindFactory) {
         this.imageViews.clear();
         this.mBindFactory = bindFactory;
         this.count = bindFactory.size();
         start();
+        return this;
     }
 
-    public void update(List<String> mTitles) {
-        this.mTitles.clear();
-        this.mTitles.addAll(mTitles);
-        start();
-    }
-
-    public void updateStyle(int mBannerStyle) {
+    public void updateStyle(int bannerStyle) {
         indicator.setVisibility(GONE);
         numIndicator.setVisibility(GONE);
         numIndicatorInside.setVisibility(GONE);
         indicatorInside.setVisibility(GONE);
         bannerTitle.setVisibility(View.GONE);
         titleView.setVisibility(View.GONE);
-        this.mBannerStyle = mBannerStyle;
+        this.mBannerStyle = bannerStyle;
         start();
     }
 
@@ -269,6 +268,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void initImages() {
         imageViews.clear();
         if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR ||
@@ -424,7 +424,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return realPosition;
     }
 
-    class BannerPagerAdapter extends PagerAdapter {
+    private class BannerPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -459,9 +459,9 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        if (mOnPageChangeListeners != null) {
-            for (int i = 0; i < mOnPageChangeListeners.size(); i++) {
-                mOnPageChangeListeners.get(i).onPageScrollStateChanged(state);
+        if (mListeners != null) {
+            for (int i = 0; i < mListeners.size(); i++) {
+                mListeners.get(i).onPageScrollStateChanged(state);
             }
         }
         currentItem = mViewPager.getCurrentItem();
@@ -487,18 +487,18 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (mOnPageChangeListeners != null) {
-            for (int i = 0; i < mOnPageChangeListeners.size(); i++) {
-                mOnPageChangeListeners.get(i).onPageScrolled(position, positionOffset, positionOffsetPixels);
+        if (mListeners != null) {
+            for (int i = 0; i < mListeners.size(); i++) {
+                mListeners.get(i).onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
         }
     }
 
     @Override
     public void onPageSelected(int position) {
-        if (mOnPageChangeListeners != null) {
-            for (int i = 0; i < mOnPageChangeListeners.size(); i++) {
-                mOnPageChangeListeners.get(i).onPageSelected(position);
+        if (mListeners != null) {
+            for (int i = 0; i < mListeners.size(); i++) {
+                mListeners.get(i).onPageSelected(position);
             }
         }
 
@@ -537,7 +537,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     }
 
     public void addOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
-        mOnPageChangeListeners.add(onPageChangeListener);
+        mListeners.add(onPageChangeListener);
     }
 
     public void releaseBanner() {

@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    BannerView bannerView;
+    private BannerView bannerView;
+    private List<BannerItem> items2 = new ArrayList<>();
+    private List<BannerItem> items3 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         initBanner1();
 
 
-        List<BannerItem> items2 = new ArrayList<>();
         BannerItem item = new BannerItem();
         item.setPic("http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg");
         item.setTitle("title6");
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        List<BannerItem> items3 = new ArrayList<>();
+
         BannerItem item1 = new BannerItem();
         item1.setPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=b5ff524bb0fcaa460e6a4c398b48e1e4&imgtype=0&src=http%3A%2F%2Fimg3.91.com%2Fuploads%2Fallimg%2F130428%2F32-13042Q63239.jpg");
         item1.setTitle("title7");
