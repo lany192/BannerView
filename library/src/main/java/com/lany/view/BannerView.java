@@ -32,16 +32,13 @@ import static android.support.v4.view.ViewPager.PageTransformer;
 public class BannerView extends FrameLayout implements OnPageChangeListener {
     private final String TAG = "BannerView";
     private int mIndicatorMargin = 5;
-    private int mIndicatorWidth;
-    private int mIndicatorHeight;
-    private int indicatorSize;
     private int mBannerStyle = BannerStyle.CIRCLE_INDICATOR;
     private int mDelayTime = 3000;//单位毫秒
     private int mScrollTime = 800;//单位毫秒
     private boolean isAutoPlay = true;
     private boolean isScroll = true;
-    private int mIndicatorSelectedResId = R.drawable.gray_radius;
-    private int mIndicatorUnselectedResId = R.drawable.white_radius;
+    private int mIndicatorSelectedResId = R.drawable.selected_indicator;
+    private int mIndicatorUnselectedResId = R.drawable.unselect_indicator;
     private int mLayoutResId = R.layout.banner;
     private int mTitleHeight;
     private int mTitleBackground;
@@ -50,11 +47,9 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private int count = 0;
     private int currentItem;
     private int mGravity = Gravity.CENTER;
-    private int lastPosition = 0;
     private int mScaleType = 1;
 
     private List<ImageView> imageViews = new ArrayList<>();
-    private List<ImageView> indicatorImages = new ArrayList<>();
     private ScrollViewPager mViewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
@@ -73,7 +68,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     public BannerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        indicatorSize = context.getResources().getDisplayMetrics().widthPixels / 80;
         initView(context, attrs);
     }
 
@@ -96,11 +90,9 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             return;
         }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerStyle);
-        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_indicatorWidth, indicatorSize);
-        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_indicatorHeight, indicatorSize);
         mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_indicatorMargin, 5);
-        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorSelectedDrawable, R.drawable.gray_radius);
-        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorUnselectedDrawable, R.drawable.white_radius);
+        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorSelectedDrawable, R.drawable.selected_indicator);
+        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorUnselectedDrawable, R.drawable.unselect_indicator);
         mScaleType = typedArray.getInt(R.styleable.BannerStyle_banner_scaleType, mScaleType);
         mDelayTime = typedArray.getInt(R.styleable.BannerStyle_banner_delayTime, 3000);
         mScrollTime = typedArray.getInt(R.styleable.BannerStyle_banner_scrollTime, 800);
@@ -287,7 +279,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR ||
                 mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE ||
                 mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
-            createIndicator();
+            resetIndicator(0);
         } else if (mBannerStyle == BannerStyle.NUM_INDICATOR_TITLE) {
             numIndicatorInside.setText("1/" + count);
         } else if (mBannerStyle == BannerStyle.NUM_INDICATOR) {
@@ -348,26 +340,25 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
     }
 
-    private void createIndicator() {
-        indicatorImages.clear();
+    private void resetIndicator(int currentIndex) {
         indicator.removeAllViews();
         indicatorInside.removeAllViews();
         for (int i = 0; i < count; i++) {
             ImageView imageView = new ImageView(getContext());
             imageView.setScaleType(ScaleType.CENTER_CROP);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth, mIndicatorHeight);
-            params.leftMargin = mIndicatorMargin;
-            params.rightMargin = mIndicatorMargin;
-            if (i == 0) {
+            if (i == currentIndex) {
                 imageView.setImageResource(mIndicatorSelectedResId);
             } else {
                 imageView.setImageResource(mIndicatorUnselectedResId);
             }
-            indicatorImages.add(imageView);
-            if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE)
-                indicator.addView(imageView, params);
-            else if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE)
-                indicatorInside.addView(imageView, params);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(mIndicatorMargin, 0, mIndicatorMargin, 0);
+            imageView.setLayoutParams(lp);
+            if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE) {
+                indicator.addView(imageView, lp);
+            } else if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
+                indicatorInside.addView(imageView, lp);
+            }
         }
     }
 
@@ -520,9 +511,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             }
         }
         if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
-            indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
-            indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
-            lastPosition = position;
+            resetIndicator((position - 1 + count) % count);
         }
         if (position == 0)
             position = count;
@@ -561,7 +550,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     public BannerView setAdapter(BannerAdapter adapter) {
         this.imageViews.clear();
-        this.indicatorImages.clear();
         this.indicator.removeAllViews();
         this.indicatorInside.removeAllViews();
         this.mPagerAdapter = null;

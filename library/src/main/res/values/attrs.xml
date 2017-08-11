@@ -9,8 +9,6 @@
         <attr name="banner_titleTextColor" format="color" />
         <attr name="banner_titleTextSize" format="dimension" />
         <attr name="banner_titleHeight" format="dimension" />
-        <attr name="banner_indicatorWidth" format="dimension" />
-        <attr name="banner_indicatorHeight" format="dimension" />
         <attr name="banner_indicatorMargin" format="dimension" />
         <attr name="banner_indicatorSelectedDrawable" format="reference" />
         <attr name="banner_indicatorUnselectedDrawable" format="reference" />
