@@ -63,22 +63,22 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        bannerView.updateStyle(BannerStyle.NOT_INDICATOR);
+                        bannerView.resetStyle(BannerStyle.NOT_INDICATOR);
                         break;
                     case 1:
-                        bannerView.updateStyle(BannerStyle.CIRCLE_INDICATOR);
+                        bannerView.resetStyle(BannerStyle.CIRCLE_INDICATOR);
                         break;
                     case 2:
-                        bannerView.updateStyle(BannerStyle.NUM_INDICATOR);
+                        bannerView.resetStyle(BannerStyle.NUM_INDICATOR);
                         break;
                     case 3:
-                        bannerView.updateStyle(BannerStyle.NUM_INDICATOR_TITLE);
+                        bannerView.resetStyle(BannerStyle.NUM_INDICATOR_TITLE);
                         break;
                     case 4:
-                        bannerView.updateStyle(BannerStyle.CIRCLE_INDICATOR_TITLE);
+                        bannerView.resetStyle(BannerStyle.CIRCLE_INDICATOR_TITLE);
                         break;
                     case 5:
-                        bannerView.updateStyle(BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE);
+                        bannerView.resetStyle(BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE);
                         break;
                 }
             }

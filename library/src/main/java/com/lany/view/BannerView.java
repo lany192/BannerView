@@ -164,7 +164,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public BannerView setBannerStyle(int bannerStyle) {
+    public BannerView setStyle(int bannerStyle) {
         this.mBannerStyle = bannerStyle;
         return this;
     }
@@ -175,7 +175,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     }
 
 
-    public void updateStyle(int bannerStyle) {
+    public void resetStyle(int bannerStyle) {
         indicator.setVisibility(GONE);
         numIndicator.setVisibility(GONE);
         numIndicatorInside.setVisibility(GONE);
@@ -187,12 +187,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     }
 
     private void start() {
-        setBannerStyleUI();
-        if (mBannerAdapter != null && mBannerAdapter.size() > 0) {
-            setImageList();
-        } else {
-            throw new IllegalArgumentException("mBindFactory most not null");
-        }
+        initBannerStyle();
+        setImageList();
         setData();
     }
 
@@ -211,7 +207,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
     }
 
-    private void setBannerStyleUI() {
+    private void initBannerStyle() {
         int visibility;
         if (count > 1) {
             visibility = View.VISIBLE;
@@ -288,23 +284,26 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setImageList() {
-        initImages();
-        for (int i = 0; i <= count + 1; i++) {
-            ImageView imageView = new ImageView(getContext());
-            setScaleType(imageView);
-            if (mBannerAdapter != null) {
+        if (mBannerAdapter != null && mBannerAdapter.size() > 0) {
+            initImages();
+            for (int i = 0; i <= count + 1; i++) {
+                ImageView imageView = new ImageView(getContext());
+                setScaleType(imageView);
+                int index;
                 if (i == 0) {
-                    Log.i(TAG, "setImageList: position==" + (count - 1));
-                    mBannerAdapter.setImage(imageView, count - 1);
+                    index = count - 1;
                 } else if (i == count + 1) {
-                    Log.i(TAG, "setImageList: position==" + 0);
-                    mBannerAdapter.setImage(imageView, 0);
+                    index = 0;
                 } else {
-                    Log.i(TAG, "setImageList: position==" + (i - 1));
-                    mBannerAdapter.setImage(imageView, i - 1);
+                    index = i - 1;
                 }
+                if (mBannerAdapter != null) {
+                    mBannerAdapter.setImage(imageView, index);
+                }
+                imageViews.add(imageView);
             }
-            imageViews.add(imageView);
+        } else {
+            throw new IllegalArgumentException("BindFactory most not null");
         }
     }
 
@@ -366,17 +365,15 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         currentItem = 1;
         if (mPagerAdapter == null) {
             mPagerAdapter = new BannerPagerAdapter();
+            mViewPager.removeOnPageChangeListener(this);
             mViewPager.addOnPageChangeListener(this);
         }
+        indicator.setGravity(mGravity);
+        mViewPager.setAdapter(null);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setFocusable(true);
         mViewPager.setCurrentItem(1);
-        indicator.setGravity(mGravity);
-        if (isScroll && count > 1) {
-            mViewPager.setScrollable(true);
-        } else {
-            mViewPager.setScrollable(false);
-        }
+        mViewPager.setScrollable(isScroll && count > 1);
         if (isAutoPlay)
             startAutoPlay();
     }
@@ -396,7 +393,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         public void run() {
             if (count > 1 && isAutoPlay) {
                 currentItem = currentItem % (count + 1) + 1;
-//                Log.i(tag, "curr:" + currentItem + " count:" + count);
                 if (currentItem == 1) {
                     mViewPager.setCurrentItem(currentItem, false);
                     mHandler.post(task);
@@ -410,7 +406,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-//        Log.i(tag, ev.getAction() + "--" + isAutoPlay);
         if (isAutoPlay) {
             int action = ev.getAction();
             if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL
@@ -451,7 +446,6 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 imageView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i(TAG, "onClick: position==" + position);
                         mBannerAdapter.selectClicked(toRealPosition(position));
                     }
                 });
@@ -534,8 +528,17 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
     }
 
-    public void releaseBanner() {
-        mHandler.removeCallbacksAndMessages(null);
+    public void reset() {
+        this.stopAutoPlay();
+        this.currentItem = 0;
+        this.mListeners.clear();
+        this.mHandler.removeCallbacksAndMessages(null);
+        this.imageViews.clear();
+        this.indicator.removeAllViews();
+        this.indicatorInside.removeAllViews();
+        this.mPagerAdapter = null;
+        this.count = 0;
+        this.mBannerAdapter = null;
     }
 
     @Override
@@ -549,12 +552,9 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     }
 
     public BannerView setAdapter(BannerAdapter adapter) {
-        this.imageViews.clear();
-        this.indicator.removeAllViews();
-        this.indicatorInside.removeAllViews();
-        this.mPagerAdapter = null;
-        this.count = adapter.size();
+        this.reset();
         this.mBannerAdapter = adapter;
+        this.count = adapter.size();
         start();
         return this;
     }
