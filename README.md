@@ -14,12 +14,17 @@ This is an android banner view
             
         bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
             @Override
-            public void bindItem(ImageView imageView, TextView title, BannerItem item) {
+            public void bindImage(ImageView imageView, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
+                Log.i("TAG", "bindTitle: BannerItem==" + item);
             }
 
             @Override

@@ -50,7 +50,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
     private int count = 0;
     private int currentItem;
     private int mGravity = Gravity.CENTER;
-    private int lastPosition = 1;
+    private int lastPosition = 0;
     private int mScaleType = 1;
 
     private List<ImageView> imageViews = new ArrayList<>();
@@ -302,11 +302,14 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             setScaleType(imageView);
             if (mBannerAdapter != null) {
                 if (i == 0) {
-                    mBannerAdapter.bind(imageView, bannerTitle, count - 1);
+                    Log.i(TAG, "setImageList: position==" + (count - 1));
+                    mBannerAdapter.setImage(imageView, count - 1);
                 } else if (i == count + 1) {
-                    mBannerAdapter.bind(imageView, bannerTitle, 0);
+                    Log.i(TAG, "setImageList: position==" + 0);
+                    mBannerAdapter.setImage(imageView, 0);
                 } else {
-                    mBannerAdapter.bind(imageView, bannerTitle, i - 1);
+                    Log.i(TAG, "setImageList: position==" + (i - 1));
+                    mBannerAdapter.setImage(imageView, i - 1);
                 }
             }
             imageViews.add(imageView);
@@ -457,6 +460,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 imageView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.i(TAG, "onClick: position==" + position);
                         mBannerAdapter.selectClicked(toRealPosition(position));
                     }
                 });
@@ -494,6 +498,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 }
                 break;
             case 2://end Sliding
+
                 break;
         }
     }
@@ -514,9 +519,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
                 mListeners.get(i).onPageSelected(position);
             }
         }
-        if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR ||
-                mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE ||
-                mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
+        if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
             indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
             indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
             lastPosition = position;
@@ -525,23 +528,15 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             position = count;
         if (position > count)
             position = 1;
-        switch (mBannerStyle) {
-            case BannerStyle.NOT_INDICATOR:
-            case BannerStyle.CIRCLE_INDICATOR:
-                break;
-            case BannerStyle.NUM_INDICATOR:
-                numIndicator.setText(position + "/" + count);
-                break;
-            case BannerStyle.NUM_INDICATOR_TITLE:
-                numIndicatorInside.setText(position + "/" + count);
-            case BannerStyle.CIRCLE_INDICATOR_TITLE:
-            case BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE:
-                if (mBannerAdapter != null) {
-                    mBannerAdapter.bind(imageViews.get(position), bannerTitle, position);
-                }
-                break;
+        if (mBannerStyle == BannerStyle.NUM_INDICATOR) {
+            numIndicator.setText(position + "/" + count);
+        } else if (mBannerStyle == BannerStyle.NUM_INDICATOR_TITLE) {
+            numIndicatorInside.setText(position + "/" + count);
+        } else if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE_INSIDE) {
+            if (mBannerAdapter != null) {
+                mBannerAdapter.setTitle(bannerTitle, position - 1);
+            }
         }
-
     }
 
     public void addOnPageChangeListener(OnPageChangeListener listener) {

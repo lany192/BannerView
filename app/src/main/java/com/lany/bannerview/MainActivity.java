@@ -3,6 +3,7 @@ package com.lany.bannerview;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -28,9 +29,9 @@ import com.lany.bannerview.transformer.TabletTransformer;
 import com.lany.bannerview.transformer.ZoomInTransformer;
 import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
 import com.lany.bannerview.transformer.ZoomOutTranformer;
+import com.lany.view.BannerAdapter;
 import com.lany.view.BannerStyle;
 import com.lany.view.BannerView;
-import com.lany.view.BannerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,12 +101,16 @@ public class MainActivity extends AppCompatActivity {
         });
         bannerView.setAnimation(Transformer.Default).setAdapter(new BannerAdapter<BannerItem>(DataUtils.getItems()) {
             @Override
-            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
+            public void bindImage(ImageView imageView, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -139,12 +144,16 @@ public class MainActivity extends AppCompatActivity {
         bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
 
             @Override
-            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
+            public void bindImage(ImageView imageView, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -163,12 +172,16 @@ public class MainActivity extends AppCompatActivity {
 
         bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
+            public void bindImage(ImageView imageView, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -180,12 +193,16 @@ public class MainActivity extends AppCompatActivity {
 
         bannerView4.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
+            public void bindImage(ImageView imageView, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -196,12 +213,16 @@ public class MainActivity extends AppCompatActivity {
         });
         bannerView5.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
+            public void bindImage(ImageView imageView, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -212,12 +233,16 @@ public class MainActivity extends AppCompatActivity {
         });
         bannerView6.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
-            public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
+            public void bindImage(ImageView imageView, BannerItem item) {
                 Glide.with(MainActivity.this)
                         .load(item.getPic())
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
                         .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
                 titleText.setText("" + item.getTitle());
             }
 
@@ -253,17 +278,24 @@ public class MainActivity extends AppCompatActivity {
         bannerView1.setAnimation(Transformer.FlipHorizontal)
                 .setAdapter(new BannerAdapter<BannerItem>(items1) {
                     @Override
-                    public void bindItem(ImageView imageView, TextView titleText, BannerItem item) {
+                    public void bindImage(ImageView imageView, BannerItem item) {
                         Glide.with(MainActivity.this)
                                 .load(item.getPic())
                                 .placeholder(R.drawable.pic)
                                 .error(R.drawable.pic)
                                 .into(imageView);
+                        Log.i("TAG", "bindImage: BannerItem==" + item);
+                    }
+
+                    @Override
+                    public void bindTitle(TextView titleText, BannerItem item) {
                         titleText.setText("" + item.getTitle());
+                        Log.i("TAG", "bindTitle: BannerItem==" + item);
                     }
 
                     @Override
                     public void onItemClicked(int position, BannerItem item) {
+                        Log.i("TAG", "onItemClicked: BannerItem==" + item);
                         Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
                     }
                 });

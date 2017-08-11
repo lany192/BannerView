@@ -19,9 +19,15 @@ public abstract class BannerAdapter<T> {
         mItems.addAll(items);
     }
 
-    public void bind(ImageView imageView, TextView titleText, int position) {
+    public void setImage(ImageView imageView, int position) {
         if (mItems != null && mItems.size() > 0 && position < mItems.size() && position >= 0) {
-            bindItem(imageView, titleText, mItems.get(position));
+            bindImage(imageView, mItems.get(position));
+        }
+    }
+
+    public void setTitle(TextView titleText, int position) {
+        if (mItems != null && mItems.size() > 0 && position < mItems.size() && position >= 0) {
+            bindTitle(titleText, mItems.get(position));
         }
     }
 
@@ -31,7 +37,9 @@ public abstract class BannerAdapter<T> {
         }
     }
 
-    public abstract void bindItem(ImageView imageView, TextView titleText, T item);
+    public abstract void bindImage(ImageView imageView, T item);
+
+    public abstract void bindTitle(TextView titleText, T item);
 
     public abstract void onItemClicked(int position, T item);
 }
