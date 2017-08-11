@@ -12,7 +12,9 @@
         <com.lany.view.BannerView
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="200dp"
+            app:banner_indicatorSelectedDrawable="@drawable/selected_point"
+            app:banner_indicatorUnselectedDrawable="@drawable/unselected_point" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,9 +69,9 @@
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
             app:banner_indicatorGravity="center"
-            app:banner_indicatorSelectedDrawable="@drawable/selected_point"
+            app:banner_indicatorSelectedDrawable="@drawable/selected"
             app:banner_indicatorType="circle_indicator_title_inside"
-            app:banner_indicatorUnselectedDrawable="@drawable/unselect_point"
+            app:banner_indicatorUnselectedDrawable="@drawable/unselected"
             app:banner_scaleType="fitXY" />
 
         <com.lany.view.BannerView
