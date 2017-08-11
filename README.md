@@ -24,7 +24,7 @@ This is an android banner view
 
             @Override
             public void bindTitle(TextView titleText, BannerItem item) {
-                Log.i("TAG", "bindTitle: BannerItem==" + item);
+                titleText.setText("" + item.getTitle());
             }
 
             @Override
