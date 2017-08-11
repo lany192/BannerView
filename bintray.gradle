@@ -1,9 +1,11 @@
 apply plugin: 'maven'
 apply plugin: 'bintray-release'
+Properties properties = new Properties()
 
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 publish {
-    bintrayUser = "${BINTRAY_USER}"
-    bintrayKey =  "${BINTRAY_KEY}"
+    bintrayUser = properties.getProperty("BINTRAY_USER")
+    bintrayKey = properties.getProperty("BINTRAY_KEY")
     artifactId = 'BannerView'
     userOrg = 'lany192'
     groupId = 'com.lany'
