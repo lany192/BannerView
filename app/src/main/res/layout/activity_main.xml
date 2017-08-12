@@ -68,19 +68,34 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
+            app:banner_delayTime="5000"
             app:banner_indicatorGravity="center"
+            app:banner_indicatorMargin="4dp"
             app:banner_indicatorSelectedDrawable="@drawable/selected"
             app:banner_indicatorType="circle_indicator_title_inside"
             app:banner_indicatorUnselectedDrawable="@drawable/unselected"
-            app:banner_scaleType="fitXY" />
+            app:banner_isAutoPlay="true"
+            app:banner_scaleType="fitXY"
+            app:banner_scrollTime="1000"
+            app:banner_titleBackground="#50000000"
+            app:banner_titleTextColor="#ffffff"
+            app:banner_titleTextSize="12sp" />
 
         <com.lany.view.BannerView
             android:id="@+id/banner_view_2"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
+            app:banner_delayTime="5000"
+            app:banner_indicatorGravity="center"
+            app:banner_indicatorMargin="4dp"
             app:banner_indicatorType="num_indicator_title"
-            app:banner_scaleType="fitXY" />
+            app:banner_isAutoPlay="true"
+            app:banner_scaleType="fitXY"
+            app:banner_scrollTime="1000"
+            app:banner_titleBackground="#90000000"
+            app:banner_titleTextColor="#ffffff"
+            app:banner_titleTextSize="12sp" />
 
         <com.lany.view.BannerView
             android:id="@+id/banner_view_3"
@@ -99,8 +114,11 @@
             android:layout_marginTop="8dp"
             app:banner_delayTime="5000"
             app:banner_indicatorGravity="center"
+            app:banner_indicatorMargin="4dp"
             app:banner_indicatorType="circle_indicator"
-            app:banner_scaleType="fitXY" />
+            app:banner_isAutoPlay="true"
+            app:banner_scaleType="fitXY"
+            app:banner_scrollTime="1000" />
 
         <com.lany.view.BannerView
             android:id="@+id/banner_view_5"
@@ -119,7 +137,13 @@
             android:layout_marginTop="8dp"
             app:banner_delayTime="5000"
             app:banner_indicatorGravity="center"
+            app:banner_indicatorMargin="4dp"
             app:banner_indicatorType="circle_indicator_title"
-            app:banner_scaleType="fitXY" />
+            app:banner_isAutoPlay="true"
+            app:banner_scaleType="fitXY"
+            app:banner_scrollTime="1000"
+            app:banner_titleBackground="#90000000"
+            app:banner_titleTextColor="#ffffff"
+            app:banner_titleTextSize="12sp" />
     </LinearLayout>
 </ScrollView>

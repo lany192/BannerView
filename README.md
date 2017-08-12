@@ -7,11 +7,27 @@ This is an android banner view
 # Gradle
        compile 'com.lany:BannerView:2.0.3'
 # Usage
-       <com.lany.view.BannerView
+
+        <com.lany.view.BannerView
             android:id="@+id/banner_view"
             android:layout_width="match_parent"
-            android:layout_height="180dp"/>
+            android:layout_height="180dp"
+            android:layout_marginTop="8dp"
+            app:banner_delayTime="5000"
+            app:banner_indicatorGravity="center"
+            app:banner_indicatorMargin="4dp"
+            app:banner_indicatorSelectedDrawable="@drawable/selected"
+            app:banner_indicatorType="circle_indicator_title_inside"
+            app:banner_indicatorUnselectedDrawable="@drawable/unselected"
+            app:banner_isAutoPlay="true"
+            app:banner_scaleType="fitXY"
+            app:banner_scrollTime="1000"
+            app:banner_titleBackground="#50000000"
+            app:banner_titleTextColor="#ffffff"
+            app:banner_titleTextSize="12sp" />
             
+            
+        BannerView bannerView = (BannerView) findViewById(R.id.banner_view);    
         bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
