@@ -62,8 +62,8 @@ This is an android banner view
 |banner_delayTime| integer|不同界面切换时间
 |banner_scrollTime| integer|切换过程滑动时间
 |banner_isAutoPlay| boolean|是否自动轮播，默认true
-|banner_titleBackground| color|reference|标题背景颜色
-|banner_titleTextColor| color|reference|标题颜色
+|banner_titleBackground| color|标题背景颜色
+|banner_titleTextColor| color|标题颜色
 |banner_titleTextSize| dimension|标题字体大小
 |banner_titleHeight| dimension|标题栏高度
 |banner_indicatorMargin| dimension|指示器之间的间距
