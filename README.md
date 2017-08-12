@@ -1,5 +1,8 @@
 # BannerView
 这是一个轻量简洁的自定义banner控件。欢迎大家提出意见或建议
+
+BannerView在控件可见时自动播放，不可见时停止播放，不需要额外设置界面切换时的开始播放和暂停播放。
+
 # Gradle
        compile 'com.lany:BannerView:2.0.3'
 # Usage
@@ -20,6 +23,7 @@
         app:banner_titleBackground="#50000000"
         app:banner_titleTextColor="#ffffff"
         app:banner_titleTextSize="12sp" />
+
 ##### 也可以使用默认配置:
          
      <com.lany.view.BannerView
