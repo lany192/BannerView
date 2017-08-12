@@ -8,7 +8,6 @@
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_marginTop="8dp"
         app:banner_delayTime="5000"
         app:banner_indicatorGravity="center"
         app:banner_indicatorMargin="4dp"
@@ -21,14 +20,12 @@
         app:banner_titleBackground="#50000000"
         app:banner_titleTextColor="#ffffff"
         app:banner_titleTextSize="12sp" />
-            
-也可以使用默认配置:
+##### 也可以使用默认配置:
          
      <com.lany.view.BannerView
          android:id="@+id/banner_view"
          android:layout_width="match_parent"
-         android:layout_height="180dp"
-         android:layout_marginTop="8dp"/>
+         android:layout_height="180dp"/>
  ## code         
             
     BannerView bannerView = (BannerView) findViewById(R.id.banner_view);    
