@@ -117,6 +117,8 @@ This is an android banner view
                 <enum name="centerInside" value="7" />
             </attr>
         </declare-styleable>
+# Demo
+[Demo apk](https://github.com/lany192/BannerView/raw/master/preview/app-release.apk)
 # Preview
 ![image](https://github.com/lany192/BannerView/raw/master/preview/pic.png)
 
