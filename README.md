@@ -7,7 +7,7 @@ This is an android banner view
 # Gradle
        compile 'com.lany:BannerView:2.0.3'
 # Usage
-
+## xml layout
         <com.lany.view.BannerView
             android:id="@+id/banner_view"
             android:layout_width="match_parent"
@@ -26,6 +26,14 @@ This is an android banner view
             app:banner_titleTextColor="#ffffff"
             app:banner_titleTextSize="12sp" />
             
+         or default settings:
+         
+         <com.lany.view.BannerView
+             android:id="@+id/banner_view"
+             android:layout_width="match_parent"
+             android:layout_height="180dp"
+             android:layout_marginTop="8dp"/>
+ ## code         
             
         BannerView bannerView = (BannerView) findViewById(R.id.banner_view);    
         bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
@@ -48,7 +56,7 @@ This is an android banner view
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        
+## attribute       
         <declare-styleable name="BannerStyle">
             <!--不同界面切换时间-->
             <attr name="banner_delayTime" format="integer" />
