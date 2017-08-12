@@ -32,6 +32,7 @@
  ## code         
             
     BannerView bannerView = (BannerView) findViewById(R.id.banner_view);    
+    //对banner的数据源list的数据结构不做要求，BannerItem可替换成你自己的数据结构
     bannerView.setAdapter(new BannerAdapter<BannerItem>(items) {
         @Override
         public void bindImage(ImageView imageView, BannerItem item) {
