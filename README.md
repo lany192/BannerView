@@ -1,8 +1,8 @@
 # BannerView
 This is an android banner view
-
-
 这是一个轻量简洁的自定义banner控件
+
+欢迎大家提出意见或建议
 
 # Gradle
        compile 'com.lany:BannerView:2.0.3'

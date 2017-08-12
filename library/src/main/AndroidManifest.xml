@@ -1,5 +1,1 @@
-<manifest package="com.lany.view">
-
-    <application />
-
-</manifest>
+<manifest package="com.lany.view" />
