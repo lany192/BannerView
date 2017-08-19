@@ -18,7 +18,7 @@ import com.lany.bannerview.transformer.StackTransformer;
 import com.lany.bannerview.transformer.TabletTransformer;
 import com.lany.bannerview.transformer.ZoomInTransformer;
 import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
-import com.lany.bannerview.transformer.ZoomOutTranformer;
+import com.lany.bannerview.transformer.ZoomOutTransformer;
 
 public class Transformer {
     public static Class<? extends PageTransformer> Default = DefaultTransformer.class;
@@ -36,6 +36,6 @@ public class Transformer {
     public static Class<? extends PageTransformer> Stack = StackTransformer.class;
     public static Class<? extends PageTransformer> Tablet = TabletTransformer.class;
     public static Class<? extends PageTransformer> ZoomIn = ZoomInTransformer.class;
-    public static Class<? extends PageTransformer> ZoomOut = ZoomOutTranformer.class;
+    public static Class<? extends PageTransformer> ZoomOut = ZoomOutTransformer.class;
     public static Class<? extends PageTransformer> ZoomOutSlide = ZoomOutSlideTransformer.class;
 }

@@ -4,10 +4,10 @@
 BannerView在控件可见时自动播放，不可见时停止播放，不需要额外设置界面切换时的开始播放和暂停播放。
 
 # Gradle
-       compile 'com.lany:BannerView:2.0.3'
+       compile 'com.lany:BannerView:2.0.4'
 # Usage
 ## xml layout
-    <com.lany.view.BannerView
+    <com.lany.banner.BannerView
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
         android:layout_height="180dp"
@@ -26,7 +26,7 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
 
 ##### 也可以使用默认配置:
          
-     <com.lany.view.BannerView
+     <com.lany.banner.BannerView
          android:id="@+id/banner_view"
          android:layout_width="match_parent"
          android:layout_height="180dp"/>

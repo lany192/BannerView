@@ -1,4 +1,4 @@
-package com.lany.view;
+package com.lany.banner;
 
 import android.os.Handler;
 import android.os.Looper;

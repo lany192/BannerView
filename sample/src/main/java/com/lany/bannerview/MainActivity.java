@@ -28,10 +28,10 @@ import com.lany.bannerview.transformer.StackTransformer;
 import com.lany.bannerview.transformer.TabletTransformer;
 import com.lany.bannerview.transformer.ZoomInTransformer;
 import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
-import com.lany.bannerview.transformer.ZoomOutTranformer;
-import com.lany.view.BannerAdapter;
-import com.lany.view.BannerStyle;
-import com.lany.view.BannerView;
+import com.lany.bannerview.transformer.ZoomOutTransformer;
+import com.lany.banner.BannerAdapter;
+import com.lany.banner.BannerStyle;
+import com.lany.banner.BannerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(StackTransformer.class);
         items.add(TabletTransformer.class);
         items.add(ZoomInTransformer.class);
-        items.add(ZoomOutTranformer.class);
+        items.add(ZoomOutTransformer.class);
         items.add(ZoomOutSlideTransformer.class);
     }
 

@@ -4,7 +4,7 @@ package com.lany.bannerview.transformer;
 
 import android.view.View;
 
-public class ZoomOutTranformer extends ABaseTransformer {
+public class ZoomOutTransformer extends ABaseTransformer {
 
 	@Override
 	protected void onTransform(View view, float position) {

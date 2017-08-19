@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.lany.view.BannerView
+        <com.lany.banner.BannerView
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -63,7 +63,7 @@
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
-        <com.lany.view.BannerView
+        <com.lany.banner.BannerView
             android:id="@+id/banner_view_1"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -81,7 +81,7 @@
             app:banner_titleTextColor="#ffffff"
             app:banner_titleTextSize="12sp" />
 
-        <com.lany.view.BannerView
+        <com.lany.banner.BannerView
             android:id="@+id/banner_view_2"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -97,7 +97,7 @@
             app:banner_titleTextColor="#ffffff"
             app:banner_titleTextSize="12sp" />
 
-        <com.lany.view.BannerView
+        <com.lany.banner.BannerView
             android:id="@+id/banner_view_3"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -107,7 +107,7 @@
             app:banner_indicatorType="num_indicator"
             app:banner_scaleType="fitXY" />
 
-        <com.lany.view.BannerView
+        <com.lany.banner.BannerView
             android:id="@+id/banner_view_4"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -120,7 +120,7 @@
             app:banner_scaleType="fitXY"
             app:banner_scrollTime="1000" />
 
-        <com.lany.view.BannerView
+        <com.lany.banner.BannerView
             android:id="@+id/banner_view_5"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -130,7 +130,7 @@
             app:banner_indicatorType="not_indicator"
             app:banner_scaleType="fitXY" />
 
-        <com.lany.view.BannerView
+        <com.lany.banner.BannerView
             android:id="@+id/banner_view_6"
             android:layout_width="match_parent"
             android:layout_height="200dp"

@@ -1,4 +1,4 @@
-package com.lany.view;
+package com.lany.banner;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
