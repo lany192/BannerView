@@ -14,9 +14,9 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
         app:banner_delayTime="5000"
         app:banner_indicatorGravity="center"
         app:banner_indicatorMargin="4dp"
-        app:banner_indicatorSelectedDrawable="@drawable/selected"
+        app:banner_indicatorSelected="@drawable/selected"
         app:banner_indicatorType="circle_indicator_title_inside"
-        app:banner_indicatorUnselectedDrawable="@drawable/unselected"
+        app:banner_indicatorUnselected="@drawable/unselected"
         app:banner_isAutoPlay="true"
         app:banner_scaleType="fitXY"
         app:banner_scrollTime="1000"
@@ -68,8 +68,8 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
 |banner_titleTextSize| dimension|标题字体大小
 |banner_titleHeight| dimension|标题栏高度
 |banner_indicatorMargin| dimension|指示器之间的间距
-|banner_indicatorSelectedDrawable| reference|选中的指示器图片
-|banner_indicatorUnselectedDrawable| reference|未选中的指示器图片
+|banner_indicatorSelected| reference|选中的指示器图片
+|banner_indicatorUnselected| reference|未选中的指示器图片
 |banner_scaleType| enum |banner图片的显示方式
 |banner_indicatorType| enum |指示器的几种样式
 |banner_indicatorGravity| enum |指示器显示位置

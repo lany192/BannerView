@@ -13,8 +13,8 @@
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            app:banner_indicatorSelectedDrawable="@drawable/selected_point"
-            app:banner_indicatorUnselectedDrawable="@drawable/unselected_point" />
+            app:banner_indicatorSelected="@drawable/selected_point"
+            app:banner_indicatorUnselected="@drawable/unselected_point" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,9 +71,9 @@
             app:banner_delayTime="5000"
             app:banner_indicatorGravity="center"
             app:banner_indicatorMargin="4dp"
-            app:banner_indicatorSelectedDrawable="@drawable/selected"
+            app:banner_indicatorSelected="@drawable/selected"
             app:banner_indicatorType="circle_indicator_title_inside"
-            app:banner_indicatorUnselectedDrawable="@drawable/unselected"
+            app:banner_indicatorUnselected="@drawable/unselected"
             app:banner_isAutoPlay="true"
             app:banner_scaleType="fitXY"
             app:banner_scrollTime="1000"

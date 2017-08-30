@@ -91,8 +91,8 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
         }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerStyle);
         mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.BannerStyle_banner_indicatorMargin, 5);
-        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorSelectedDrawable, R.drawable.indicator_oval_selected);
-        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorUnselectedDrawable, R.drawable.indicator_oval_unselected);
+        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorSelected, R.drawable.indicator_oval_selected);
+        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.BannerStyle_banner_indicatorUnselected, R.drawable.indicator_oval_unselected);
         mScaleType = typedArray.getInt(R.styleable.BannerStyle_banner_scaleType, mScaleType);
         mDelayTime = typedArray.getInt(R.styleable.BannerStyle_banner_delayTime, 3000);
         mScrollTime = typedArray.getInt(R.styleable.BannerStyle_banner_scrollTime, 800);

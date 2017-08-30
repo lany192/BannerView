@@ -10,8 +10,8 @@
         <attr name="banner_titleTextSize" format="dimension" />
         <attr name="banner_titleHeight" format="dimension" />
         <attr name="banner_indicatorMargin" format="dimension" />
-        <attr name="banner_indicatorSelectedDrawable" format="reference" />
-        <attr name="banner_indicatorUnselectedDrawable" format="reference" />
+        <attr name="banner_indicatorSelected" format="reference" />
+        <attr name="banner_indicatorUnselected" format="reference" />
         <attr name="banner_indicatorType" format="enum">
             <enum name="not_indicator" value="0" />
             <enum name="circle_indicator" value="1" />
