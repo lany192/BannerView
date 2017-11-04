@@ -4,9 +4,12 @@
 BannerView在控件可见时自动播放，不可见时停止播放，不需要额外设置界面切换时的开始播放和暂停播放。
 
 # Gradle
-       compile 'com.lany:BannerView:2.0.5'
+
+       compile 'com.lany:BannerView:2.0.6'
+
 # Usage
 ## xml layout
+
     <com.lany.banner.BannerView
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
@@ -24,12 +27,14 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
         app:banner_titleTextColor="#ffffff"
         app:banner_titleTextSize="12sp" />
 
+
 ##### 也可以使用默认配置:
          
      <com.lany.banner.BannerView
          android:id="@+id/banner_view"
          android:layout_width="match_parent"
          android:layout_height="180dp"/>
+
  ## code         
             
     BannerView bannerView = (BannerView) findViewById(R.id.banner_view);    
@@ -57,7 +62,9 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
             Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
         }
     });
-## attribute 
+
+## attribute
+
 |Attributes|format|describe
 |---|---|---|
 |banner_delayTime| integer|不同界面切换时间
@@ -73,6 +80,7 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
 |banner_scaleType| enum |banner图片的显示方式
 |banner_indicatorType| enum |指示器的几种样式
 |banner_indicatorGravity| enum |指示器显示位置
+
 # Demo
 [点击下载 download Demo apk](https://github.com/lany192/BannerView/raw/master/preview/app-release.apk)
 # Preview
