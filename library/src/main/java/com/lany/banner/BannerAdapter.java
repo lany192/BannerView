@@ -1,12 +1,14 @@
 package com.lany.banner;
 
 
+import android.support.annotation.Keep;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Keep
 public abstract class BannerAdapter<T> {
     private List<T> mItems = new ArrayList<>();
 

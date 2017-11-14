@@ -3,6 +3,7 @@ package com.lany.banner;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -28,7 +29,7 @@ import java.util.List;
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 import static android.support.v4.view.ViewPager.PageTransformer;
 
-@SuppressWarnings("unused")
+@Keep
 public class BannerView extends FrameLayout implements OnPageChangeListener {
     private final String TAG = "BannerView";
     private int mIndicatorMargin = 5;

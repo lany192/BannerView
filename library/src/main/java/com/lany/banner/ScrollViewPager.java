@@ -1,11 +1,12 @@
 package com.lany.banner;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-
+@Keep
 public class ScrollViewPager extends ViewPager {
     private boolean scrollable = true;
 

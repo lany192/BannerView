@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BannerItem banner = new BannerItem();
-                banner.setPic("http://imgsrc.baidu.com/imgad/pic/item/b03533fa828ba61e5e6d4c0d4b34970a304e5915.jpg");
+                banner.setPic("http://f.hiphotos.baidu.com/image/pic/item/d1a20cf431adcbef43977ecca5af2edda2cc9f5c.jpg");
                 banner.setTitle("title6");
                 items1.add(banner);
                 initBanner1();
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<BannerItem> items2 = new ArrayList<>();
         BannerItem item = new BannerItem();
-        item.setPic("http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg");
+        item.setPic("http://f.hiphotos.baidu.com/image/pic/item/4ec2d5628535e5dd623069aa7cc6a7efce1b62a3.jpg");
         item.setTitle("title6");
         items2.add(item);
         items2.addAll(DataUtils.getItems());
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<BannerItem> items3 = new ArrayList<>();
         BannerItem item1 = new BannerItem();
-        item1.setPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489902136826&di=b5ff524bb0fcaa460e6a4c398b48e1e4&imgtype=0&src=http%3A%2F%2Fimg3.91.com%2Fuploads%2Fallimg%2F130428%2F32-13042Q63239.jpg");
+        item1.setPic("http://a.hiphotos.baidu.com/image/pic/item/a9d3fd1f4134970a300589e59ccad1c8a6865d81.jpg");
         item1.setTitle("title7");
         items3.add(item1);
         items3.addAll(DataUtils.getItems());

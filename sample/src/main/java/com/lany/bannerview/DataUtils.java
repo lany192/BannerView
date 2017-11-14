@@ -9,27 +9,27 @@ public class DataUtils {
     public static List<BannerItem> getItems() {
         items.clear();
         BannerItem banner = new BannerItem();
-        banner.setPic("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2167376170,2737558790&fm=11&gp=0.jpg");
+        banner.setPic("http://h.hiphotos.baidu.com/image/pic/item/b7003af33a87e950128ee8a619385343faf2b45a.jpg");
         banner.setTitle("title1");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/281-5-730x456.jpg");
+        banner.setPic("http://b.hiphotos.baidu.com/image/pic/item/8ad4b31c8701a18b96aede3a942f07082838fe7a.jpg");
         banner.setTitle("title2");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/184-4-1024x768.jpg");
+        banner.setPic("http://f.hiphotos.baidu.com/image/pic/item/023b5bb5c9ea15ce2b8ee7c3bf003af33b87b293.jpg");
         banner.setTitle("title3");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setPic("http://www.1tong.com/uploads/wallpaper/plants/184-5-1024x768.jpg");
+        banner.setPic("http://g.hiphotos.baidu.com/image/pic/item/ac6eddc451da81cbeffa4fb85866d016092431a3.jpg");
         banner.setTitle("title4");
         items.add(banner);
 
         banner = new BannerItem();
-        banner.setPic("http://pic17.nipic.com/20111122/6759425_152002413138_2.jpg");
+        banner.setPic("http://h.hiphotos.baidu.com/image/pic/item/e824b899a9014c08897b336f037b02087af4f4bc.jpg");
         banner.setTitle("title5");
         items.add(banner);
 
