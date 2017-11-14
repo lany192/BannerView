@@ -57,7 +57,9 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
             Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
         }
     });
-## attribute 
+
+## attribute
+
 |Attributes|format|describe
 |---|---|---|
 |banner_delayTime| integer|不同界面切换时间
