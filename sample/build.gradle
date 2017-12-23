@@ -22,5 +22,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.github.bumptech.glide:glide:4.4.0'
-    compile project(':library')
+    implementation project(':library')
 }
