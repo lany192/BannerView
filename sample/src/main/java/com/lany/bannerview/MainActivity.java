@@ -12,6 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.lany.banner.BannerAdapter;
+import com.lany.banner.BannerStyle;
+import com.lany.banner.BannerView;
 import com.lany.bannerview.transformer.AccordionTransformer;
 import com.lany.bannerview.transformer.BackgroundToForegroundTransformer;
 import com.lany.bannerview.transformer.CubeInTransformer;
@@ -29,9 +34,6 @@ import com.lany.bannerview.transformer.TabletTransformer;
 import com.lany.bannerview.transformer.ZoomInTransformer;
 import com.lany.bannerview.transformer.ZoomOutSlideTransformer;
 import com.lany.bannerview.transformer.ZoomOutTransformer;
-import com.lany.banner.BannerAdapter;
-import com.lany.banner.BannerStyle;
-import com.lany.banner.BannerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,10 +104,15 @@ public class MainActivity extends AppCompatActivity {
         bannerView.setAnimation(Transformer.Default).setAdapter(new BannerAdapter<BannerItem>(DataUtils.getItems()) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
-                Glide.with(MainActivity.this)
-                        .load(item.getPic())
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .dontAnimate()
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(options)
+                        .load(item.getPic())
                         .into(imageView);
             }
 
@@ -145,10 +152,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
-                Glide.with(MainActivity.this)
-                        .load(item.getPic())
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .dontAnimate()
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(options)
+                        .load(item.getPic())
                         .into(imageView);
             }
 
@@ -173,10 +185,15 @@ public class MainActivity extends AppCompatActivity {
         bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
-                Glide.with(MainActivity.this)
-                        .load(item.getPic())
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .dontAnimate()
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(options)
+                        .load(item.getPic())
                         .into(imageView);
             }
 
@@ -194,10 +211,15 @@ public class MainActivity extends AppCompatActivity {
         bannerView4.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
-                Glide.with(MainActivity.this)
-                        .load(item.getPic())
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .dontAnimate()
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(options)
+                        .load(item.getPic())
                         .into(imageView);
             }
 
@@ -214,10 +236,15 @@ public class MainActivity extends AppCompatActivity {
         bannerView5.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
-                Glide.with(MainActivity.this)
-                        .load(item.getPic())
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .dontAnimate()
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(options)
+                        .load(item.getPic())
                         .into(imageView);
             }
 
@@ -234,10 +261,15 @@ public class MainActivity extends AppCompatActivity {
         bannerView6.setAdapter(new BannerAdapter<BannerItem>(items3) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
-                Glide.with(MainActivity.this)
-                        .load(item.getPic())
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .dontAnimate()
                         .placeholder(R.drawable.pic)
                         .error(R.drawable.pic)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(options)
+                        .load(item.getPic())
                         .into(imageView);
             }
 
@@ -279,12 +311,16 @@ public class MainActivity extends AppCompatActivity {
                 .setAdapter(new BannerAdapter<BannerItem>(items1) {
                     @Override
                     public void bindImage(ImageView imageView, BannerItem item) {
-                        Glide.with(MainActivity.this)
-                                .load(item.getPic())
+                        RequestOptions options = new RequestOptions()
+                                .fitCenter()
+                                .dontAnimate()
                                 .placeholder(R.drawable.pic)
                                 .error(R.drawable.pic)
+                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                        Glide.with(MainActivity.this)
+                                .setDefaultRequestOptions(options)
+                                .load(item.getPic())
                                 .into(imageView);
-                        Log.i("TAG", "bindImage: BannerItem==" + item);
                     }
 
                     @Override
