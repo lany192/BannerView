@@ -49,15 +49,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initData();
-        bannerView = (BannerView) findViewById(R.id.banner);
-        Spinner spinnerStyle = (Spinner) findViewById(R.id.spinnerStyle);
-        Spinner spinnerStyle2 = (Spinner) findViewById(R.id.spinnerTransformer);
-        bannerView1 = (BannerView) findViewById(R.id.banner_view_1);
-        BannerView bannerView2 = (BannerView) findViewById(R.id.banner_view_2);
-        BannerView bannerView3 = (BannerView) findViewById(R.id.banner_view_3);
-        BannerView bannerView4 = (BannerView) findViewById(R.id.banner_view_4);
-        BannerView bannerView5 = (BannerView) findViewById(R.id.banner_view_5);
-        BannerView bannerView6 = (BannerView) findViewById(R.id.banner_view_6);
+        bannerView = findViewById(R.id.banner);
+        Spinner spinnerStyle = findViewById(R.id.spinnerStyle);
+        Spinner spinnerStyle2 = findViewById(R.id.spinnerTransformer);
+        bannerView1 = findViewById(R.id.banner_view_1);
+        BannerView bannerView2 = findViewById(R.id.banner_view_2);
+        BannerView bannerView3 = findViewById(R.id.banner_view_3);
+        BannerView bannerView4 = findViewById(R.id.banner_view_4);
+        BannerView bannerView5 = findViewById(R.id.banner_view_5);
+        BannerView bannerView6 = findViewById(R.id.banner_view_6);
 
 
         spinnerStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -351,7 +351,7 @@ public class BannerView extends FrameLayout implements OnPageChangeListener {
             } else {
                 imageView.setImageResource(mIndicatorUnselectedResId);
             }
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(mIndicatorMargin, 0, mIndicatorMargin, 0);
             imageView.setLayoutParams(lp);
             if (mBannerStyle == BannerStyle.CIRCLE_INDICATOR || mBannerStyle == BannerStyle.CIRCLE_INDICATOR_TITLE) {
