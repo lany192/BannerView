@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lany.banner.BannerAdapter;
 import com.lany.banner.BannerStyle;
 import com.lany.banner.BannerView;
+import com.lany.banner.SimpleBannerAdapter;
 import com.lany.bannerview.transformer.AccordionTransformer;
 import com.lany.bannerview.transformer.BackgroundToForegroundTransformer;
 import com.lany.bannerview.transformer.CubeInTransformer;
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         item.setTitle("title6");
         items2.add(item);
         items2.addAll(DataUtils.getItems());
-        bannerView2.setAdapter(new BannerAdapter<BannerItem>(items2) {
+        bannerView2.setAdapter(new SimpleBannerAdapter<BannerItem>(items2) {
 
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         items3.add(item1);
         items3.addAll(DataUtils.getItems());
 
-        bannerView3.setAdapter(new BannerAdapter<BannerItem>(items3) {
+        bannerView3.setAdapter(new SimpleBannerAdapter<BannerItem>(items3) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
                 RequestOptions options = new RequestOptions()
@@ -208,7 +209,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bannerView4.setAdapter(new BannerAdapter<BannerItem>(items3) {
+        bannerView4.setAdapter(new SimpleBannerAdapter<BannerItem>(items3) {
+            @Override
+            public void bindImage(ImageView imageView, BannerItem item) {
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .dontAnimate()
+                        .placeholder(R.drawable.pic)
+                        .error(R.drawable.pic)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(options)
+                        .load(item.getPic())
+                        .into(imageView);
+            }
+
+            @Override
+            public void bindTitle(TextView titleText, BannerItem item) {
+                titleText.setText("" + item.getTitle());
+            }
+
+//            @Override
+//            public void onItemClicked(int position, BannerItem item) {
+//                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
+//            }
+        });
+        bannerView5.setAdapter(new SimpleBannerAdapter<BannerItem>(items3) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
                 RequestOptions options = new RequestOptions()
@@ -233,32 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        bannerView5.setAdapter(new BannerAdapter<BannerItem>(items3) {
-            @Override
-            public void bindImage(ImageView imageView, BannerItem item) {
-                RequestOptions options = new RequestOptions()
-                        .fitCenter()
-                        .dontAnimate()
-                        .placeholder(R.drawable.pic)
-                        .error(R.drawable.pic)
-                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-                Glide.with(MainActivity.this)
-                        .setDefaultRequestOptions(options)
-                        .load(item.getPic())
-                        .into(imageView);
-            }
-
-            @Override
-            public void bindTitle(TextView titleText, BannerItem item) {
-                titleText.setText("" + item.getTitle());
-            }
-
-            @Override
-            public void onItemClicked(int position, BannerItem item) {
-                Toast.makeText(MainActivity.this, "点击" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        bannerView6.setAdapter(new BannerAdapter<BannerItem>(items3) {
+        bannerView6.setAdapter(new SimpleBannerAdapter<BannerItem>(items3) {
             @Override
             public void bindImage(ImageView imageView, BannerItem item) {
                 RequestOptions options = new RequestOptions()
@@ -308,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initBanner1() {
         bannerView1.setAnimation(Transformer.FlipHorizontal)
-                .setAdapter(new BannerAdapter<BannerItem>(items1) {
+                .setAdapter(new SimpleBannerAdapter<BannerItem>(items1) {
                     @Override
                     public void bindImage(ImageView imageView, BannerItem item) {
                         RequestOptions options = new RequestOptions()
