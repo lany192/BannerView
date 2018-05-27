@@ -14,7 +14,7 @@ BannerView在控件可见时自动播放，不可见时停止播放，不需要�
 
 #
 
-     implementation 'com.github.lany192:BannerView:3.0.0'
+     implementation 'com.github.lany192:BannerView:3.0.1'
 # Usage
 ## xml layout
     <com.lany.banner.BannerView
