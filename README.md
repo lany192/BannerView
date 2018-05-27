@@ -4,7 +4,17 @@
 BannerView在控件可见时自动播放，不可见时停止播放，不需要额外设置界面切换时的开始播放和暂停播放。
 
 # Gradle
-       implementation 'com.lany:BannerView:2.1.1'
+
+    allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+
+#
+
+     implementation 'com.github.lany192:BannerView:3.0.0'
 # Usage
 ## xml layout
     <com.lany.banner.BannerView
