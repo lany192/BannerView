@@ -12,10 +12,14 @@ public class SimpleBannerAdapter<T> extends BannerAdapter<T> {
     }
 
     @Override
-    public void bind(ImageView imageView, TextView titleText, T item) {
+    public void bindImage(ImageView imageView, T item) {
 
     }
 
+    @Override
+    public void bindTitle(TextView titleText, T item) {
+
+    }
 
     @Override
     public void onItemClicked(int position, T item) {
