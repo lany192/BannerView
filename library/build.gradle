@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.lany192'
-version = '1.0.0'
+version = '3.0.0'
 
 android {
     compileSdkVersion 27
@@ -10,7 +10,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 1
+        versionCode 300
         versionName version
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
