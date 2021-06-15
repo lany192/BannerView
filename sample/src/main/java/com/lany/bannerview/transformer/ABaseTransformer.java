@@ -2,17 +2,12 @@
 
 package com.lany.bannerview.transformer;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.view.ViewPager.PageTransformer;
 import android.view.View;
 
-@RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-public abstract class ABaseTransformer implements PageTransformer {
+import androidx.viewpager.widget.ViewPager;
 
-
+public abstract class ABaseTransformer implements ViewPager.PageTransformer {
     protected abstract void onTransform(View page, float position);
-
 
     @Override
     public void transformPage(View page, float position) {
@@ -30,7 +25,6 @@ public abstract class ABaseTransformer implements PageTransformer {
     protected boolean isPagingEnabled() {
         return false;
     }
-
 
 
     protected void onPreTransform(View page, float position) {

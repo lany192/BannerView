@@ -1,9 +1,10 @@
 package com.lany.banner;
 
 
-import android.support.annotation.Keep;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Keep;
 
 import java.util.ArrayList;
 import java.util.List;
