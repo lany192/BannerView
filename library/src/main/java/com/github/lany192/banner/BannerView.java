@@ -579,4 +579,17 @@ public class BannerView extends RelativeLayout {
         adapterWrapper.registerAdapter(adapter);
         startPager(startPosition);
     }
+
+    /**
+     * 不可见时停止自动轮播
+     */
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE) {
+            startTurning();
+        } else {
+            stopTurning();
+        }
+    }
 }
