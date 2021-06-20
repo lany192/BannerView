@@ -1,149 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.lany.banner.BannerView
+        <com.github.lany192.banner.BannerView
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            app:banner_indicatorSelected="@drawable/selected_point"
-            app:banner_indicatorUnselected="@drawable/unselected_point" />
+            android:layout_height="240dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="banner type："
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/spinnerStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/style" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PageTransformer："
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/spinnerTransformer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/anim" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/my_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="add one banner"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-
-        <com.lany.banner.BannerView
-            android:id="@+id/banner_view_1"
+        <com.github.lany192.banner.BannerView
+            android:id="@+id/banner2"
             android:layout_width="match_parent"
             android:layout_height="240dp"
-            android:layout_marginTop="8dp"
-            app:banner_delayTime="5000"
-            app:banner_indicatorGravity="center"
-            app:banner_indicatorMargin="4dp"
-            app:banner_indicatorSelected="@drawable/selected"
-            app:banner_indicatorType="circle_indicator_title_inside"
-            app:banner_indicatorUnselected="@drawable/unselected"
-            app:banner_isAutoPlay="true"
-            app:banner_scaleType="fitXY"
-            app:banner_scrollTime="1000"
-            app:banner_titleBackground="#50000000"
-            app:banner_titleTextColor="#ffffff"
-            app:banner_titleTextSize="12sp" />
+            android:layout_marginTop="8dp" />
 
-        <com.lany.banner.BannerView
-            android:id="@+id/banner_view_2"
+        <com.github.lany192.banner.BannerView
+            android:id="@+id/banner3"
             android:layout_width="match_parent"
             android:layout_height="240dp"
-            android:layout_marginTop="8dp"
-            app:banner_delayTime="5000"
-            app:banner_indicatorGravity="center"
-            app:banner_indicatorMargin="4dp"
-            app:banner_indicatorType="num_indicator_title"
-            app:banner_isAutoPlay="true"
-            app:banner_scaleType="fitXY"
-            app:banner_scrollTime="1000"
-            app:banner_titleBackground="#90000000"
-            app:banner_titleTextColor="#ffffff"
-            app:banner_titleTextSize="12sp" />
-
-        <com.lany.banner.BannerView
-            android:id="@+id/banner_view_3"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_marginTop="8dp"
-            app:banner_delayTime="5000"
-            app:banner_indicatorGravity="center"
-            app:banner_indicatorType="num_indicator"
-            app:banner_scaleType="fitXY" />
-
-        <com.lany.banner.BannerView
-            android:id="@+id/banner_view_4"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_marginTop="8dp"
-            app:banner_delayTime="5000"
-            app:banner_indicatorGravity="center"
-            app:banner_indicatorMargin="4dp"
-            app:banner_indicatorType="circle_indicator"
-            app:banner_isAutoPlay="true"
-            app:banner_scaleType="fitXY"
-            app:banner_scrollTime="1000" />
-
-        <com.lany.banner.BannerView
-            android:id="@+id/banner_view_5"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_marginTop="8dp"
-            app:banner_delayTime="5000"
-            app:banner_indicatorGravity="center"
-            app:banner_indicatorType="not_indicator"
-            app:banner_scaleType="fitXY" />
-
-        <com.lany.banner.BannerView
-            android:id="@+id/banner_view_6"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_marginTop="8dp"
-            app:banner_delayTime="5000"
-            app:banner_indicatorGravity="center"
-            app:banner_indicatorMargin="4dp"
-            app:banner_indicatorType="circle_indicator_title"
-            app:banner_isAutoPlay="true"
-            app:banner_scaleType="fitXY"
-            app:banner_scrollTime="1000"
-            app:banner_titleBackground="#90000000"
-            app:banner_titleTextColor="#ffffff"
-            app:banner_titleTextSize="12sp" />
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 </ScrollView>
