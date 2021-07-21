@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         bannerView3.addPageTransformer(new MarginPageTransformer(20));
         bannerView3.setIndicator(indicatorView);
         bannerView3.setPageMargin(DensityUtils.dp2px(20), DensityUtils.dp2px(10));
-        bannerView3.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        bannerView3.setOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
 

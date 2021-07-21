@@ -447,7 +447,7 @@ public class BannerView extends RelativeLayout {
         return this;
     }
 
-    public BannerView registerOnPageChangeCallback(ViewPager2.OnPageChangeCallback listener) {
+    public BannerView setOnPageChangeCallback(ViewPager2.OnPageChangeCallback listener) {
         this.changeCallback = listener;
         return this;
     }
