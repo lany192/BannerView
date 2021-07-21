@@ -45,9 +45,9 @@ public class IndicatorView extends View implements Indicator {
     private int indicatorStyle;
 
     /*--------------- 核心控制点大小距离参数 ---------------*/
-    private float indicatorRadius = dip2px(10.0f);
+    private float indicatorRadius = dip2px(3.5f);
     private float indicatorRatio = 1.0f;
-    private float indicatorSelectedRadius = dip2px(10.0f);
+    private float indicatorSelectedRadius = dip2px(3.5f);
     private float indicatorSelectedRatio = 1.0f;
     private float indicatorSpacing = dip2px(10);
     /*--------------- 核心控制点大小距离参数end ---------------*/
@@ -230,12 +230,8 @@ public class IndicatorView extends View implements Indicator {
 
     private void drawBezier(Canvas canvas, float midY) {
         drawPagerCountCircle(canvas, midY);
-        if (path == null) {
-            path = new Path();
-        }
-        if (accelerateInterpolator == null) {
-            accelerateInterpolator = new AccelerateInterpolator();
-        }
+        if (path == null) path = new Path();
+        if (accelerateInterpolator == null) accelerateInterpolator = new AccelerateInterpolator();
         float indicatorStartX = indicatorStartX(selectedPage);
         float nextIndicatorStartX = indicatorStartX((selectedPage + 1) % pagerCount);
         float leftX = indicatorStartX + (nextIndicatorStartX - indicatorStartX) * accelerateInterpolator.getInterpolation(offset);
@@ -274,9 +270,7 @@ public class IndicatorView extends View implements Indicator {
         indicatorPaint.setColor(unColor);
         for (int i = 0; i < pagerCount; i++) {
             float startCx = indicatorStartX(i);
-            if (isNextFirst) {
-                startCx += distanceOffset;
-            }
+            if (isNextFirst) startCx += distanceOffset;
             float left = startCx - ratioIndicatorRadius;
             float top = midY - indicatorRadius;
             float right = startCx + ratioIndicatorRadius;
@@ -292,9 +286,7 @@ public class IndicatorView extends View implements Indicator {
 
         if (offset < 0.99f) {
             float leftX = indicatorStartX(selectedPage) - ratioSelectedRadius;
-            if (isNextFirst) {
-                leftX += distanceOffset;
-            }
+            if (isNextFirst) leftX += distanceOffset;
             float rightX = leftX + ratioSelectedRadius * 2 + distance - distanceOffset;
             rectF.set(leftX, midY - indicatorSelectedRadius, rightX, midY + indicatorSelectedRadius);
             canvas.drawRoundRect(rectF, indicatorSelectedRadius, indicatorSelectedRadius, indicatorPaint);

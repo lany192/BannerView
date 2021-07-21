@@ -30,14 +30,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- * 可以无限换行banner
- * https://github.com/lany192/BannerView
- *
- * @author lany192
- */
 @Keep
 public class BannerView extends RelativeLayout {
+
     private static final long DEFAULT_AUTO_TIME = 2500;
     private static final long DEFAULT_PAGER_DURATION = 800;
     private static final int NORMAL_COUNT = 2;
@@ -85,7 +80,7 @@ public class BannerView extends RelativeLayout {
     }
 
     private void startPager(int startPosition) {
-        if (sidePage == NORMAL_COUNT) {
+        if (sidePage == NORMAL_COUNT) { //一页多品模式下，重新设置Adapter，数据刷新貌似有bug
             viewPager2.setAdapter(adapterWrapper);
         } else {
             adapterWrapper.notifyDataSetChanged();
@@ -188,6 +183,7 @@ public class BannerView extends RelativeLayout {
         return super.onInterceptTouchEvent(ev);
     }
 
+
     private class OnPageChangeCallback extends ViewPager2.OnPageChangeCallback {
 
         @Override
@@ -240,7 +236,8 @@ public class BannerView extends RelativeLayout {
     }
 
     private class BannerAdapterWrapper extends RecyclerView.Adapter<ViewHolder> {
-        private RecyclerView.Adapter<ViewHolder> adapter;
+
+        private RecyclerView.Adapter adapter;
 
         @NonNull
         @Override
@@ -272,7 +269,7 @@ public class BannerView extends RelativeLayout {
             return adapter == null ? 0 : adapter.getItemCount();
         }
 
-        void registerAdapter(RecyclerView.Adapter<ViewHolder> adapter) {
+        void registerAdapter(RecyclerView.Adapter adapter) {
             if (this.adapter != null) {
                 this.adapter.unregisterAdapterDataObserver(itemDataSetChangeObserver);
             }
@@ -286,9 +283,7 @@ public class BannerView extends RelativeLayout {
     private final RecyclerView.AdapterDataObserver itemDataSetChangeObserver = new RecyclerView.AdapterDataObserver() {
 
         @Override
-        public final void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-            onChanged();
-        }
+        public final void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) { onChanged(); }
 
         @Override
         public final void onItemRangeInserted(int positionStart, int itemCount) {
@@ -298,9 +293,7 @@ public class BannerView extends RelativeLayout {
         }
 
         @Override
-        public final void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            onChanged();
-        }
+        public final void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) { onChanged(); }
 
         @Override
         public void onChanged() {
@@ -313,26 +306,26 @@ public class BannerView extends RelativeLayout {
             //控制切换速度，采用反射方。法方法只会调用一次，替换掉内部的RecyclerView的LinearLayoutManager
             RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
             recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            ProxyLayoutManger proxyLayoutManger = new ProxyLayoutManger(getContext(), linearLayoutManager);
+            LinearLayoutManager o = (LinearLayoutManager) recyclerView.getLayoutManager();
+            ProxyLayoutManger proxyLayoutManger = new ProxyLayoutManger(getContext(), o);
             recyclerView.setLayoutManager(proxyLayoutManger);
 
             Field mRecyclerView = RecyclerView.LayoutManager.class.getDeclaredField("mRecyclerView");
             mRecyclerView.setAccessible(true);
-            mRecyclerView.set(linearLayoutManager, recyclerView);
+            mRecyclerView.set(o, recyclerView);
 
-            Field layoutMangerField = ViewPager2.class.getDeclaredField("mLayoutManager");
-            layoutMangerField.setAccessible(true);
-            layoutMangerField.set(viewPager2, proxyLayoutManger);
+            Field LayoutMangerField = ViewPager2.class.getDeclaredField("mLayoutManager");
+            LayoutMangerField.setAccessible(true);
+            LayoutMangerField.set(viewPager2, proxyLayoutManger);
 
             Field pageTransformerAdapterField = ViewPager2.class.getDeclaredField("mPageTransformerAdapter");
             pageTransformerAdapterField.setAccessible(true);
             Object mPageTransformerAdapter = pageTransformerAdapterField.get(viewPager2);
             if (mPageTransformerAdapter != null) {
                 Class<?> aClass = mPageTransformerAdapter.getClass();
-                Field layoutManagerField = aClass.getDeclaredField("mLayoutManager");
-                layoutManagerField.setAccessible(true);
-                layoutManagerField.set(mPageTransformerAdapter, proxyLayoutManger);
+                Field layoutManager = aClass.getDeclaredField("mLayoutManager");
+                layoutManager.setAccessible(true);
+                layoutManager.set(mPageTransformerAdapter, proxyLayoutManger);
             }
             Field scrollEventAdapterField = ViewPager2.class.getDeclaredField("mScrollEventAdapter");
             scrollEventAdapterField.setAccessible(true);
@@ -359,22 +352,27 @@ public class BannerView extends RelativeLayout {
         }
 
         @Override
-        public boolean performAccessibilityAction(@NonNull RecyclerView.Recycler recycler, @NonNull RecyclerView.State state, int action, @Nullable Bundle args) {
+        public boolean performAccessibilityAction(@NonNull RecyclerView.Recycler recycler,
+                                                  @NonNull RecyclerView.State state, int action, @Nullable Bundle args) {
             return layoutManager.performAccessibilityAction(recycler, state, action, args);
         }
 
         @Override
-        public void onInitializeAccessibilityNodeInfo(@NonNull RecyclerView.Recycler recycler, @NonNull RecyclerView.State state, @NonNull AccessibilityNodeInfoCompat info) {
+        public void onInitializeAccessibilityNodeInfo(@NonNull RecyclerView.Recycler recycler,
+                                                      @NonNull RecyclerView.State state, @NonNull AccessibilityNodeInfoCompat info) {
             layoutManager.onInitializeAccessibilityNodeInfo(recycler, state, info);
         }
 
         @Override
-        public boolean requestChildRectangleOnScreen(@NonNull RecyclerView parent, @NonNull View child, @NonNull Rect rect, boolean immediate, boolean focusedChildVisible) {
+        public boolean requestChildRectangleOnScreen(@NonNull RecyclerView parent,
+                                                     @NonNull View child, @NonNull Rect rect, boolean immediate,
+                                                     boolean focusedChildVisible) {
             return layoutManager.requestChildRectangleOnScreen(parent, child, rect, immediate, focusedChildVisible);
         }
 
         @Override
-        protected void calculateExtraLayoutSpace(@NonNull RecyclerView.State state, @NonNull int[] extraLayoutSpace) {
+        protected void calculateExtraLayoutSpace(@NonNull RecyclerView.State state,
+                                                 @NonNull int[] extraLayoutSpace) {
             try {
                 Method method = layoutManager.getClass().getDeclaredMethod("calculateExtraLayoutSpace", state.getClass(), extraLayoutSpace.getClass());
                 method.setAccessible(true);
@@ -447,7 +445,7 @@ public class BannerView extends RelativeLayout {
         return this;
     }
 
-    public BannerView setOnPageChangeCallback(ViewPager2.OnPageChangeCallback listener) {
+    public BannerView setOuterPageChangeListener(ViewPager2.OnPageChangeCallback listener) {
         this.changeCallback = listener;
         return this;
     }
@@ -583,18 +581,5 @@ public class BannerView extends RelativeLayout {
     public void setAdapter(@Nullable RecyclerView.Adapter adapter, int startPosition) {
         adapterWrapper.registerAdapter(adapter);
         startPager(startPosition);
-    }
-
-    /**
-     * 不可见时停止自动轮播
-     */
-    @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        if (visibility == VISIBLE) {
-            startTurning();
-        } else {
-            stopTurning();
-        }
     }
 }
