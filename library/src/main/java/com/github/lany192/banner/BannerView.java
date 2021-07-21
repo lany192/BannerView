@@ -30,6 +30,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * 可以无限换行banner
+ * https://github.com/lany192/BannerView
+ */
 @Keep
 public class BannerView extends RelativeLayout {
     private static final long DEFAULT_AUTO_TIME = 2500;
