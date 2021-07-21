@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         bannerView3.setAutoPlay(false)
                 .setIndicator(indicatorView)
                 .setOrientation(ViewPager2.ORIENTATION_HORIZONTAL)
-                .setPagerScrollDuration(800)
+                .setPagerScrollDuration(1000)
                 .setPageMargin(DensityUtils.dp2px(20), DensityUtils.dp2px(10))
                 .setOuterPageChangeListener(new ViewPager2.OnPageChangeCallback() {
                     @Override

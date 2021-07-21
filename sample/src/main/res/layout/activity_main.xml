@@ -12,18 +12,18 @@
         <com.github.lany192.banner.BannerView
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="240dp" />
+            android:layout_height="200dp" />
 
         <com.github.lany192.banner.BannerView
             android:id="@+id/banner2"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="200dp"
             android:layout_marginTop="8dp" />
 
         <com.github.lany192.banner.BannerView
             android:id="@+id/banner3"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="200dp"
             android:layout_marginTop="8dp" />
     </LinearLayout>
 </ScrollView>
